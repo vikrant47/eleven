@@ -157,7 +157,7 @@ export class RestQuery {
     }
     data.modelAlias = this.modelAlias.replaceAll('.', '\\');
     return TenantService.request(Object.assign({
-      url: '/api/engine/models/' + this.modelAlias + '/query',
+      url: '/api/crm/models/' + this.modelAlias + '/query',
       queryMethod: options.method
     }, options));
   }

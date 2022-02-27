@@ -3,7 +3,7 @@ import { TenantService } from '@/modules/engine/services/tenant.service';
 
 export function login(username, password, code, uuid) {
   return TenantService.request({
-    url: '/api/engine/auth/login',
+    url: '/api/system/auth/login',
     method: 'post',
     data: {
       password,
@@ -16,7 +16,7 @@ export function login(username, password, code, uuid) {
 
 export function getInfo() {
   return TenantService.instance.request({
-    url: '/api/engine/auth/user',
+    url: '/api/system/auth/user',
     method: 'get'
   });
 }

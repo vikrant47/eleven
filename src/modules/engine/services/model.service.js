@@ -11,7 +11,7 @@ export class ModelService {
 
   requestDefinition(options = {}) {
     return this.tenantService.request({
-      url: '/api/engine/models/' + this.modelAlias + '/definition',
+      url: '/api/crm/models/' + this.modelAlias + '/definition',
       params: {
         list: options.list,
         formId: options.formId

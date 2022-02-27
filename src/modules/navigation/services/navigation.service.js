@@ -82,7 +82,7 @@ export class NavigationService {
       this.navPromise = new Promise((resolve, reject) => {
         if (this.allNavigations.length === 0) {
           TenantService.instance.request({
-            url: '/api/engine/navigations?position=' + this.position,
+            url: '/api/crm/navigations?position=' + this.position,
             method: 'get'
           }).then(navs => {
             this.allNavigations = navs.contents;

@@ -34,7 +34,8 @@ const layouts = {
     widgetInstance.setPreviewMode(this.previewMode);
     return (
       <render widget={widgetInstance} {...{ on: listeners }} wrapper={true} form-model={formData}
-        eval-context={this.context}>
+        eval-context={this.context}
+      >
         {child}
       </render>
       /* <el-col span={widgetSettings.span} v-show={widgetSettings.visible}>
@@ -110,8 +111,8 @@ function formBtns(h) {
 
 function renderFormItem(h, elementList, formModel) {
   return elementList.map(widget => {
-    const config = widget.widgetSettings;
-    const layout = layouts[config.layout];
+    const config = widget.widgetSettings || {};
+    const layout = layouts[config.layout || 'colFormItem'];
 
     if (layout) {
       return layout.call(this, h, widget, formModel);

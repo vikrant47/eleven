@@ -279,7 +279,7 @@ export default class MultiReferenceWidget extends BaseWidget {
     const assigned = this.getValue();
     // const previous = this.multiReferenceData.filter(d => d[through] && d[through].length > 0).map(d => d.id);
     await new RestQuery().request({
-      url: '/api/engine/associations/' + this.association.id + '/bulk-assign',
+      url: '/api/crm/associations/' + this.association.id + '/bulk-assign',
       method: 'post',
       data: {
         assigned: assigned.map(id => {
