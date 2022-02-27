@@ -173,10 +173,14 @@ export class EngineForm extends EngineDefinitionService {
   fillFieldConfig(fieldName, widgetConfig) {
     const field = this.getFieldByName(fieldName);
     if (field) {
-      Object.assign(widgetConfig.fieldSettings, {
+      widgetConfig.widgetAlias = widgetConfig.widgetAlias || field.form_renderer;
+      widgetConfig.fieldSettings = Object.assign({
         readOnly: field.readonly,
         disabled: field.readonly
-      });
+      }, widgetConfig.fieldSettings);
+      widgetConfig.widgetSettings = Object.assign({
+        label: field.label,
+      }, widgetConfig.widgetSettings);
       switch (field.type) {
         case 'reference':
           // assigning default values
