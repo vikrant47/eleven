@@ -50,6 +50,12 @@ export const constantRouterMap = [
         meta: { title: 'Home', icon: 'index', affix: true, noCache: true },
         props: true
       }, {
+        path: '/flows/:flowId',
+        component: (resolve) => require(['@/modules/flowdesigner/views/FlowRenderer'], resolve),
+        name: 'Form',
+        meta: { title: 'Flow', icon: 'index', affix: true, noCache: true },
+        props: true
+      }, {
         path: '/models/:modelAlias/form/:formId/:recordId/:view',
         component: (resolve) => require(['@/modules/form/views/FormRenderer'], resolve),
         name: 'Form',

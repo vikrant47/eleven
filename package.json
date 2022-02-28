@@ -33,6 +33,7 @@
     "url": "https://github.com/elunez/eladmin/issues"
   },
   "dependencies": {
+    "@braks/vue-flow": "^0.3.1",
     "@riophae/vue-treeselect": "0.4.0",
     "@toast-ui/vue-editor": "^2.5.1",
     "axios": "0.18.1",
@@ -83,8 +84,7 @@
     "@babel/core": "7.0.0",
     "@babel/parser": "^7.7.4",
     "@babel/plugin-transform-runtime": "^7.12.1",
-    "@babel/preset-env": "^7.14.1",
-    "@babel/preset-es2017": "^7.0.0-beta.53",
+    "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.12.7",
     "@babel/register": "7.0.0",
     "@babel/runtime": "^7.12.5",
