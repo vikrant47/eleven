@@ -1,5 +1,5 @@
 /* import loadScript from './loadScript';
-import ELEMENT from 'element-ui';
+import ELEMENT from 'element-plus';
 
 let beautifierObj;*/
 

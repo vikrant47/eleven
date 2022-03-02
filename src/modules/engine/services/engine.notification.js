@@ -1,5 +1,5 @@
-import { MessageBox } from 'element-ui';
-import { Message } from 'element-ui';
+import { MessageBox } from 'element-plus';
+import { Message } from 'element-plus';
 
 export class EngineNotification {
   static defaultMessageConfig = {

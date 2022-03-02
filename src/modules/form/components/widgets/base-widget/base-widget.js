@@ -2,7 +2,7 @@ import {
   DEFAULT_CONFIG_SECTION,
   ITEM_LAYOUT
 } from '@/modules/form/components/widgets/base-widget/widget-config';
-import Vue from 'vue';
+import {Vue} from '@/main';
 import { LAYOUT_WIDGETS, WIDGETS } from '@/modules/form/components/widgets/base-widget/widgets';
 import _ from 'lodash';
 import { Engine } from '@/modules/engine/core/engine';
@@ -86,7 +86,7 @@ export class BaseWidget extends EngineObservable {
     'palletSettings',
     'engineForm',
     { widgetSettings: ['formId', 'on'] },
-    'widgetSettings.formId', 'widgetSettings.regList', 'widgetSettings.document', 'widgetSettings.changeTag', 'widgetSettings.renderKey', 'widgetSettings.domProps', 'widgetSettings.nativeOn', 'widgetSettings.on', 'widgetSettings.directives', 'widgetSettings.scopedSlots', 'widgetSettings.key', 'widgetSettings.ref', 'widgetSettings.refInFor', 'widgetSettings.visible', 'widgetSettings.wrapper'
+    'widgetSettings.formId', 'widgetSettings.regList', 'widgetSettings.document', 'widgetSettings.changeTag', 'widgetSettings.renderKey', 'widgetSettings.domProps', 'widgetSettingsOn', 'widgetSettings.on', 'widgetSettings.directives', 'widgetSettings.scopedSlots', 'widgetSettings.key', 'widgetSettings.ref', 'widgetSettings.refInFor', 'widgetSettings.visible', 'widgetSettings.wrapper'
   ];
   transient = BaseWidget.transient;
   oldValueHash = null;

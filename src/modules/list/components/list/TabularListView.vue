@@ -25,10 +25,10 @@
         :min-width="column.config.minWidth"
       >
         <template slot="header" slot-scope="scope">
-          <div class="header-label">
+<!--         <div class="header-label">
             <span>{{ scope.column.label }}</span>
           </div>
-          <slot name="header" />
+          <slot name="header" />-->
         </template>
         <template #default="{row}">
           <div

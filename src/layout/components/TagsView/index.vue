@@ -4,8 +4,8 @@
       <el-breadcrumb
         class="tags-view-item"
         separator-class="el-icon-arrow-right"
-        @click.middle.native="closeSelectedTag(tag)"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
+        @click.middle="closeSelectedTag(tag)"
+        @contextmenu.prevent="openMenu(tag,$event)"
       >
         <el-breadcrumb-item
           v-for="tag in visitedViews"
@@ -24,8 +24,8 @@
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
         class="tags-view-item"
-        @click.middle.native="closeSelectedTag(tag)"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
+        @click.middle="closeSelectedTag(tag)"
+        @contextmenu.prevent="openMenu(tag,$event)"
       >
         {{ tag.title }}
         <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />

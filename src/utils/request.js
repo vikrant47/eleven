@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '@/router/routers';
-import { Notification } from 'element-ui';
+import { Notification } from 'element-plus';
 import store from '../store';
 import { getToken } from '@/utils/auth';
 import Config from '@/settings';

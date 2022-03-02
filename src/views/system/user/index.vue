@@ -36,7 +36,7 @@
               placeholder="输入名称或者邮箱搜索"
               style="width: 200px;"
               class="filter-item"
-              @keyup.enter.native="crud.toQuery"
+              @keyup.enter="crud.toQuery"
             />
             <date-range-picker v-model="query.createTime" class="date-item" />
             <el-select
@@ -60,7 +60,7 @@
           <crudOperation show="" :permission="permission" />
         </div>
         <!--表单渲染-->
-        <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="570px">
+        <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="cuGtZero" :title="crud.status.title" width="570px">
           <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="66px">
             <el-form-item label="用户名" prop="username">
               <el-input v-model="form.username" />
@@ -215,6 +215,11 @@ export default {
   components: { Treeselect, crudOperation, rrOperation, udOperation, pagination, DateRangePicker },
   cruds() {
     return CRUD({ title: '用户', url: 'api/users', crudMethod: { ...crudUser }});
+  },
+  computed(){
+    return {
+      cuGtZero: crud.status.cu > 0,
+    }
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   // 数据字典

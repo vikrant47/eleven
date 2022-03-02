@@ -11,7 +11,7 @@
           placeholder="模糊搜索"
           style="width: 200px;"
           class="filter-item"
-          @keyup.enter.native="crud.toQuery"
+          @keyup.enter="crud.toQuery"
         />
         <date-range-picker v-model="query.createTime" class="date-item" />
         <rrOperation />
@@ -23,7 +23,7 @@
       append-to-body
       :close-on-click-modal="false"
       :before-close="crud.cancelCU"
-      :visible.sync="crud.status.cu > 0"
+      :visible.sync="cuGtZero"
       :title="crud.status.title"
       width="580px"
     >
@@ -223,6 +223,11 @@ export default {
   components: { Treeselect, IconSelect, crudOperation, rrOperation, udOperation, DateRangePicker },
   cruds() {
     return CRUD({ title: '菜单', url: 'api/menus', crudMethod: { ...navService }});
+  },
+  computed(){
+    return {
+      cuGtZero: crud.status.cu > 0,
+    }
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {

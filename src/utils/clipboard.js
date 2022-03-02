@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import {Vue} from '@/main';
 import Clipboard from 'clipboard';
 
 function clipboardSuccess() {

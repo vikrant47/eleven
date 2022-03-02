@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import {app} from '@/main';
 import { get as getDictDetail } from '@/api/system/dictDetail';
 
 export default class Dict {
@@ -12,7 +12,7 @@ export default class Dict {
     }
     const ps = [];
     names.forEach(n => {
-      Vue.set(this.dict.dict, n, {});
+      /*Vue.set(this.dict.dict, n, {});
       Vue.set(this.dict.label, n, {});
       Vue.set(this.dict, n, []);
       ps.push(getDictDetail(n).then(data => {
@@ -21,7 +21,7 @@ export default class Dict {
           Vue.set(this.dict.dict[n], d.value, d);
           Vue.set(this.dict.label[n], d.value, d.label);
         });
-      }));
+      }));*/
     });
     await Promise.all(ps);
     completeCallback();

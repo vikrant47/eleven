@@ -22,8 +22,8 @@
           clearable
           suffix-icon="el-icon-search"
           style="width: 218px;"
-          @keyup.enter.native="$emit('on-search',search)"
-          @keyup.native="$emit('onSearchKeyUp',search)"
+          @keyup.enter="$emit('on-search',search)"
+          @keyup="$emit('onSearchKeyUp',search)"
         />
         <el-button-group class="crud-opts-right">
           <el-popover
@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import {Vue} from '@/main';
 import { Engine } from '@/modules/engine/core/engine';
 import EnAction from '@/modules/engine/components/EnAction';
 import { LIST_EVENTS, ListEvent } from '@/modules/list/engine-api/list-events';

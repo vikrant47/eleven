@@ -18,12 +18,12 @@
 
 <script>
 
-import Vue from 'vue';
+import {Vue} from '@/main';
 import Parser from '@/modules/form/components/widgets/form-designer/render/Parser';
 import { EngineForm } from '@/modules/form/engine-api/engine.form';
 import { FormEventHandler } from '@/modules/form/services/form.event.handler';
-import locale from 'element-ui/lib/locale/lang/en';
-import ElementUI from 'element-ui';
+import locale from 'element-plus/lib/locale/lang/en';
+import ElementUI from 'element-plus';
 import EnFormToolbar from '@/modules/form/components/engine/toolbar/EnFormToolbar';
 import { FORM_EVENTS, FormEvent } from '@/modules/form/engine-api/form-events';
 import RelatedRecord from '@/modules/form/components/engine/form/RelatedRecord';

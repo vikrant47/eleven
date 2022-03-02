@@ -1,24 +1,23 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import Layout from '../layout/index';
 
-Vue.use(Router);
+// Vue.use(Router);
 
 export const constantRouterMap = [
   {
     path: '/login',
     meta: { title: 'Log In', noCache: true },
-    component: (resolve) => require(['@/views/login'], resolve),
+    component: import('@/views/login'),
     hidden: true
   },
   {
     path: '/404',
-    component: (resolve) => require(['@/views/features/404'], resolve),
+    component: import('@/views/features/404'),
     hidden: true
   },
   {
     path: '/401',
-    component: (resolve) => require(['@/views/features/401'], resolve),
+    component: import('@/views/features/401'),
     hidden: true
   },
   {
@@ -28,7 +27,7 @@ export const constantRouterMap = [
     children: [
       {
         path: '/redirect/:path*',
-        component: (resolve) => require(['@/views/features/redirect'], resolve)
+        component: import('@/views/features/redirect')
       }
     ]
   },
@@ -39,37 +38,37 @@ export const constantRouterMap = [
     children: [
       {
         path: 'dashboard',
-        component: (resolve) => require(['@/modules/dashboard/views/index'], resolve),
+        component: import('@/modules/dashboard/views/index'),
         name: 'Dashboard',
         meta: { title: 'Home', icon: 'index', affix: true, noCache: true },
         props: true
       }, {
         path: 'models/:modelAlias/list/:list/:view',
-        component: (resolve) => require(['@/modules/list/views/index'], resolve),
+        component: import('@/modules/list/views/index'),
         name: 'List',
         meta: { title: 'Home', icon: 'index', affix: true, noCache: true },
         props: true
       }, {
         path: '/flows/:flowId',
-        component: (resolve) => require(['@/modules/flowdesigner/views/FlowRenderer'], resolve),
+        component: import('@/modules/flowdesigner/views/FlowRenderer'),
         name: 'Form',
         meta: { title: 'Flow', icon: 'index', affix: true, noCache: true },
         props: true
       }, {
         path: '/models/:modelAlias/form/:formId/:recordId/:view',
-        component: (resolve) => require(['@/modules/form/views/FormRenderer'], resolve),
+        component: import('@/modules/form/views/FormRenderer'),
         name: 'Form',
         meta: { title: 'Home', icon: 'index', affix: true, noCache: true },
         props: true
       }, {
         path: 'widgets/:widgetId/render',
-        component: (resolve) => require(['@/modules/list/views/index'], resolve),
+        component: import('@/modules/list/views/index'),
         name: 'Widget',
         meta: { title: 'Home', icon: 'index', affix: true, noCache: true },
         props: true
       }, {
         path: 'dashboards/:dashboardId/render',
-        component: (resolve) => require(['@/modules/list/views/index'], resolve),
+        component: import('@/modules/list/views/index'),
         name: 'Dashboard',
         meta: { title: 'Home', icon: 'index', affix: true, noCache: true },
         props: true
@@ -84,7 +83,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'center',
-        component: (resolve) => require(['@/views/system/user/center'], resolve),
+        component: import('@/views/system/user/center'),
         name: 'Personal center',
         meta: { title: 'Personal center' }
       }
@@ -92,9 +91,10 @@ export const constantRouterMap = [
   }
 ];
 
-export default new Router({
+export default createRouter({
   // mode: 'hash',
   mode: 'history',
+  history: createWebHashHistory(),
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 });

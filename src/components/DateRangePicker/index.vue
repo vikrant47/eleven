@@ -1,5 +1,5 @@
 <script>
-import { DatePicker, DatePickerOptions } from 'element-ui'
+import { DatePicker, DatePickerOptions } from 'element-plus'
 import { calendarShortcuts } from '@/utils/shortcuts'
 
 export default {

@@ -13,8 +13,8 @@
   />
 </template>
 <script>
-import lang from 'element-ui/lib/locale/lang/en';
-import locale from 'element-ui/lib/locale';
+import lang from 'element-plus/lib/locale/lang/en';
+import locale from 'element-plus/lib/locale';
 
 // configure language
 locale.use(lang);

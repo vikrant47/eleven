@@ -4,7 +4,7 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.blurry" clearable size="small" placeholder="输入内容模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.blurry" clearable size="small" placeholder="输入内容模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <date-range-picker v-model="query.createTime" class="date-item" />
         <rrOperation />
       </div>
@@ -23,7 +23,7 @@
       </crudOperation>
     </div>
     <!--表单组件-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.add ? '文件上传' : '编辑文件'" width="500px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="cuGtZero" :title="crud.status.add ? '文件上传' : '编辑文件'" width="500px">
       <el-form ref="form" :model="form" size="small" label-width="80px">
         <el-form-item label="文件名">
           <el-input v-model="form.name" style="width: 370px;" />
@@ -120,6 +120,11 @@ export default {
   components: { pagination, crudOperation, rrOperation, DateRangePicker },
   cruds() {
     return CRUD({ title: '文件', url: 'api/localStorage', crudMethod: { ...crudFile }})
+  },
+  computed(){
+    return {
+      cuGtZero: crud.status.cu > 0,
+    }
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {

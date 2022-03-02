@@ -12,7 +12,7 @@
       </el-form-item>
       <el-form-item prop="password">
         <el-input v-model="loginForm.password" type="Password" auto-complete="off" placeholder="password"
-                  @keyup.enter.native="handleLogin">
+                  @keyup.enter="handleLogin">
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon"/>
         </el-input>
       </el-form-item>
@@ -21,7 +21,7 @@
       </el-checkbox>
       <el-form-item style="width:100%;">
         <el-button :loading="loading" size="medium" type="primary" style="width:100%;"
-                   @click.native.prevent="handleLogin">
+                   @click.prevent="handleLogin">
           <span v-if="!loading">Login</span>
           <span v-else>Logging In...</span>
         </el-button>

@@ -1,4 +1,3 @@
-import store from '@/store';
 import { Engine } from '@/modules/engine/core/engine';
 
 export class EngineScript {
@@ -34,6 +33,7 @@ export class EngineScript {
   }
 
   static buildContext(context = {}, self) {
+    const store = require('@/store');
     const defaultContext = require('@/modules/engine/context/index').default;
     return Object.assign({ self: self }, context, store.state.user, defaultContext);
   }

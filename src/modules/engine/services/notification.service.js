@@ -1,4 +1,4 @@
-import { Message } from 'element-ui';
+import { Message } from 'element-plus';
 export class NotificationService {
   static defaultMessageConfig = {
     showClose: true,

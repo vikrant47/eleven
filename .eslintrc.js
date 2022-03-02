@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
     sourceType: 'module'
   },
   env: {
@@ -188,6 +188,6 @@ module.exports = {
       objectsInObjects: false
     }],
     'array-bracket-spacing': [2, 'never'],
-    'object-literal-key-quotes': [false, 'never']
+    'object-literal-key-quotes': [0, 'never']
   }
 };

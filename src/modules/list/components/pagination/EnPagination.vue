@@ -23,13 +23,13 @@
     </div>
   </div>
 </template>
-<script>
-import lang from 'element-ui/lib/locale/lang/en';
-import locale from 'element-ui/lib/locale';
+<script>/*
+import lang from 'element-plus/lib/locale/lang/en';
+import locale from 'element-plus/lib/locale';*/
 import { Pagination } from '@/modules/list/models/pagination';
 
 // configure language
-locale.use(lang);
+// locale.use(lang);
 
 export default {
   name: 'EnPagination',

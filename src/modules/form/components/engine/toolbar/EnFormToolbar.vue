@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import {Vue} from '@/main';
 import EnAction from '@/modules/engine/components/EnAction';
 
 export default {

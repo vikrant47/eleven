@@ -2,7 +2,8 @@
 const path = require('path');
 const defaultSettings = require('./src/settings.js');
 // webpack.config.js
-const MonacoEditorPlugin = require('monaco-editor-webpack-plugin');
+// const MonacoEditorPlugin = require('monaco-editor-webpack-plugin');
+
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
@@ -54,14 +55,14 @@ module.exports = {
       }
     },
     plugins: [
-      new MonacoEditorPlugin({
+      /*new MonacoEditorPlugin({
         // https://github.com/Microsoft/monaco-editor-webpack-plugin#options
         // Include a subset of languages support
         // Some language extensions like typescript are so huge that may impact build performance
         // e.g. Build full languages support with webpack 4.0 takes over 80 seconds
         // Languages are loaded on demand at runtime
         languages: ['javascript', 'css', 'html', 'typescript', 'json']
-      })
+      })*/
     ],
   },
   chainWebpack(config) {
@@ -91,7 +92,14 @@ module.exports = {
       .use('vue-loader')
       .loader('vue-loader')
       .tap(options => {
-        options.compilerOptions.preserveWhitespace = true;
+        // options.compilerOptions.preserveWhitespace = true;
+        Object.assign(options, {
+          compilerOptions: {
+            compatConfig: {
+              MODE: 2
+            }
+          }
+        });
         return options;
       })
       .end();
@@ -115,28 +123,28 @@ module.exports = {
             .end();
           config
             .optimization.splitChunks({
-              chunks: 'all',
-              cacheGroups: {
-                libs: {
-                  name: 'chunk-libs',
-                  test: /[\\/]node_modules[\\/]/,
-                  priority: 10,
-                  chunks: 'initial' // only package third parties that are initially dependent
-                },
-                elementUI: {
-                  name: 'chunk-elementUI', // split elementUI into a single package
-                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
-                },
-                commons: {
-                  name: 'chunk-commons',
-                  test: resolve('src/components'), // can customize your rules
-                  minChunks: 3, //  minimum common number
-                  priority: 5,
-                  reuseExistingChunk: true
-                }
+            chunks: 'all',
+            cacheGroups: {
+              libs: {
+                name: 'chunk-libs',
+                test: /[\\/]node_modules[\\/]/,
+                priority: 10,
+                chunks: 'initial' // only package third parties that are initially dependent
+              },
+              elementUI: {
+                name: 'chunk-elementUI', // split elementUI into a single package
+                priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+                test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
+              },
+              commons: {
+                name: 'chunk-commons',
+                test: resolve('src/components'), // can customize your rules
+                minChunks: 3, //  minimum common number
+                priority: 5,
+                reuseExistingChunk: true
               }
-            });
+            }
+          });
           config.optimization.runtimeChunk('single');
         }
       );

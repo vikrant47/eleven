@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
-import Vue from 'vue';
+import {Vue} from '@/main';
 
 export default {
-  Media: Vue.filter('media', function(value) {
+  /*Media: Vue.filter('media', function(value) {
     if (value) {
       return process.env.VUE_APP_MEDIA_SERVER_URL + value;
     }
@@ -12,5 +12,5 @@ export default {
     if (value) {
       return DateTime.fromJSDate(new Date(value), { zone: 'utc' }).toLocaleString(format);
     }
-  })
+  })*/
 };

@@ -1,6 +1,6 @@
 import { download } from '@/api/data';
 import { parseTime, downloadFile } from '@/utils/index';
-import Vue from 'vue';
+import {app} from '@/main';
 import { ModelService } from '@/modules/engine/services/model.service';
 import { RestQuery } from '@/modules/engine/services/rest.query';
 import { EngineList } from '@/modules/list/engine-api/engine.list';

@@ -4,7 +4,7 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.blurry" clearable placeholder="模糊搜索" style="width: 200px" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.blurry" clearable placeholder="模糊搜索" style="width: 200px" class="filter-item" @keyup.enter="crud.toQuery" />
         <date-range-picker v-model="query.createTime" class="date-item" />
         <rrOperation />
       </div>
@@ -24,7 +24,7 @@
     </div>
     <!--表单组件-->
     <eForm ref="execute" :database-info="currentRow" />
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="530px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="cuGtZero" :title="crud.status.title" width="530px">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
         <el-form-item label="连接名称" prop="name">
           <el-input v-model="form.name" style="width: 370px" />
@@ -85,6 +85,11 @@ const defaultForm = { id: null, name: null, jdbcUrl: 'jdbc:mysql://', userName: 
 export default {
   name: 'DataBase',
   components: { eForm, pagination, crudOperation, rrOperation, udOperation, DateRangePicker },
+  computed(){
+    return {
+      cuGtZero: crud.status.cu > 0,
+    }
+  },
   cruds() {
     return CRUD({ title: '数据库', url: 'api/database', crudMethod: { ...crudDatabase }})
   },

@@ -1,5 +1,5 @@
 import { loadScriptQueue } from './loadScript';
-import ELEMENT from 'element-ui';
+import ELEMENT from 'element-plus';
 
 // monaco-editor单例
 let monacoEidtor;
