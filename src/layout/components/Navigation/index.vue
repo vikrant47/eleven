@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'has-logo':showLogo}">
+  <div :class="{ 'has-logo': showLogo }">
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
@@ -12,7 +12,12 @@
         :collapse-transition="false"
         :mode="navPosition"
       >
-        <navigation-item v-for="route in navigations" :key="route.path" :item="route" :base-path="route.path" />
+        <navigation-item
+          v-for="route in navigations"
+          :key="route.path"
+          :item="route"
+          :base-path="route.path"
+        />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -31,20 +36,17 @@ export default {
   props: {
     position: {
       type: String,
-      default: 'sidebar'
-    }
+      default: 'sidebar',
+    },
   },
   data() {
     return {
       navigations: [],
-      navPosition: this.position === 'sidebar' ? 'vertical' : 'horizontal'
+      navPosition: this.position === 'sidebar' ? 'vertical' : 'horizontal',
     };
   },
   computed: {
-    ...mapGetters([
-      'permission_routers',
-      'sidebar'
-    ]),
+    ...mapGetters(['permission_routers', 'sidebar']),
     activeMenu() {
       const route = this.$route;
       const { meta, path } = route;
@@ -55,19 +57,23 @@ export default {
       return path;
     },
     showLogo() {
-      return this.position === 'sidebar' && this.$store.state.settings.sidebarLogo;
+      return (
+        this.position === 'sidebar' && this.$store.state.settings.sidebarLogo
+      );
     },
     variables() {
       return variables;
     },
     isCollapse() {
       return !this.sidebar.opened;
-    }
+    },
   },
   created() {
-    NavigationService.getInstance(this.position).getNavigations(this.position).then(nav => {
-      this.navigations = nav;
-    });
-  }
+    NavigationService.getInstance(this.position)
+      .getNavigations(this.position)
+      .then((nav) => {
+        this.navigations = nav;
+      });
+  },
 };
 </script>

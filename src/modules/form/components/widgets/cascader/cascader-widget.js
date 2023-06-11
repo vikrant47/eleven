@@ -3,10 +3,14 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 export default class CascaderWidget extends BaseWidget {
   palletSettings = {
     label: 'Cascader',
-    icon: 'cascader'
-  };
+    icon: 'cascader',
+  }
 
   componentRender(component, h) {
-    return h('el-cascader', this.getComponentConfig(component), this.getChildren());
+    return h(
+      'el-cascader',
+      this.getComponentConfig(component),
+      this.getChildren()
+    );
   }
 }

@@ -4,7 +4,7 @@ export function add(data) {
   return request({
     url: 'api/database',
     method: 'post',
-    data
+    data,
   });
 }
 
@@ -12,7 +12,7 @@ export function del(ids) {
   return request({
     url: 'api/database',
     method: 'delete',
-    data: ids
+    data: ids,
   });
 }
 
@@ -20,7 +20,7 @@ export function edit(data) {
   return request({
     url: 'api/database',
     method: 'put',
-    data
+    data,
   });
 }
 
@@ -28,7 +28,7 @@ export function testDbConnection(data) {
   return request({
     url: 'api/database/testConnect',
     method: 'post',
-    data
+    data,
   });
 }
 

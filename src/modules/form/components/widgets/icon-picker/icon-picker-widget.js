@@ -4,19 +4,20 @@ import IconsDialog from '@/modules/form/components/widgets/icon-picker/IconsDial
 export default class IconPickerWidget extends BaseWidget {
   palletSettings = {
     label: 'Icon',
-    icon: 'icon'
-  };
+    icon: 'icon',
+  }
 
   componentRender(component, h) {
     const _this = this;
     const iconDialogConf = {
-      attrs: { 'visible': this.getData().visibleIconPopup || false },
+      attrs: { visible: this.getData().visibleIconPopup || false },
       on: {
         close() {
           // document.querySelector('').style.display = 'none';
           iconDialogConf.attrs.visible = false;
           setTimeout(() => {
-            document.querySelector('.icon-dialog .v-modal').style.display = 'none';
+            document.querySelector('.icon-dialog .v-modal').style.display =
+              'none';
             _this.setData({ visibleIconPopup: false });
             _this.repaint();
           }, 500);
@@ -25,22 +26,23 @@ export default class IconPickerWidget extends BaseWidget {
           iconDialogConf.attrs.visible = false;
           _this.setData({ visibleIconPopup: false });
           _this.setValue(icon);
-        }
-      }
+        },
+      },
     };
     return h('div', { class: 'icon-widget' }, [
       h('el-input', this.getComponentConfig(), [
         h('el-button', {
           slot: 'append',
-          attrs: { type: 'primary', icon: 'el-icon-thumb' }, on: {
+          attrs: { type: 'primary', icon: 'elu-icon-thumb' },
+          on: {
             click() {
               _this.setData({ visibleIconPopup: true }); // emitting data event to store additional data
               _this.repaint();
-            }
-          }
-        })
+            },
+          },
+        }),
       ]),
-      h(IconsDialog, iconDialogConf, this.getChildren())
+      h(IconsDialog, iconDialogConf, this.getChildren()),
     ]);
   }
 }

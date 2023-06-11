@@ -6,31 +6,56 @@ import { FORM_EVENTS, FormEvent } from '@/modules/form/engine-api/form-events';
 import * as _ from 'lodash';
 import { FormWidgetService } from '@/modules/form/services/form.widget.service';
 import { EngineDefinitionService } from '@/modules/engine/core/engine.definition.service';
-import { LAYOUT_WIDGETS, WIDGETS } from '@/modules/form/components/widgets/base-widget/widgets';
+import {
+  LAYOUT_WIDGETS,
+  WIDGETS,
+} from '@/modules/form/components/widgets/base-widget/widgets';
 
 export class EngineForm extends EngineDefinitionService {
-  id;
-  record = {};
-  definition = { form: { config: { tabs: {}}, actions: [], processors: [], relatedRecords: [] }, fields: [] };
+  id
+  record = {}
+  definition = {
+    form: {
+      config: { tabs: {}},
+      actions: [],
+      processors: [],
+      relatedRecords: [],
+    },
+    fields: [],
+  }
   formConfig = {
     widgets: [],
     labelSuffix: '',
     labelWidth: '100',
     labelPosition: 'right',
     formModel: 'formModel', // name of the for model key
-    formRules: 'formRules' // name of the form rules key
-  };
+    formRules: 'formRules', // name of the form rules key
+  }
   settings = {
     recordId: 'new',
     showLoader: true,
     loaderDelay: 30,
-    previewMode: false
-  };
-  original = {};
-  relatedRecords = [];
+    previewMode: false,
+  }
+  original = {}
+  relatedRecords = []
 
-  static navigate(modelAlias, formId = 'default', recordId = 'new', context = 'create') {
-    $router.replace('/models/' + modelAlias + '/form/' + formId + '/' + recordId + '?context = ' + context);
+  static navigate(
+    modelAlias,
+    formId = 'default',
+    recordId = 'new',
+    context = 'create'
+  ) {
+    $router.replace(
+      '/models/' +
+        modelAlias +
+        '/form/' +
+        formId +
+        '/' +
+        recordId +
+        '?context = ' +
+        context
+    );
   }
 
   constructor(settings) {
@@ -56,15 +81,22 @@ export class EngineForm extends EngineDefinitionService {
           parsedValue = value + '';
           break;
         case 'json':
-          parsedValue = typeof parsedValue === 'string' ? JSON.parse(parsedValue) : parsedValue;
+          parsedValue =
+            typeof parsedValue === 'string'
+              ? JSON.parse(parsedValue)
+              : parsedValue;
           break;
         case 'boolean':
-          parsedValue = typeof parsedValue === 'string' ? parsedValue === 'true' : !!parsedValue;
+          parsedValue =
+            typeof parsedValue === 'string'
+              ? parsedValue === 'true'
+              : !!parsedValue;
           break;
         case 'integer':
         case 'bigInteger':
         case 'number':
-          parsedValue = typeof parsedValue === 'string' ? parsedValue * 1 : parsedValue;
+          parsedValue =
+            typeof parsedValue === 'string' ? parsedValue * 1 : parsedValue;
           break;
         default:
           parsedValue = value;
@@ -81,8 +113,15 @@ export class EngineForm extends EngineDefinitionService {
       for (const fieldName of fieldNames) {
         if (typeof record[fieldName] === 'undefined') {
           const field = this.getFieldByName(fieldName);
-          if (field && typeof field.default_value !== 'undefined' && field.default_value !== null) {
-            record[fieldName] = EngineForm.parseFieldValueByType(field, field.default_value);
+          if (
+            field &&
+            typeof field.default_value !== 'undefined' &&
+            field.default_value !== null
+          ) {
+            record[fieldName] = EngineForm.parseFieldValueByType(
+              field,
+              field.default_value
+            );
           }
         }
       }
@@ -98,25 +137,27 @@ export class EngineForm extends EngineDefinitionService {
     return this.original;
   }
 
-  registerEvents() {
-
-  }
+  registerEvents() {}
 
   static getAllWidgets(widgetConfig = []) {
     let widgets = [];
     for (const widget of widgetConfig) {
       widgets.push(widget);
       if (widget.widgetSettings.containsChild === true) {
-        widgets = widgets.concat(this.getAllWidgets(widget.widgetSettings.children));
+        widgets = widgets.concat(
+          this.getAllWidgets(widget.widgetSettings.children)
+        );
       }
     }
     return widgets;
   }
 
   getSelectedWidgets() {
-    return EngineForm.getAllWidgets(this.definition.form.config.widgets).filter((widget) => {
-      return LAYOUT_WIDGETS.indexOf(widget.widgetAlias) < 0;
-    });
+    return EngineForm.getAllWidgets(this.definition.form.config.widgets).filter(
+      (widget) => {
+        return LAYOUT_WIDGETS.indexOf(widget.widgetAlias) < 0;
+      }
+    );
   }
 
   getSelectedFieldNames() {
@@ -147,7 +188,9 @@ export class EngineForm extends EngineDefinitionService {
   }
 
   populateRelatedRecords() {
-    this.relatedRecords = this.definition.form.relatedRecords.sort((r1, r2) => r1.sort_order - r2.sort_order);
+    this.relatedRecords = this.definition.form.relatedRecords.sort(
+      (r1, r2) => r1.sort_order - r2.sort_order
+    );
   }
 
   populateProcessors() {
@@ -174,20 +217,26 @@ export class EngineForm extends EngineDefinitionService {
     const field = this.getFieldByName(fieldName);
     if (field) {
       widgetConfig.widgetAlias = widgetConfig.widgetAlias || field.form_renderer;
-      widgetConfig.fieldSettings = Object.assign({
-        readOnly: field.readonly,
-        disabled: field.readonly
-      }, widgetConfig.fieldSettings);
-      widgetConfig.widgetSettings = Object.assign({
-        label: field.label,
-      }, widgetConfig.widgetSettings);
+      widgetConfig.fieldSettings = Object.assign(
+        {
+          readOnly: field.readonly,
+          disabled: field.readonly,
+        },
+        widgetConfig.fieldSettings
+      );
+      widgetConfig.widgetSettings = Object.assign(
+        {
+          label: field.label,
+        },
+        widgetConfig.widgetSettings
+      );
       switch (field.type) {
         case 'reference':
           // assigning default values
           Object.assign(widgetConfig.widgetSettings, {
             display_field_name: field.display_field_name,
             referenced_field_name: field.referenced_field_name,
-            referenced_model_alias: field.referenced_model_alias
+            referenced_model_alias: field.referenced_model_alias,
           });
           break;
         case 'enum':
@@ -206,10 +255,13 @@ export class EngineForm extends EngineDefinitionService {
     if (selectedFields.indexOf('id') < 0) {
       selectedFields.push('id');
     }
-    const response = await new RestQuery(this.settings.modelAlias).findById(this.settings.recordId, {
-      fields: selectedFields,
-      include: this.getIncludeStatement(this.getSelectedFieldNames())
-    });
+    const response = await new RestQuery(this.settings.modelAlias).findById(
+      this.settings.recordId,
+      {
+        fields: selectedFields,
+        include: this.getIncludeStatement(this.getSelectedFieldNames()),
+      }
+    );
     this.original = Engine.clone(response.contents);
     this.setRecord(response.contents);
     await this.emit(FORM_EVENTS.model.update);
@@ -247,8 +299,10 @@ export class EngineForm extends EngineDefinitionService {
       }
       this.enableLoading();
       // request data
-      const response = await new ModelService(this.settings.modelAlias).requestDefinition({
-        formId: this.settings.formId
+      const response = await new ModelService(
+        this.settings.modelAlias
+      ).requestDefinition({
+        formId: this.settings.formId,
       });
       this.definition = response.contents;
       this.sanitizeDefinition();
@@ -269,18 +323,26 @@ export class EngineForm extends EngineDefinitionService {
     return {
       title: 'Fields',
       updatable: true,
-      list: fields.map(field => new FormWidgetService().getWidgetInstance({
-        id: field.id,
-        widgetAlias: field.form_renderer,
-        fieldName: field.name,
-        immutable_configs: ['fieldName', 'referenced_model_alias', 'display_field_name', 'disabled', 'formModel'],
-        widgetSettings: {
-          label: field.label
-        },
-        palletSettings: {
-          label: field.label
-        }
-      }))
+      list: fields.map((field) =>
+        new FormWidgetService().getWidgetInstance({
+          id: field.id,
+          widgetAlias: field.form_renderer,
+          fieldName: field.name,
+          immutable_configs: [
+            'fieldName',
+            'referenced_model_alias',
+            'display_field_name',
+            'disabled',
+            'formModel',
+          ],
+          widgetSettings: {
+            label: field.label,
+          },
+          palletSettings: {
+            label: field.label,
+          },
+        })
+      ),
     };
   }
 
@@ -295,7 +357,11 @@ export class EngineForm extends EngineDefinitionService {
   }
 
   containsSection() {
-    return this.formConfig.widgets.filter(widget => widget.widgetAlias === WIDGETS.row).length > 0;
+    return (
+      this.formConfig.widgets.filter(
+        (widget) => widget.widgetAlias === WIDGETS.row
+      ).length > 0
+    );
   }
 
   getWidgetConfig() {
@@ -307,9 +373,7 @@ export class EngineForm extends EngineDefinitionService {
     this.formConfig.widgets = widgetConfig;
   }
 
-  open() {
-
-  }
+  open() {}
 
   getDirtyFields() {
     return Object.keys(this.getDirty());
@@ -317,9 +381,11 @@ export class EngineForm extends EngineDefinitionService {
 
   getDirty(updatable = true) {
     const dirty = {};
-    const updatableFields = updatable ? this.getUpdatableFields() : this.getSelectedWidgets().map((widget) => {
-      return { name: widget.fieldName };
-    });
+    const updatableFields = updatable
+      ? this.getUpdatableFields()
+      : this.getSelectedWidgets().map((widget) => {
+        return { name: widget.fieldName };
+      });
     const formData = this.getFormData();
     for (const field of updatableFields) {
       if (this.original[field.name] !== formData[field.name]) {
@@ -330,15 +396,16 @@ export class EngineForm extends EngineDefinitionService {
   }
 
   getUpdatableFields() {
-    return this.getFields().filter(field => !field.readonly);
+    return this.getFields().filter((field) => !field.readonly);
   }
 
   getFormattedRecord() {
-    const updatableFields = this.getUpdatableFields().map(field => field.name);
+    const updatableFields = this.getUpdatableFields().map((field) => field.name);
     const formatted = {};
     const formData = this.getFormData();
     for (const i in formData) {
-      if (updatableFields.indexOf(i) >= 0 || i.startsWith('_')) { // any field starts with underscore(_) can be pushed
+      if (updatableFields.indexOf(i) >= 0 || i.startsWith('_')) {
+        // any field starts with underscore(_) can be pushed
         formatted[i] = formData[i];
       }
     }
@@ -351,13 +418,17 @@ export class EngineForm extends EngineDefinitionService {
   }
 
   create() {
-    return new RestQuery(this.settings.modelAlias).create(this.getFormattedRecord());
+    return new RestQuery(this.settings.modelAlias).create(
+      this.getFormattedRecord()
+    );
   }
 
   update() {
     const formatted = this.getDirty();
     if (Object.keys(formatted).length > 0) {
-      return new RestQuery(this.settings.modelAlias).update(formatted, { where: { id: this.original.id }});
+      return new RestQuery(this.settings.modelAlias).update(formatted, {
+        where: { id: this.original.id },
+      });
     }
     return { contents: [this.record] };
   }
@@ -371,9 +442,7 @@ export class EngineForm extends EngineDefinitionService {
   }
 
   /** Delete the current record*/
-  delete() {
-
-  }
+  delete() {}
 
   setFormData(formData) {
     Object.values(this.$widgetRefs).forEach((widget) => {

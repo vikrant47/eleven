@@ -8,7 +8,9 @@
     <div v-if="$store.state.settings.showFooter" id="el-main-footer">
       <span v-html="$store.state.settings.footerTxt" />
       <span> ⋅ </span>
-      <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">{{ $store.state.settings.caseNumber }}</a>
+      <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">{{
+        $store.state.settings.caseNumber
+      }}</a>
     </div>
     <en-popup v-for="popup in popups" :key="popup.id" :model="popup" />
   </section>
@@ -23,7 +25,7 @@ export default {
   components: { EnPopup },
   data() {
     return {
-      popups: EnginePopup.popups
+      popups: EnginePopup.popups,
     };
   },
   computed: {
@@ -32,8 +34,8 @@ export default {
     },
     key() {
       return this.$route.path;
-    }
-  }
+    },
+  },
 };
 </script>
 

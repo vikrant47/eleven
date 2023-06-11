@@ -1,9 +1,8 @@
-
 export class Selection {
-  selections = {};
-  hashKey = 'id';
-  allSelected = false;
-  unselected = {};
+  selections = {}
+  hashKey = 'id'
+  allSelected = false
+  unselected = {}
 
   constructor(selections = {}, hashKey = 'id') {
     this.selections = selections;

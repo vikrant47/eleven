@@ -3,10 +3,10 @@ export class NotificationService {
   static defaultMessageConfig = {
     showClose: true,
     message: 'Done.',
-    type: 'success'
-  };
+    type: 'success',
+  }
   /** @type instance NavigationService*/
-  static instance = new NotificationService();
+  static instance = new NotificationService()
 
   /** @return NavigationService*/
   static getInstance() {
@@ -14,7 +14,11 @@ export class NotificationService {
   }
 
   showMessage(settings = {}) {
-    settings = Object.assign({}, NotificationService.defaultMessageConfig, settings);
+    settings = Object.assign(
+      {},
+      NotificationService.defaultMessageConfig,
+      settings
+    );
     Message(settings);
   }
 }

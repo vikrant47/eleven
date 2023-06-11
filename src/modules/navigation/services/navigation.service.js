@@ -11,7 +11,7 @@ export const NavComponentMapping = {
   folder: Layout,
   list: ListView,
   // form: FormView,
-  dashboard: DashboardView
+  dashboard: DashboardView,
   /* widget:,
   uipage:,
   iframe: Iframe*/
@@ -19,24 +19,24 @@ export const NavComponentMapping = {
 export const NavRoutConfig = {
   folder: {
     path: '',
-    component: Layout
+    component: Layout,
   },
   list: {
     path: '/models/:modelAlias/list/:listId/:view',
-    component: ListView
+    component: ListView,
   },
   form: {
     path: '/models/:modelAlias/form/:formId/:recordId/:view',
-    component: ListView
+    component: ListView,
   },
   dashboard: {
     path: '/dashboard/:dashboardId',
-    component: DashboardView
+    component: DashboardView,
   },
   widget: {
     path: '/widget/:widgetId',
-    component: DashboardView
-  }
+    component: DashboardView,
+  },
 };
 
 export class NavigationService {
@@ -44,19 +44,19 @@ export class NavigationService {
   static instances = {
     topnav: new NavigationService('topnav'),
     sidebar: new NavigationService('sidebar'),
-    applist: new NavigationService('applist')
-  };
+    applist: new NavigationService('applist'),
+  }
 
   /** @return NavigationService*/
   static getInstance(position = 'sidebar') {
     return NavigationService.instances[position];
   }
 
-  static allNavigations = [];
-  static navPromise;
-  navigations = [];
-  position;
-  flatNavs = [];
+  static allNavigations = []
+  static navPromise
+  navigations = []
+  position
+  flatNavs = []
 
   constructor(position = 'sidebar') {
     this.position = position;
@@ -65,14 +65,16 @@ export class NavigationService {
   getMenusTree(pid) {
     return request({
       url: 'api/menus/lazy?pid=' + pid,
-      method: 'get'
+      method: 'get',
     });
   }
 
   async getNavigations() {
     if (this.navigations.length === 0) {
       const allNav = await NavigationService.getAllNavigations();
-      this.navigations = NavigationService.navDataToRoute(allNav.filter(nav => nav.position === this.position));
+      this.navigations = NavigationService.navDataToRoute(
+        allNav.filter((nav) => nav.position === this.position)
+      );
     }
     return this.navigations;
   }
@@ -81,13 +83,16 @@ export class NavigationService {
     if (!this.navPromise) {
       this.navPromise = new Promise((resolve, reject) => {
         if (this.allNavigations.length === 0) {
-          TenantService.instance.request({
-            url: '/api/crm/navigations?position=' + this.position,
-            method: 'get'
-          }).then(navs => {
-            this.allNavigations = navs.contents;
-            resolve(this.allNavigations);
-          }).catch(err => reject(err));
+          TenantService.instance
+            .request({
+              url: '/api/crm/navigations?position=' + this.position,
+              method: 'get',
+            })
+            .then((navs) => {
+              this.allNavigations = navs.contents;
+              resolve(this.allNavigations);
+            })
+            .catch((err) => reject(err));
         } else {
           resolve(this.allNavigations);
         }
@@ -99,7 +104,7 @@ export class NavigationService {
   getFlatNavigations() {
     return new Promise((resolve, reject) => {
       if (this.flatNavs.length === 0) {
-        this.getNavigations().then(navs => {
+        this.getNavigations().then((navs) => {
           this.flatNavs = this.navDataToFlatArray(navs);
           resolve(this.flatNavs);
         });
@@ -114,14 +119,14 @@ export class NavigationService {
     return request({
       url: 'api/menus/superior',
       method: 'post',
-      data
+      data,
     });
   }
 
   getChild(id) {
     return request({
       url: 'api/menus/child?id=' + id,
-      method: 'get'
+      method: 'get',
     });
   }
 
@@ -129,7 +134,7 @@ export class NavigationService {
     return request({
       url: 'api/menus',
       method: 'post',
-      data
+      data,
     });
   }
 
@@ -137,7 +142,7 @@ export class NavigationService {
     return request({
       url: 'api/menus',
       method: 'delete',
-      data: ids
+      data: ids,
     });
   }
 
@@ -145,12 +150,15 @@ export class NavigationService {
     return request({
       url: 'api/menus',
       method: 'put',
-      data
+      data,
     });
   }
 
   static getRouteConfig(nav) {
-    const route = Object.assign({ component: Layout, path: nav.name }, NavRoutConfig[nav.type]);
+    const route = Object.assign(
+      { component: Layout, path: nav.name },
+      NavRoutConfig[nav.type]
+    );
     route.meta = nav;
     route.name = nav.label; // setting name in route
     route.meta.title = nav.label;
@@ -159,14 +167,15 @@ export class NavigationService {
       route.path = nav.name;
     }
     if (nav.type === 'list') {
-      route.path = route.path.replace(':listId', nav.engine_list_id || 'default')
-        .replace(':view', (nav.view || 'details'))
+      route.path = route.path
+        .replace(':listId', nav.engine_list_id || 'default')
+        .replace(':view', nav.view || 'details')
         .replace(':modelAlias', (nav.modelAlias || '').toLowerCase());
     } else if (nav.type === 'form') {
       route.path = route.path
         .replace(':formId', nav.engine_form_id || 'default')
         .replace(':recordId', nav.record_id || 'new')
-        .replace(':view', (nav.view || 'edit'))
+        .replace(':view', nav.view || 'edit')
         .replace(':modelAlias', (nav.modelAlias || '').toLowerCase());
     } else if (nav.type === 'widget') {
       route.path = route.path.replace(':widgetId', nav.widget_id);
@@ -189,8 +198,9 @@ export class NavigationService {
     }, []);
   }
 
-  static navDataToRoute(navigation) { // Traverse the routing string from the background and convert it into a component object
-    return navigation.map(nav => {
+  static navDataToRoute(navigation) {
+    // Traverse the routing string from the background and convert it into a component object
+    return navigation.map((nav) => {
       const route = this.getRouteConfig(nav);
       if (nav.children && nav.children.length) {
         route.children = this.navDataToRoute(nav.children);
@@ -209,16 +219,47 @@ export class NavigationService {
     return $router.push(url);
   }
 
-  navigateToForm(modelAlias, formId = 'default', recordId = 'new', view = 'edit', params = {}, newWindow = false) {
-    const url = '/models/' + modelAlias + '/form/' + formId + '/' + recordId + '/' + view + '?' + Engine.toUrlParam(params);
+  navigateToForm(
+    modelAlias,
+    formId = 'default',
+    recordId = 'new',
+    view = 'edit',
+    params = {},
+    newWindow = false
+  ) {
+    const url =
+      '/models/' +
+      modelAlias +
+      '/form/' +
+      formId +
+      '/' +
+      recordId +
+      '/' +
+      view +
+      '?' +
+      Engine.toUrlParam(params);
     if (newWindow) {
       return window.open(url);
     }
     return this.navigate(url);
   }
 
-  navigateToList(modelAlias, listId = 'default', view = 'details', params = {}, newWindow = false) {
-    const url = '/models/' + modelAlias + '/form/' + listId + '/' + view + '?' + Engine.toUrlParam(params);
+  navigateToList(
+    modelAlias,
+    listId = 'default',
+    view = 'details',
+    params = {},
+    newWindow = false
+  ) {
+    const url =
+      '/models/' +
+      modelAlias +
+      '/form/' +
+      listId +
+      '/' +
+      view +
+      '?' +
+      Engine.toUrlParam(params);
     if (newWindow) {
       return window.open(url);
     }

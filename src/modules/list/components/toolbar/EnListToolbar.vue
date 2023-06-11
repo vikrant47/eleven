@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="24">
     <el-col :span="17">
-      <div class="action-list-wrapper" style="display: flex;">
+      <div class="action-list-wrapper" style="display: flex">
         <EnAction
           v-for="action in actions"
           :key="action.id"
@@ -20,27 +20,20 @@
           v-model="search"
           placeholder="Search"
           clearable
-          suffix-icon="el-icon-search"
-          style="width: 218px;"
-          @keyup.enter="$emit('on-search',search)"
-          @keyup="$emit('onSearchKeyUp',search)"
+          :suffix-icon="EluIconSearch"
+          style="width: 218px"
+          @keyup.enter="$emit('on-search', search)"
+          @keyup="$emit('onSearchKeyUp', search)"
         />
         <el-button-group class="crud-opts-right">
-          <el-popover
-            placement="bottom-end"
-            width="150"
-            trigger="click"
-          >
+          <el-popover placement="bottom-end" width="150" trigger="click">
             <el-button
               slot="reference"
-              :type="!allColumnsSelected?'info':''"
+              :type="!allColumnsSelected ? 'info' : ''"
               size="mini"
-              icon="el-icon-s-grid"
+              :icon="EluIconSGrid"
             >
-              <i
-                class="fa fa-caret-down"
-                aria-hidden="true"
-              />
+              <i class="fa fa-caret-down" aria-hidden="true" />
             </el-button>
             <el-checkbox
               v-model="allColumnsSelected"
@@ -59,13 +52,19 @@
             </el-checkbox>
           </el-popover>
         </el-button-group>
-        <el-badge :value="engineList.filterQuery && engineList.filterQuery.rules.length" class="item" type="primary">
-          <el-button
-            class="search-button"
-            @click="openSearchDrawer"
-          ><i class="el-icon-search" /></el-button>
+        <el-badge
+          :model-value="
+            engineList.filterQuery && engineList.filterQuery.rules.length
+          "
+          class="item"
+          type="primary"
+        >
+          <el-button class="search-button" @click="openSearchDrawer">
+            <el-icon>
+              <elu-icon-search />
+            </el-icon>
+          </el-button>
         </el-badge>
-
       </div>
     </el-col>
     <el-drawer
@@ -87,11 +86,14 @@
       </div>
     </el-drawer>
   </el-row>
-
 </template>
 
 <script>
-import {Vue} from '@/main';
+import {
+  Search as EluIconSearch,
+  Grid as EluIconSGrid,
+} from '@element-plus/icons';
+import { Vue } from '@/main';
 import { Engine } from '@/modules/engine/core/engine';
 import EnAction from '@/modules/engine/components/EnAction';
 import { LIST_EVENTS, ListEvent } from '@/modules/list/engine-api/list-events';
@@ -100,28 +102,32 @@ import QueryBuilder from '@/modules/engine/components/query-builder/QueryBuilder
 
 export default {
   name: 'EnListToolbar',
-  components: { QueryBuilder, EnAction },
+  components: {
+    QueryBuilder,
+    EnAction,
+    EluIconSearch,
+  },
   props: {
     engineList: {
       type: EngineList,
-      required: true
+      required: true,
     },
     searchValue: {
       type: String,
-      default: ''
+      default: '',
     },
     hiddenColumns: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     ignoreColumns: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     actions: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -135,7 +141,9 @@ export default {
       ignoreNextTableColumnsChange: false,
       fields: this.engineList.getWidgets(),
       search: '',
-      actionEvent: new ListEvent(LIST_EVENTS.action.click, this.engineList)
+      actionEvent: new ListEvent(LIST_EVENTS.action.click, this.engineList),
+      EluIconSearch,
+      EluIconSGrid,
     };
   },
   created() {
@@ -156,14 +164,14 @@ export default {
     handleCheckedTableColumnsChange(item) {
       let totalCount = 0;
       let selectedCount = 0;
-      this.fields.forEach(column => {
+      this.fields.forEach((column) => {
         ++totalCount;
         selectedCount += column.visible ? 1 : 0;
       });
       if (selectedCount === 0) {
         Engine.notify(this.$parent, {
           title: 'Please select at least one column',
-          type: Engine.NOTIFICATION_TYPE.WARNING
+          type: Engine.NOTIFICATION_TYPE.WARNING,
         });
         return;
       }
@@ -171,7 +179,8 @@ export default {
         //  item.visible = true;
       });
       this.allColumnsSelected = selectedCount === totalCount;
-      this.allColumnsSelectedIndeterminate = selectedCount !== totalCount && selectedCount !== 0;
+      this.allColumnsSelectedIndeterminate =
+        selectedCount !== totalCount && selectedCount !== 0;
     },
     handleSearchClose() {
       this.showSearchDrawer = false;
@@ -184,18 +193,16 @@ export default {
       this.showSearchDrawer = !this.showSearchDrawer;
     },
     applyFilter(query) {
-
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .list-operations {
   float: right;
 }
 
 .list-filter {
-
 }
 </style>

@@ -9,28 +9,28 @@ export function login(username, password, code, uuid) {
       password,
       code,
       uuid,
-      login: username
-    }
+      login: username,
+    },
   });
 }
 
 export function getInfo() {
   return TenantService.instance.request({
     url: '/api/system/auth/user',
-    method: 'get'
+    method: 'get',
   });
 }
 
 export function getCodeImg() {
   return request({
     url: 'auth/code',
-    method: 'get'
+    method: 'get',
   });
 }
 
 export function logout() {
   return request({
     url: 'auth/logout',
-    method: 'delete'
+    method: 'delete',
   });
 }

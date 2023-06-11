@@ -13,7 +13,7 @@ export default function loadBeautifier(cb) {
     fullscreen: true,
     lock: true,
     text: '格式化资源加载中...',
-    spinner: 'el-icon-loading',
+    spinner: 'elu-icon-loading',
     background: 'rgba(255, 255, 255, 0.5)'
   })
 

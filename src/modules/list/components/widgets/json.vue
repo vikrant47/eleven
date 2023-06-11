@@ -3,15 +3,13 @@
     {{ value }}
   </div>
 </template>
-<script>
 
+<script>
 import BaseWidget from '@/modules/list/components/widgets/base-widget';
 export default {
   name: 'JsonWidget',
-  extends: BaseWidget
+  extends: BaseWidget,
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

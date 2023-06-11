@@ -3,10 +3,14 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 export default class SwitchWidget extends BaseWidget {
   palletSettings = {
     label: 'Switch',
-    icon: 'switch'
-  };
+    icon: 'switch',
+  }
 
   componentRender(component, h) {
-    return h('el-switch', this.getComponentConfig(component), this.getChildren());
+    return h(
+      'el-switch',
+      this.getComponentConfig(component),
+      this.getChildren()
+    );
   }
 }

@@ -3,30 +3,45 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 export default class DateWidget extends BaseWidget {
   palletSettings = {
     label: 'Date',
-    icon: 'date'
-  };
+    icon: 'date',
+  }
 
   overrideConfigSection(configSectionWidgets) {
-    configSectionWidgets['fieldSettings.type'].slot.options = [{
-      label: 'Date', value: 'date'
-    }, {
-      label: 'Date Time', value: 'datetime'
-    }, {
-      label: 'Date Range', value: 'daterange'
-    }, {
-      label: 'Date Time Range', value: 'datetimerange'
-    }, {
-      label: 'Month Range', value: 'monthrange'
-    }];
+    configSectionWidgets['fieldSettings.type'].slot.options = [
+      {
+        label: 'Date',
+        value: 'date',
+      },
+      {
+        label: 'Date Time',
+        value: 'datetime',
+      },
+      {
+        label: 'Date Range',
+        value: 'daterange',
+      },
+      {
+        label: 'Date Time Range',
+        value: 'datetimerange',
+      },
+      {
+        label: 'Month Range',
+        value: 'monthrange',
+      },
+    ];
   }
 
   overrideFieldSettings(fieldSettings) {
     Object.assign(fieldSettings, {
-      type: 'date'
+      type: 'date',
     });
   }
 
   componentRender(component, h) {
-    return h('el-date-picker', this.getComponentConfig(component), this.getChildren());
+    return h(
+      'el-date-picker',
+      this.getComponentConfig(component),
+      this.getChildren()
+    );
   }
 }

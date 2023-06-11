@@ -4,25 +4,27 @@ import Layout from '@/layout/index';
 const permission = {
   state: {
     routers: constantRouterMap,
-    addRouters: []
+    addRouters: [],
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers;
       state.routers = constantRouterMap.concat(routers);
-    }
+    },
   },
   actions: {
     GenerateRoutes({ commit }, asyncRouter) {
       commit('SET_ROUTERS', asyncRouter);
-    }
-  }
+    },
+  },
 };
 
-export const filterAsyncRouter = (routers) => { // Traverse the routing string from the background and convert it into a component object
-  return routers.filter(router => {
+export const filterAsyncRouter = (routers) => {
+  // Traverse the routing string from the background and convert it into a component object
+  return routers.filter((router) => {
     if (router.type) {
-      if (router.type === 'folder') { // Layout component special handling
+      if (router.type === 'folder') {
+        // Layout component special handling
         router.component = Layout;
       } else {
         const component = router.component;

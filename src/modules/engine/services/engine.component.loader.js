@@ -11,7 +11,7 @@ export class EngineComponentLoader {
       TabularListView,
       MediaLibrary,
       EnForm,
-      FormRenderer
+      FormRenderer,
     };
   }
 

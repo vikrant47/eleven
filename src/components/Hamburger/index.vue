@@ -1,23 +1,27 @@
 <template>
-  <div style="padding: 0 15px;" @click="toggleClick">
-    <i class="el-icon-s-fold" />
+  <div style="padding: 0 15px" @click="toggleClick">
+    <el-icon><elu-icon-s-fold /></el-icon>
   </div>
 </template>
 
 <script>
+import { SFold as EluIconSFold } from '@element-plus/icons';
 export default {
   name: 'Hamburger',
+  components: {
+    EluIconSFold,
+  },
   props: {
     isActive: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     toggleClick() {
       this.$emit('toggleClick');
-    }
-  }
+    },
+  },
 };
 </script>
 

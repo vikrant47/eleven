@@ -1,6 +1,10 @@
 <template>
-  <div :class="{'show':show}" class="header-search">
-    <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />
+  <div :class="{ show: show }" class="header-search">
+    <svg-icon
+      class-name="search-icon"
+      icon-class="search"
+      @click.stop="click"
+    />
     <el-select
       ref="headerSearchSelect"
       v-model="search"
@@ -12,7 +16,12 @@
       class="header-search-select"
       @change="change"
     >
-      <el-option v-for="item in searchPool" :key="item.id" :value="item" :label="item.meta.label" />
+      <el-option
+        v-for="item in searchPool"
+        :key="item.id"
+        :value="item"
+        :label="item.meta.label"
+      />
     </el-select>
   </div>
 </template>
@@ -32,7 +41,7 @@ export default {
       options: [],
       searchPool: [],
       show: false,
-      fuse: undefined
+      fuse: undefined,
     };
   },
   watch: {
@@ -45,12 +54,14 @@ export default {
       } else {
         document.body.removeEventListener('click', this.close);
       }
-    }
+    },
   },
   mounted() {
-    NavigationService.getInstance().getFlatNavigations().then(navigations => {
-      this.searchPool = navigations;
-    });
+    NavigationService.getInstance()
+      .getFlatNavigations()
+      .then((navigations) => {
+        this.searchPool = navigations;
+      });
   },
   methods: {
     click() {
@@ -85,13 +96,16 @@ export default {
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
-        keys: [{
-          name: 'title',
-          weight: 0.7
-        }, {
-          name: 'path',
-          weight: 0.3
-        }]
+        keys: [
+          {
+            name: 'title',
+            weight: 0.7,
+          },
+          {
+            name: 'path',
+            weight: 0.3,
+          },
+        ],
       });
     },
     // Filter out the navigations that can be displayed in the sidebar
@@ -106,8 +120,10 @@ export default {
         }
 
         const data = {
-          path: !this.ishttp(router.path) ? path.resolve(basePath, router.path) : router.path,
-          title: [...prefixTitle]
+          path: !this.ishttp(router.path)
+            ? path.resolve(basePath, router.path)
+            : router.path,
+          title: [...prefixTitle],
         };
 
         if (router.meta && router.meta.title) {
@@ -122,7 +138,11 @@ export default {
 
         // recursive child navigations
         if (router.children) {
-          const tempnavigations = this.generatenavigations(router.children, data.path, data.title);
+          const tempnavigations = this.generatenavigations(
+            router.children,
+            data.path,
+            data.title
+          );
           if (tempnavigations.length >= 1) {
             res = [...res, ...tempnavigations];
           }
@@ -139,8 +159,8 @@ export default {
     },
     ishttp(url) {
       return url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1;
-    }
-  }
+    },
+  },
 };
 </script>
 

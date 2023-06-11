@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export class TenantService {
   /** @type instance TenantService*/
-  static instance = new TenantService();
+  static instance = new TenantService()
 
   /** @return TenantService*/
   static getInstance() {
@@ -14,8 +14,8 @@ export class TenantService {
   }
 
   tenant = {
-    code: 'default'
-  };
+    code: 'default',
+  }
 
   getCurrentTenant() {
     if (!this.tenant) {
@@ -34,7 +34,7 @@ export class TenantService {
 
   getBaseTenantUrl() {
     // const tenantCode = this.tenant.code;
-    return '';// '/tenant/' + tenantCode;
+    return ''; // '/tenant/' + tenantCode;
   }
 
   /** Make request to current tenant*/

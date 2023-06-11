@@ -1,5 +1,5 @@
 export class ListEventHandler {
-  vm;
+  vm
 
   constructor(vm) {
     this.vm = vm;
@@ -10,13 +10,14 @@ export class ListEventHandler {
     engineList.selectionChange(e);
   }
 
-  handleCurrentChange() {
-
-  }
+  handleCurrentChange() {}
 
   sortHandler(e) {
     const engineList = this.vm.engineList;
-    engineList.order = { direction: e.order === 'ascending' ? 'ASC' : 'DESC', attribute: e.prop };
+    engineList.order = {
+      direction: e.order === 'ascending' ? 'ASC' : 'DESC',
+      attribute: e.prop,
+    };
     return engineList.refresh();
   }
 }

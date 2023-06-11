@@ -4,15 +4,15 @@ import { WIDGETS } from '@/modules/form/components/widgets/base-widget/widgets';
 import { EngineScript } from '@/modules/engine/core/engine.script';
 
 export default class ReferenceWidget extends BaseWidget {
-  loading = false;
+  loading = false
 
   palletSettings = {
     label: 'Reference',
-    icon: 'reference'
-  };
-  slot = { options: [] };
+    icon: 'reference',
+  }
+  slot = { options: [] }
 
-  valueInitialized = false;
+  valueInitialized = false
 
   constructor(settings = {}) {
     super(settings);
@@ -26,14 +26,20 @@ export default class ReferenceWidget extends BaseWidget {
     return {
       select(value) {
         // this.renderComponent.$emit('value', value);
-      }
+      },
     };
   }
 
   options(h, key) {
     const list = [];
-    this.slot.options.forEach(item => {
-      list.push(<el-option label={item.label} value={item.value} disabled={item.disabled}/>);
+    this.slot.options.forEach((item) => {
+      list.push(
+        <el-option
+          label={item.label}
+          value={item.value}
+          disabled={item.disabled}
+        />
+      );
     });
     return list;
   }
@@ -51,8 +57,8 @@ export default class ReferenceWidget extends BaseWidget {
             advance: true,
             referenced_model_alias: 'engine_models',
             referenced_field_name: 'alias',
-            display_field_name: 'label'
-          }
+            display_field_name: 'label',
+          },
         },
         'widgetSettings.referenced_field_name': {
           fieldName: 'widgetSettings.referenced_field_name',
@@ -64,8 +70,8 @@ export default class ReferenceWidget extends BaseWidget {
             advance: true,
             referenced_model_alias: 'engine_fields',
             referenced_field_name: 'name',
-            display_field_name: 'label'
-          }
+            display_field_name: 'label',
+          },
         },
         'widgetSettings.display_field_name': {
           fieldName: 'widgetSettings.display_field_name',
@@ -77,9 +83,9 @@ export default class ReferenceWidget extends BaseWidget {
             advance: true,
             referenced_model_alias: 'engine_fields',
             referenced_field_name: 'name',
-            display_field_name: 'label'
-          }
-        }
+            display_field_name: 'label',
+          },
+        },
       });
     }
     configSectionWidgets['fieldSettings.interceptor'] = {
@@ -90,8 +96,8 @@ export default class ReferenceWidget extends BaseWidget {
         span: 24,
         label: 'Interceptor',
         advance: true,
-        language: 'javascript'
-      }
+        language: 'javascript',
+      },
     };
     return configSectionWidgets;
   }
@@ -105,45 +111,61 @@ export default class ReferenceWidget extends BaseWidget {
     } else {
       const interceptor = fieldSettings.interceptor;
       fieldSettings.interceptor = (query, resolve) => {
-        return new EngineScript({ script: interceptor }).execute({ query, resolve }, this.buildContext());
+        return new EngineScript({ script: interceptor }).execute(
+          { query, resolve },
+          this.buildContext()
+        );
       };
     }
     return Object.assign(fieldSettings, {
       async remoteMethod(value) {
         fieldSettings.loading = true;
-        const result = await fieldSettings.interceptor({
-          where: {
-            [_this.widgetSettings.display_field_name]: {
-              '$regex': value
-            }
+        const result = await fieldSettings.interceptor(
+          {
+            where: {
+              [_this.widgetSettings.display_field_name]: {
+                $regex: value,
+              },
+            },
+            fields: [
+              _this.widgetSettings.referenced_field_name,
+              _this.widgetSettings.display_field_name,
+            ],
           },
-          fields: [_this.widgetSettings.referenced_field_name, _this.widgetSettings.display_field_name]
-        }, async(query) => {
-          const response = await new RestQuery(_this.widgetSettings.referenced_model_alias).findAll(query);
-          return response.contents;
-        });
-        _this.renderComponent.$set(_this.slot, 'options', result.map(rec => {
-          if (_this.isWidgetWithField()) { // store only id
+          async(query) => {
+            const response = await new RestQuery(
+              _this.widgetSettings.referenced_model_alias
+            ).findAll(query);
+            return response.contents;
+          }
+        );
+        _this.renderComponent.$set(
+          _this.slot,
+          'options',
+          result.map((rec) => {
+            if (_this.isWidgetWithField()) {
+              // store only id
+              return {
+                label: rec[_this.widgetSettings.display_field_name],
+                value: rec[_this.widgetSettings.referenced_field_name],
+              };
+            }
             return {
               label: rec[_this.widgetSettings.display_field_name],
-              value: rec[_this.widgetSettings.referenced_field_name]
+              value: JSON.stringify({
+                label: rec[_this.widgetSettings.display_field_name],
+                value: rec[_this.widgetSettings.referenced_field_name],
+              }),
             };
-          }
-          return {
-            label: rec[_this.widgetSettings.display_field_name],
-            value: JSON.stringify({
-              label: rec[_this.widgetSettings.display_field_name],
-              value: rec[_this.widgetSettings.referenced_field_name]
-            })
-          };
-        }));
+          })
+        );
         fieldSettings.loading = false;
         _this.repaint();
       },
       filterable: true,
       remote: true,
       reserveKeyword: true,
-      loading: false
+      loading: false,
     });
   }
 
@@ -152,10 +174,12 @@ export default class ReferenceWidget extends BaseWidget {
       const value = this.getValue();
       const refModel = this.formModel['ref_' + this.fieldName];
       if (refModel) {
-        if (this.slot.options.findIndex(option => option.value === value) < 0) {
+        if (
+          this.slot.options.findIndex((option) => option.value === value) < 0
+        ) {
           this.slot.options.push({
             label: refModel[this.widgetSettings.display_field_name],
-            value: value
+            value: value,
           });
         }
         this.valueInitialized = true;
@@ -169,6 +193,10 @@ export default class ReferenceWidget extends BaseWidget {
         }
       }
     }
-    return h('el-select', this.getComponentConfig(component), this.getChildren(h));
+    return h(
+      'el-select',
+      this.getComponentConfig(component),
+      this.getChildren(h)
+    );
   }
 }

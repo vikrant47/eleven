@@ -1,5 +1,11 @@
 <template>
-  <el-dialog append-to-body :close-on-click-modal="false" :visible.sync="dialog" title="执行脚本" width="400px">
+  <el-dialog
+    append-to-body
+    :close-on-click-modal="false"
+    :visible.sync="dialog"
+    title="执行脚本"
+    width="400px"
+  >
     <el-form ref="form" :rules="rules" size="small">
       <el-upload
         :action="databaseUploadApi"
@@ -10,12 +16,14 @@
         class="upload-demo"
         drag
       >
-        <i class="el-icon-upload" />
+        <el-icon><elu-icon-upload /></el-icon>
         <div class="el-upload__text">
           将文件拖到此处，或
           <em>点击上传</em>
         </div>
-        <div slot="tip" class="el-upload__tip">上传后，系统会自动执行SQL脚本</div>
+        <div slot="tip" class="el-upload__tip">
+          上传后，系统会自动执行SQL脚本
+        </div>
       </el-upload>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -25,62 +33,64 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { getToken } from '@/utils/auth'
+import { Upload as EluIconUpload } from '@element-plus/icons';
+import { mapGetters } from 'vuex';
+import { getToken } from '@/utils/auth';
 export default {
+  components: {
+    EluIconUpload,
+  },
   props: {
     databaseInfo: {
       type: Object,
       default() {
-        return {}
-      }
-    }
+        return {};
+      },
+    },
   },
   data() {
     return {
       loading: false,
       dialog: false,
       headers: {
-        Authorization: getToken()
+        Authorization: getToken(),
       },
-      rules: {}
-    }
+      rules: {},
+    };
   },
   computed: {
-    ...mapGetters(['databaseUploadApi'])
+    ...mapGetters(['databaseUploadApi']),
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     cancel() {
-      this.dialog = false
+      this.dialog = false;
     },
     handleSuccess(response, file, fileList) {
       if (response === 'success') {
         this.$notify({
           title: '执行成功',
           type: 'success',
-          duration: 2500
-        })
+          duration: 2500,
+        });
       } else {
         this.$notify({
           title: response,
           type: 'error',
-          duration: 0
-        })
+          duration: 0,
+        });
       }
     },
     handleError(e, file, fileList) {
-      const msg = JSON.parse(e.message)
+      const msg = JSON.parse(e.message);
       this.$notify({
         title: msg.message,
         type: 'error',
-        duration: 0
-      })
-    }
-  }
-}
+        duration: 0,
+      });
+    },
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

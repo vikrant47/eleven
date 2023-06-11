@@ -1,63 +1,74 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
-import echarts from 'echarts'
+import echarts from 'echarts';
 
-require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils'
+require('echarts/theme/macarons'); // echarts theme
+import { debounce } from '@/utils';
 
 export default {
   props: {
     className: {
       type: String,
-      default: 'chart'
+      default: 'chart',
     },
     width: {
       type: String,
-      default: '100%'
+      default: '100%',
     },
     height: {
       type: String,
-      default: '500px'
-    }
+      default: '500px',
+    },
   },
   data() {
     return {
-      chart: null
-    }
+      chart: null,
+    };
   },
   mounted() {
-    this.initChart()
+    this.initChart();
     this.__resizeHandler = debounce(() => {
       if (this.chart) {
-        this.chart.resize()
+        this.chart.resize();
       }
-    }, 100)
-    window.addEventListener('resize', this.__resizeHandler)
+    }, 100);
+    window.addEventListener('resize', this.__resizeHandler);
   },
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    window.removeEventListener('resize', this.__resizeHandler)
-    this.chart.dispose()
-    this.chart = null
+    window.removeEventListener('resize', this.__resizeHandler);
+    this.chart.dispose();
+    this.chart = null;
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
+      this.chart = echarts.init(this.$el, 'macarons');
 
       this.chart.setOption({
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
+          formatter: '{a} <br/>{b}: {c} ({d}%)',
         },
         legend: {
           orient: 'vertical',
           x: 'left',
-          data: ['直达', '营销广告', '搜索引擎', '邮件营销', '联盟广告', '视频广告', '百度', '谷歌', '必应', '其他']
+          data: [
+            '直达',
+            '营销广告',
+            '搜索引擎',
+            '邮件营销',
+            '联盟广告',
+            '视频广告',
+            '百度',
+            '谷歌',
+            '必应',
+            '其他',
+          ],
         },
         series: [
           {
@@ -68,19 +79,19 @@ export default {
 
             label: {
               normal: {
-                position: 'inner'
-              }
+                position: 'inner',
+              },
             },
             labelLine: {
               normal: {
-                show: false
-              }
+                show: false,
+              },
             },
             data: [
               { value: 335, name: '直达', selected: true },
               { value: 679, name: '营销广告' },
-              { value: 1548, name: '搜索引擎' }
-            ]
+              { value: 1548, name: '搜索引擎' },
+            ],
           },
           {
             name: '访问来源',
@@ -102,33 +113,33 @@ export default {
                   a: {
                     color: '#999',
                     lineHeight: 22,
-                    align: 'center'
+                    align: 'center',
                   },
                   abg: {
                     backgroundColor: '#333',
                     width: '100%',
                     align: 'right',
                     height: 22,
-                    borderRadius: [4, 4, 0, 0]
+                    borderRadius: [4, 4, 0, 0],
                   },
                   hr: {
                     borderColor: '#aaa',
                     width: '100%',
                     borderWidth: 0.5,
-                    height: 0
+                    height: 0,
                   },
                   b: {
                     fontSize: 16,
-                    lineHeight: 33
+                    lineHeight: 33,
                   },
                   per: {
                     color: '#eee',
                     backgroundColor: '#334455',
                     padding: [2, 4],
-                    borderRadius: 2
-                  }
-                }
-              }
+                    borderRadius: 2,
+                  },
+                },
+              },
             },
             data: [
               { value: 335, name: '直达' },
@@ -138,12 +149,12 @@ export default {
               { value: 1048, name: '百度' },
               { value: 251, name: '谷歌' },
               { value: 147, name: '必应' },
-              { value: 102, name: '其他' }
-            ]
-          }
-        ]
-      })
-    }
-  }
-}
+              { value: 102, name: '其他' },
+            ],
+          },
+        ],
+      });
+    },
+  },
+};
 </script>

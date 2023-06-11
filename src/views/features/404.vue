@@ -2,15 +2,34 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" src="@/assets/404_images/404.png" alt="404">
-        <img class="pic-404__child left" src="@/assets/404_images/404_cloud.png" alt="404">
-        <img class="pic-404__child mid" src="@/assets/404_images/404_cloud.png" alt="404">
-        <img class="pic-404__child right" src="@/assets/404_images/404_cloud.png" alt="404">
+        <img
+          class="pic-404__parent"
+          src="@/assets/404_images/404.png"
+          alt="404"
+        >
+        <img
+          class="pic-404__child left"
+          src="@/assets/404_images/404_cloud.png"
+          alt="404"
+        >
+        <img
+          class="pic-404__child mid"
+          src="@/assets/404_images/404_cloud.png"
+          alt="404"
+        >
+        <img
+          class="pic-404__child right"
+          src="@/assets/404_images/404_cloud.png"
+          alt="404"
+        >
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
         <div class="bullshit__headline">{{ message }}</div>
-        <div class="bullshit__info">Please check if the URL you entered is correct, please click the button below to return to the homepage or send an error report</div>
+        <div class="bullshit__info">
+          Please check if the URL you entered is correct, please click the
+          button below to return to the homepage or send an error report
+        </div>
         <a href="/" class="bullshit__return-home">Back to homepage</a>
       </div>
     </div>
@@ -18,20 +37,19 @@
 </template>
 
 <script>
-
 export default {
   name: 'Page404',
   computed: {
     message() {
       return '网管说这个页面你不能进......';
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-.wscn-http404-container{
-  transform: translate(-50%,-50%);
+<style lang="scss" rel="stylesheet/scss" scoped>
+.wscn-http404-container {
+  transform: translate(-50%, -50%);
   position: absolute;
   top: 40%;
   left: 50%;

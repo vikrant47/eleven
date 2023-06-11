@@ -11,9 +11,7 @@ export const FIELD_TYPES = {
   ENUM: 'enum',
   REFERENCE: 'reference',
   FILE: 'file',
-  BIG_INTEGER: 'big_integer'
+  BIG_INTEGER: 'big_integer',
 };
 
-export class EngineField {
-
-}
+export class EngineField {}

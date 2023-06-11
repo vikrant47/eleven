@@ -9,7 +9,7 @@
         class="filter-item"
         size="mini"
         type="primary"
-        icon="el-icon-plus"
+        :icon="EluIconPlus"
         @click="crud.toAdd"
       >
         新增
@@ -20,7 +20,7 @@
         class="filter-item"
         size="mini"
         type="success"
-        icon="el-icon-edit"
+        :icon="EluIconEdit"
         :disabled="crud.selections.length !== 1"
         @click="crud.toEdit(crud.selections[0])"
       >
@@ -32,7 +32,7 @@
         v-permission="permission.del"
         class="filter-item"
         type="danger"
-        icon="el-icon-delete"
+        :icon="EluIconDelete"
         size="mini"
         :loading="crud.delAllLoading"
         :disabled="crud.selections.length === 0"
@@ -47,7 +47,7 @@
         class="filter-item"
         size="mini"
         type="warning"
-        icon="el-icon-download"
+        :icon="EluIconDownload"
         @click="crud.doExport"
       >导出</el-button>
       <!--右侧-->
@@ -58,28 +58,13 @@
         size="mini"
         plain
         type="info"
-        icon="el-icon-search"
+        :icon="EluIconSearch"
         @click="toggleSearch()"
       />
-      <el-button
-        size="mini"
-        icon="el-icon-refresh"
-        @click="crud.refresh()"
-      />
-      <el-popover
-        placement="bottom-end"
-        width="150"
-        trigger="click"
-      >
-        <el-button
-          slot="reference"
-          size="mini"
-          icon="el-icon-s-grid"
-        >
-          <i
-            class="fa fa-caret-down"
-            aria-hidden="true"
-          />
+      <el-button size="mini" :icon="EluIconRefresh" @click="crud.refresh()" />
+      <el-popover placement="bottom-end" width="150" trigger="click">
+        <el-button slot="reference" size="mini" :icon="EluIconSGrid">
+          <i class="fa fa-caret-down" aria-hidden="true" />
         </el-button>
         <el-checkbox
           v-model="allColumnsSelected"
@@ -100,13 +85,23 @@
     </el-button-group>
   </div>
 </template>
+
 <script>
+import {
+  Plus as EluIconPlus,
+  Edit as EluIconEdit,
+  Delete as EluIconDelete,
+  Download as EluIconDownload,
+  Search as EluIconSearch,
+  Refresh as EluIconRefresh,
+  SGrid as EluIconSGrid,
+} from '@element-plus/icons';
 import CRUD, { crud } from '@crud/crud';
 
 function sortWithRef(src, ref) {
   const result = Object.assign([], ref);
   let cursor = -1;
-  src.forEach(e => {
+  src.forEach((e) => {
     const idx = result.indexOf(e);
     if (idx === -1) {
       cursor += 1;
@@ -119,21 +114,6 @@ function sortWithRef(src, ref) {
 }
 
 export default {
-  mixins: [crud()],
-  props: {
-    permission: {
-      type: Object,
-      default: () => { return {}; }
-    },
-    hiddenColumns: {
-      type: Array,
-      default: () => { return []; }
-    },
-    ignoreColumns: {
-      type: Array,
-      default: () => { return []; }
-    }
-  },
   data() {
     return {
       tableColumns: [],
@@ -141,13 +121,41 @@ export default {
       allColumnsSelectedIndeterminate: false,
       tableUnwatcher: null,
       // 忽略下次表格列变动
-      ignoreNextTableColumnsChange: false
+      ignoreNextTableColumnsChange: false,
+      EluIconPlus,
+      EluIconEdit,
+      EluIconDelete,
+      EluIconDownload,
+      EluIconSearch,
+      EluIconRefresh,
+      EluIconSGrid,
     };
+  },
+  mixins: [crud()],
+  props: {
+    permission: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+    hiddenColumns: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    ignoreColumns: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   watch: {
     'crud.props.table'() {
       this.updateTableColumns();
-      this.tableColumns.forEach(column => {
+      this.tableColumns.forEach((column) => {
         if (this.hiddenColumns.indexOf(column.property) !== -1) {
           column.visible = false;
           this.updateColumnVisible(column);
@@ -156,7 +164,7 @@ export default {
     },
     'crud.props.table.store.states.columns'() {
       this.updateTableColumns();
-    }
+    },
   },
   created() {
     this.crud.updateProp('searchToggle', true);
@@ -169,7 +177,11 @@ export default {
         return;
       }
       let cols = null;
-      const columnFilter = e => e && e.type === 'default' && e.property && this.ignoreColumns.indexOf(e.property) === -1;
+      const columnFilter = (e) =>
+        e &&
+        e.type === 'default' &&
+        e.property &&
+        this.ignoreColumns.indexOf(e.property) === -1;
       const refCols = table.columns.filter(columnFilter);
       if (this.ignoreNextTableColumnsChange) {
         this.ignoreNextTableColumnsChange = false;
@@ -177,13 +189,15 @@ export default {
       }
       this.ignoreNextTableColumnsChange = false;
       const columns = [];
-      const fullTableColumns = table.$children.map(e => e.columnConfig).filter(columnFilter);
+      const fullTableColumns = table.$children
+        .map((e) => e.columnConfig)
+        .filter(columnFilter);
       cols = sortWithRef(fullTableColumns, refCols);
-      cols.forEach(config => {
+      cols.forEach((config) => {
         const column = {
           property: config.property,
           label: config.label,
-          visible: refCols.indexOf(config) !== -1
+          visible: refCols.indexOf(config) !== -1,
         };
         columns.push(column);
       });
@@ -193,19 +207,20 @@ export default {
       this.$confirm(`确认删除选中的${datas.length}条数据?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.crud.delAllLoading = true;
-        this.crud.doDelete(datas);
-      }).catch(() => {
-      });
+        type: 'warning',
+      })
+        .then(() => {
+          this.crud.delAllLoading = true;
+          this.crud.doDelete(datas);
+        })
+        .catch(() => {});
     },
     handleCheckAllChange(val) {
       if (val === false) {
         this.allColumnsSelected = true;
         return;
       }
-      this.tableColumns.forEach(column => {
+      this.tableColumns.forEach((column) => {
         if (!column.visible) {
           column.visible = true;
           this.updateColumnVisible(column);
@@ -217,7 +232,7 @@ export default {
     handleCheckedTableColumnsChange(item) {
       let totalCount = 0;
       let selectedCount = 0;
-      this.tableColumns.forEach(column => {
+      this.tableColumns.forEach((column) => {
         ++totalCount;
         selectedCount += column.visible ? 1 : 0;
       });
@@ -229,17 +244,23 @@ export default {
         return;
       }
       this.allColumnsSelected = selectedCount === totalCount;
-      this.allColumnsSelectedIndeterminate = selectedCount !== totalCount && selectedCount !== 0;
+      this.allColumnsSelectedIndeterminate =
+        selectedCount !== totalCount && selectedCount !== 0;
       this.updateColumnVisible(item);
     },
     updateColumnVisible(item) {
       const table = this.crud.props.table;
-      const vm = table.$children.find(e => e.prop === item.property);
+      const vm = table.$children.find((e) => e.prop === item.property);
       const columnConfig = vm.columnConfig;
       if (item.visible) {
         // 找出合适的插入点
         const columnIndex = this.tableColumns.indexOf(item);
-        vm.owner.store.commit('insertColumn', columnConfig, columnIndex + 1, null);
+        vm.owner.store.commit(
+          'insertColumn',
+          columnConfig,
+          columnIndex + 1,
+          null
+        );
       } else {
         vm.owner.store.commit('removeColumn', columnConfig, null);
       }
@@ -247,19 +268,19 @@ export default {
     },
     toggleSearch() {
       this.crud.props.searchToggle = !this.crud.props.searchToggle;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style>
-  .crud-opts {
-    padding: 4px 0;
-    display: -webkit-flex;
-    display: flex;
-    align-items: center;
-  }
-  .crud-opts .crud-opts-right {
-    margin-left: auto;
-  }
+.crud-opts {
+  padding: 4px 0;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+}
+.crud-opts .crud-opts-right {
+  margin-left: auto;
+}
 </style>

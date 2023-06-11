@@ -3,7 +3,7 @@
     <div class="left-board">
       <el-scrollbar class="left-scrollbar">
         <el-tab-pane class="components-list">
-          <el-tabs value="Fields" :stretch="true">
+          <el-tabs model-value="Fields" :stretch="true">
             <el-tab-pane
               v-for="(item, listIndex) in getFilteredPallet()"
               :key="listIndex"
@@ -41,19 +41,28 @@
     <div class="center-board center-board-with-pallet">
       <el-scrollbar class="center-scrollbar">
         <el-row class="center-board-row" :gutter="24">
-          <draggable class="drawing-board" :list="drawingList" :animation="340" group="componentsGroup">
+          <draggable
+            class="drawing-board"
+            :list="drawingList"
+            :animation="340"
+            group="componentsGroup"
+          >
             <el-row
               v-for="(element, index) in drawingList"
               :key="element.label"
-              class="draggable-item field-wrapper "
+              class="draggable-item field-wrapper"
               :gutter="24"
             >
               <el-col class="field-item" :span="22">
                 {{ element.label }}
               </el-col>
               <el-col class="delete-item" :span="2">
-                <span class="drawing-item-delete" title="Delete" @click="drawingItemDelete(index,drawingList)">
-                  <i class="el-icon-delete" />
+                <span
+                  class="drawing-item-delete"
+                  title="Delete"
+                  @click="drawingItemDelete(index, drawingList)"
+                >
+                  <el-icon><elu-icon-delete /></el-icon>
                 </span>
               </el-col>
             </el-row>
@@ -69,17 +78,14 @@
 </template>
 
 <script>
+import { Delete as EluIconDelete } from '@element-plus/icons';
 
 import draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import ClipboardJS from 'clipboard';
-import {
-  deepClone
-} from '@/modules/form/utils';
+import { deepClone } from '@/modules/form/utils';
 import drawingDefalut from '@/modules/form/components/generator/drawingDefalut';
-import {
-  saveIdGlobal
-} from '@/modules/form/utils/db';
+import { saveIdGlobal } from '@/modules/form/utils/db';
 
 let tempactiveWidget;
 // const drawingListInDB = [];// getDrawingList();
@@ -88,28 +94,29 @@ let hash = null;
 export default {
   name: 'ListDesigner',
   components: {
-    draggable
+    draggable,
+    EluIconDelete,
   },
   props: {
     value: {
       type: Object,
       default() {
         return { widgets: [] };
-      }
+      },
     },
     pallet: {
       type: Array,
       default() {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       activePallet: 'Fields',
       configVisible: false,
       labelWidth: 100,
-      drawingList: this.value && this.value.widgets || [],
+      drawingList: (this.value && this.value.widgets) || [],
       drawingData: {},
       activeId: drawingDefalut[0].formId,
       drawerVisible: false,
@@ -123,22 +130,22 @@ export default {
         const newHash = JSON.stringify(list);
         if (list.length > 0 && hash !== newHash) {
           this.$emit('input', {
-            widgets: list.map(field => {
+            widgets: list.map((field) => {
               return { id: field.id, label: field.label, name: field.name };
-            })
+            }),
           }); // emitting event to top form item
           hash = newHash;
         }
         // return saveDrawingList(list.map(widget => Engine.marshall(widget, new FormWidgetService().getWidgetInstance(widget))));
       }),
       saveIdGlobalDebounce: debounce(340, saveIdGlobal),
-      leftComponents: this.pallet
+      leftComponents: this.pallet,
     };
   },
   computed: {
     filteredPallet() {
       return this.getFilteredPallet();
-    }
+    },
   },
   watch: {
     // eslint-disable-next-line func-names
@@ -151,37 +158,38 @@ export default {
           this.updateAllSelectedItems({ palletSettings: { hidden: true }});
         }
       },
-      deep: true
+      deep: true,
     },
     pallet: {
       handler(val) {
         // this.drawingList = [];
-      }
+      },
     },
     value: {
       handler(val) {
         if (val.widgets && val.widgets.length > 0) {
           this.drawingList = val.widgets;
         }
-      }
-    }
+      },
+    },
   },
   mounted() {
     if (this.drawingList.length > 0) {
       this.activeFormItem(this.drawingList[0]);
     }
     const clipboard = new ClipboardJS('#copyNode', {
-      text: trigger => {
+      text: (trigger) => {
         const codeStr = this.generateCode();
         this.$notify({
           title: 'success',
-          message: 'The code has been copied to the clipboard and can be pasted.',
-          type: 'success'
+          message:
+            'The code has been copied to the clipboard and can be pasted.',
+          type: 'success',
         });
         return codeStr;
-      }
+      },
     });
-    clipboard.on('error', e => {
+    clipboard.on('error', (e) => {
       this.$message.error('Code copy failed');
     });
   },
@@ -192,7 +200,7 @@ export default {
     getFilteredPallet() {
       return this.pallet.map((palletItem) => {
         return Object.assign({}, palletItem, {
-          list: palletItem.list.filter(item => !item.palletSettings.hidden)
+          list: palletItem.list.filter((item) => !item.palletSettings.hidden),
         });
       });
     },
@@ -242,23 +250,27 @@ export default {
       const item = list[index];
       list.splice(index, 1);
       this.$nextTick(() => {
-        this.updatedSelectedPalletItem(item, { palletSettings: { hidden: false }});
+        this.updatedSelectedPalletItem(item, {
+          palletSettings: { hidden: false },
+        });
       });
     },
     cloneWidget(original) {
-      const clone = deepClone(original);// deepClone(origin);
+      const clone = deepClone(original); // deepClone(origin);
       tempactiveWidget = clone;
       return tempactiveWidget;
     },
     empty() {
-      this.$confirm('Are you sure you want to clear all components?', 'Prompt', { type: 'warning' }).then(
-        () => {
-          this.drawingList = [];
-          this.idGlobal = 100;
-        }
-      );
-    }
-  }
+      this.$confirm(
+        'Are you sure you want to clear all components?',
+        'Prompt',
+        { type: 'warning' }
+      ).then(() => {
+        this.drawingList = [];
+        this.idGlobal = 100;
+      });
+    },
+  },
 };
 </script>
 

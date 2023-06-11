@@ -88,7 +88,9 @@ export class Utils {
     var doThrow = typeof arguments[i] === 'boolean' ? arguments[i++] : true;
     var type = arguments[i++];
     var message = arguments[i++];
-    var args = Array.isArray(arguments[i]) ? arguments[i] : Array.prototype.slice.call(arguments, i);
+    var args = Array.isArray(arguments[i])
+      ? arguments[i]
+      : Array.prototype.slice.call(arguments, i);
 
     if (doThrow) {
       var err = new Error(Utils.fmt(message, args));
@@ -124,10 +126,18 @@ export class Utils {
         }
         return parseFloat(value);
       case 'boolean':
-        if (typeof value === 'string' && !/^(0|1|true|false){1}$/i.test(value)) {
+        if (
+          typeof value === 'string' &&
+          !/^(0|1|true|false){1}$/i.test(value)
+        ) {
           return value;
         }
-        return value === true || value === 1 || value.toLowerCase() === 'true' || value === '1';
+        return (
+          value === true ||
+          value === 1 ||
+          value.toLowerCase() === 'true' ||
+          value === '1'
+        );
       default:
         return value;
       // @formatter:on
@@ -144,26 +154,28 @@ export class Utils {
       return value;
     }
 
-    return value
-      .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
-        switch (s) {
-          // @formatter:off
-          case '\0':
-            return '\\0';
-          case '\n':
-            return '\\n';
-          case '\r':
-            return '\\r';
-          case '\b':
-            return '\\b';
-          default:
-            return '\\' + s;
-          // @formatter:off
-        }
-      })
-      // uglify compliant
-      .replace(/\t/g, '\\t')
-      .replace(/\x1a/g, '\\Z');
+    return (
+      value
+        .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+          switch (s) {
+            // @formatter:off
+            case '\0':
+              return '\\0';
+            case '\n':
+              return '\\n';
+            case '\r':
+              return '\\r';
+            case '\b':
+              return '\\b';
+            default:
+              return '\\' + s;
+            // @formatter:off
+          }
+        })
+        // uglify compliant
+        .replace(/\t/g, '\\t')
+        .replace(/\x1a/g, '\\Z')
+    );
   }
 
   /**
@@ -185,10 +197,11 @@ export class Utils {
     // https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
     // - escapes : . [ ] ,
     // - avoids escaping already escaped values
-    return (str) ? str.replace(/(\\)?([:.\[\],])/g,
-      function($0, $1, $2) {
+    return str
+      ? str.replace(/(\\)?([:.\[\],])/g, function($0, $1, $2) {
         return $1 ? $0 : '\\' + $2;
-      }) : str;
+      })
+      : str;
   }
 
   /**
@@ -238,9 +251,10 @@ export class Utils {
           return this.__[field];
         },
         set: function(value) {
-          const previousValue = (this.__[field] !== null && typeof this.__[field] === 'object')
-            ? Object.assign({}, this.__[field])
-            : this.__[field];
+          const previousValue =
+            this.__[field] !== null && typeof this.__[field] === 'object'
+              ? Object.assign({}, this.__[field])
+              : this.__[field];
 
           this.__[field] = value;
 
@@ -256,14 +270,14 @@ export class Utils {
              */
             this.model.trigger('update', this, field, value, previousValue);
           }
-        }
+        },
       });
     });
   }
 }
 
 export class MongoParser {
-  filters = [];
+  filters = []
   settings = {
     default_condition: 'AND',
     mongoOperators: {
@@ -272,154 +286,251 @@ export class MongoParser {
         return v[0];
       },
       not_equal(v) {
-        return { '$ne': v[0] };
+        return { $ne: v[0] };
       },
       in(v) {
-        return { '$in': v };
+        return { $in: v };
       },
       not_in(v) {
-        return { '$nin': v };
+        return { $nin: v };
       },
       less(v) {
-        return { '$lt': v[0] };
+        return { $lt: v[0] };
       },
       less_or_equal(v) {
-        return { '$lte': v[0] };
+        return { $lte: v[0] };
       },
       greater(v) {
-        return { '$gt': v[0] };
+        return { $gt: v[0] };
       },
       greater_or_equal(v) {
-        return { '$gte': v[0] };
+        return { $gte: v[0] };
       },
       between(v) {
-        return { '$gte': v[0], '$lte': v[1] };
+        return { $gte: v[0], $lte: v[1] };
       },
       not_between(v) {
-        return { '$lt': v[0], '$gt': v[1] };
+        return { $lt: v[0], $gt: v[1] };
       },
       begins_with(v) {
-        return { '$regex': '^' + Utils.escapeRegExp(v[0]) };
+        return { $regex: '^' + Utils.escapeRegExp(v[0]) };
       },
       not_begins_with(v) {
-        return { '$regex': '^(?!' + Utils.escapeRegExp(v[0]) + ')' };
+        return { $regex: '^(?!' + Utils.escapeRegExp(v[0]) + ')' };
       },
       contains(v) {
-        return { '$regex': Utils.escapeRegExp(v[0]) };
+        return { $regex: Utils.escapeRegExp(v[0]) };
       },
       not_contains(v) {
-        return { '$regex': '^((?!' + Utils.escapeRegExp(v[0]) + ').)*$', '$options': 's' };
+        return {
+          $regex: '^((?!' + Utils.escapeRegExp(v[0]) + ').)*$',
+          $options: 's',
+        };
       },
       ends_with(v) {
-        return { '$regex': Utils.escapeRegExp(v[0]) + '$' };
+        return { $regex: Utils.escapeRegExp(v[0]) + '$' };
       },
       not_ends_with(v) {
-        return { '$regex': '(?<!' + Utils.escapeRegExp(v[0]) + ')$' };
+        return { $regex: '(?<!' + Utils.escapeRegExp(v[0]) + ')$' };
       },
       is_empty(v) {
         return '';
       },
       is_not_empty(v) {
-        return { '$ne': '' };
+        return { $ne: '' };
       },
       is_null(v) {
         return null;
       },
       is_not_null(v) {
-        return { '$ne': null };
-      }
+        return { $ne: null };
+      },
       // @formatter:on
     },
 
     mongoRuleOperators: {
       $eq(v) {
         return {
-          'val': v,
-          'op': v === null ? 'is_null' : (v === '' ? 'is_empty' : 'equal')
+          val: v,
+          op: v === null ? 'is_null' : v === '' ? 'is_empty' : 'equal',
         };
       },
       $ne(v) {
         v = v.$ne;
         return {
-          'val': v,
-          'op': v === null ? 'is_not_null' : (v === '' ? 'is_not_empty' : 'not_equal')
+          val: v,
+          op:
+            v === null
+              ? 'is_not_null'
+              : v === ''
+                ? 'is_not_empty'
+                : 'not_equal',
         };
       },
       $regex(v) {
         v = v.$regex;
         if (v.slice(0, 4) === '^(?!' && v.slice(-1) === ')') {
-          return { 'val': v.slice(4, -1), 'op': 'not_begins_with' };
+          return { val: v.slice(4, -1), op: 'not_begins_with' };
         } else if (v.slice(0, 5) === '^((?!' && v.slice(-5) === ').)*$') {
-          return { 'val': v.slice(5, -5), 'op': 'not_contains' };
+          return { val: v.slice(5, -5), op: 'not_contains' };
         } else if (v.slice(0, 4) === '(?<!' && v.slice(-2) === ')$') {
-          return { 'val': v.slice(4, -2), 'op': 'not_ends_with' };
+          return { val: v.slice(4, -2), op: 'not_ends_with' };
         } else if (v.slice(-1) === '$') {
-          return { 'val': v.slice(0, -1), 'op': 'ends_with' };
+          return { val: v.slice(0, -1), op: 'ends_with' };
         } else if (v.slice(0, 1) === '^') {
-          return { 'val': v.slice(1), 'op': 'begins_with' };
+          return { val: v.slice(1), op: 'begins_with' };
         } else {
-          return { 'val': v, 'op': 'contains' };
+          return { val: v, op: 'contains' };
         }
       },
       between(v) {
-        return { 'val': [v.$gte, v.$lte], 'op': 'between' };
+        return { val: [v.$gte, v.$lte], op: 'between' };
       },
       not_between(v) {
-        return { 'val': [v.$lt, v.$gt], 'op': 'not_between' };
+        return { val: [v.$lt, v.$gt], op: 'not_between' };
       },
       $in(v) {
-        return { 'val': v.$in, 'op': 'in' };
+        return { val: v.$in, op: 'in' };
       },
       $nin(v) {
-        return { 'val': v.$nin, 'op': 'not_in' };
+        return { val: v.$nin, op: 'not_in' };
       },
       $lt(v) {
-        return { 'val': v.$lt, 'op': 'less' };
+        return { val: v.$lt, op: 'less' };
       },
       $lte(v) {
-        return { 'val': v.$lte, 'op': 'less_or_equal' };
+        return { val: v.$lte, op: 'less_or_equal' };
       },
       $gt(v) {
-        return { 'val': v.$gt, 'op': 'greater' };
+        return { val: v.$gt, op: 'greater' };
       },
       $gte(v) {
-        return { 'val': v.$gte, 'op': 'greater_or_equal' };
-      }
-    }
-
-  };
+        return { val: v.$gte, op: 'greater_or_equal' };
+      },
+    },
+  }
   operators = {
-    equal: { type: 'equal', nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
+    equal: {
+      type: 'equal',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['string', 'number', 'datetime', 'boolean'],
+    },
     not_equal: {
       type: 'not_equal',
       nb_inputs: 1,
       multiple: false,
-      apply_to: ['string', 'number', 'datetime', 'boolean']
+      apply_to: ['string', 'number', 'datetime', 'boolean'],
     },
-    in: { type: 'in', nb_inputs: 1, multiple: true, apply_to: ['string', 'number', 'datetime'] },
-    not_in: { type: 'not_in', nb_inputs: 1, multiple: true, apply_to: ['string', 'number', 'datetime'] },
-    less: { type: 'less', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
-    less_or_equal: { type: 'less_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
-    greater: { type: 'greater', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
-    greater_or_equal: { type: 'greater_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
-    between: { type: 'between', nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime'] },
-    not_between: { type: 'not_between', nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime'] },
-    begins_with: { type: 'begins_with', nb_inputs: 1, multiple: false, apply_to: ['string'] },
-    not_begins_with: { type: 'not_begins_with', nb_inputs: 1, multiple: false, apply_to: ['string'] },
-    contains: { type: 'contains', nb_inputs: 1, multiple: false, apply_to: ['string'] },
-    not_contains: { type: 'not_contains', nb_inputs: 1, multiple: false, apply_to: ['string'] },
-    ends_with: { type: 'ends_with', nb_inputs: 1, multiple: false, apply_to: ['string'] },
-    not_ends_with: { type: 'not_ends_with', nb_inputs: 1, multiple: false, apply_to: ['string'] },
-    is_empty: { type: 'is_empty', nb_inputs: 0, multiple: false, apply_to: ['string'] },
-    is_not_empty: { type: 'is_not_empty', nb_inputs: 0, multiple: false, apply_to: ['string'] },
-    is_null: { type: 'is_null', nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
+    in: {
+      type: 'in',
+      nb_inputs: 1,
+      multiple: true,
+      apply_to: ['string', 'number', 'datetime'],
+    },
+    not_in: {
+      type: 'not_in',
+      nb_inputs: 1,
+      multiple: true,
+      apply_to: ['string', 'number', 'datetime'],
+    },
+    less: {
+      type: 'less',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['number', 'datetime'],
+    },
+    less_or_equal: {
+      type: 'less_or_equal',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['number', 'datetime'],
+    },
+    greater: {
+      type: 'greater',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['number', 'datetime'],
+    },
+    greater_or_equal: {
+      type: 'greater_or_equal',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['number', 'datetime'],
+    },
+    between: {
+      type: 'between',
+      nb_inputs: 2,
+      multiple: false,
+      apply_to: ['number', 'datetime'],
+    },
+    not_between: {
+      type: 'not_between',
+      nb_inputs: 2,
+      multiple: false,
+      apply_to: ['number', 'datetime'],
+    },
+    begins_with: {
+      type: 'begins_with',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['string'],
+    },
+    not_begins_with: {
+      type: 'not_begins_with',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['string'],
+    },
+    contains: {
+      type: 'contains',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['string'],
+    },
+    not_contains: {
+      type: 'not_contains',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['string'],
+    },
+    ends_with: {
+      type: 'ends_with',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['string'],
+    },
+    not_ends_with: {
+      type: 'not_ends_with',
+      nb_inputs: 1,
+      multiple: false,
+      apply_to: ['string'],
+    },
+    is_empty: {
+      type: 'is_empty',
+      nb_inputs: 0,
+      multiple: false,
+      apply_to: ['string'],
+    },
+    is_not_empty: {
+      type: 'is_not_empty',
+      nb_inputs: 0,
+      multiple: false,
+      apply_to: ['string'],
+    },
+    is_null: {
+      type: 'is_null',
+      nb_inputs: 0,
+      multiple: false,
+      apply_to: ['string', 'number', 'datetime', 'boolean'],
+    },
     is_not_null: {
       type: 'is_not_null',
       nb_inputs: 0,
       multiple: false,
-      apply_to: ['string', 'number', 'datetime', 'boolean']
-    }
-  };
+      apply_to: ['string', 'number', 'datetime', 'boolean'],
+    },
+  }
 
   /**
    * Triggers an event on the builder container and returns the modified value
@@ -465,7 +576,10 @@ export class MongoParser {
       group.condition = this.settings.default_condition;
     }
     if (['AND', 'OR'].indexOf(group.condition.toUpperCase()) === -1) {
-      throw new Error('UndefinedMongoCondition : Unable to build MongoDB condition with condition ' + group.condition);
+      throw new Error(
+        'UndefinedMongoCondition : Unable to build MongoDB condition with condition ' +
+          group.condition
+      );
     }
 
     if (!group.rules) {
@@ -482,7 +596,10 @@ export class MongoParser {
         const ope = this.getOperatorByType(rule.operator);
 
         if (mdb === undefined) {
-          throw new Error('UndefinedMongoOperator, Unknown MongoDB operation for operator' + rule.operator);
+          throw new Error(
+            'UndefinedMongoOperator, Unknown MongoDB operation for operator' +
+              rule.operator
+          );
         }
 
         if (ope.nb_inputs !== 0) {
@@ -514,7 +631,9 @@ export class MongoParser {
          * @param {function} valueWrapper - function that takes the value and adds the operator
          * @returns {object}
          */
-        parts.push(this.change('ruleToMongo', ruleExpression, rule, rule.value, mdb));
+        parts.push(
+          this.change('ruleToMongo', ruleExpression, rule, rule.value, mdb)
+        );
       }
     });
 
@@ -565,7 +684,7 @@ export class MongoParser {
     if ('id' in query && 'operator' in query && 'value' in query) {
       return {
         condition: this.settings.default_condition,
-        rules: [query]
+        rules: [query],
       };
     }
 
@@ -608,7 +727,11 @@ export class MongoParser {
 
           const mdbrl = _this.settings.mongoRuleOperators[operator];
           if (mdbrl === undefined) {
-            Utils.error('UndefinedMongoOperator', 'JSON Rule operation unknown for operator "{0}"', operator);
+            Utils.error(
+              'UndefinedMongoOperator',
+              'JSON Rule operation unknown for operator "{0}"',
+              operator
+            );
           }
 
           const opVal = mdbrl.call(this, value);
@@ -623,12 +746,16 @@ export class MongoParser {
            * @param {object} expression
            * @returns {object}
            */
-          const rule = _this.change('mongoToRule', {
-            id: id,
-            field: field,
-            operator: opVal.op,
-            value: opVal.val
-          }, data);
+          const rule = _this.change(
+            'mongoToRule',
+            {
+              id: id,
+              field: field,
+              operator: opVal.op,
+              value: opVal.val,
+            },
+            data
+          );
 
           parts.push(rule);
         }
@@ -642,11 +769,15 @@ export class MongoParser {
        * @param {object} expression
        * @returns {object}
        */
-      return _this.change('mongoToGroup', {
-        condition: topKey.replace('$', '').toUpperCase(),
-        rules: parts
-      }, data);
-    }(query, key));
+      return _this.change(
+        'mongoToGroup',
+        {
+          condition: topKey.replace('$', '').toUpperCase(),
+          rules: parts,
+        },
+        data
+      );
+    })(query, key);
   }
 
   /**
@@ -704,9 +835,11 @@ export class MongoParser {
         return 'not_between';
       }
 
-      const knownKeys = Object.keys(data).filter(function(key) {
-        return !!this.settings.mongoRuleOperators[key];
-      }.bind(this));
+      const knownKeys = Object.keys(data).filter(
+        function(key) {
+          return !!this.settings.mongoRuleOperators[key];
+        }.bind(this)
+      );
 
       if (knownKeys.length === 1) {
         return knownKeys[0];

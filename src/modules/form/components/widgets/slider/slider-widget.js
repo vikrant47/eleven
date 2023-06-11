@@ -3,10 +3,14 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 export default class SliderWidget extends BaseWidget {
   palletSettings = {
     label: 'Slider',
-    icon: 'slider'
-  };
+    icon: 'slider',
+  }
 
   componentRender(component, h) {
-    return h('el-slider', this.getComponentConfig(component), this.getChildren());
+    return h(
+      'el-slider',
+      this.getComponentConfig(component),
+      this.getChildren()
+    );
   }
 }

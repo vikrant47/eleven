@@ -3,12 +3,12 @@ import { FORM_EVENTS } from '@/modules/form/engine-api/form-events';
 import { EngineObservable } from '@/modules/engine/core/engine.observable';
 
 export class EngineFlow extends EngineObservable {
-  id;
+  id
   settings = {
     flowId: 'new',
     showLoader: true,
-  };
-  record = {};
+  }
+  record = {}
 
   constructor(settings) {
     super();
@@ -35,7 +35,9 @@ export class EngineFlow extends EngineObservable {
     this.enableLoading();
     try {
       await this.syncEmit('beforeRefresh');
-      const response = await new RestQuery(this.settings.modelAlias).findById(this.settings.flowId);
+      const response = await new RestQuery(this.settings.modelAlias).findById(
+        this.settings.flowId
+      );
       this.record = response.contents;
     } catch (err) {
       this.disableLoading();

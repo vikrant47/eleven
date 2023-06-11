@@ -2,12 +2,17 @@
   <div class="navbar">
     <el-row class="top-nav-container">
       <el-col :span="20" class="nav-wrapper">
-        <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+        <hamburger
+          id="hamburger-container"
+          :is-active="sidebar.opened"
+          class="hamburger-container"
+          @toggleClick="toggleSideBar"
+        />
         <navigation position="topnav" />
       </el-col>
       <el-col :span="4">
         <div class="right-menu">
-          <template v-if="device!=='mobile'">
+          <template v-if="device !== 'mobile'">
             <search id="header-search" class="right-menu-item" />
 
             <el-tooltip content="项目文档" effect="dark" placement="bottom">
@@ -15,35 +20,44 @@
             </el-tooltip>
 
             <el-tooltip content="全屏缩放" effect="dark" placement="bottom">
-              <screenfull id="screenfull" class="right-menu-item hover-effect" />
+              <screenfull
+                id="screenfull"
+                class="right-menu-item hover-effect"
+              />
             </el-tooltip>
 
             <el-tooltip content="布局设置" effect="dark" placement="bottom">
-              <size-select id="size-select" class="right-menu-item hover-effect" />
+              <size-select
+                id="size-select"
+                class="right-menu-item hover-effect"
+              />
             </el-tooltip>
-
           </template>
 
-          <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+          <el-dropdown
+            class="avatar-container right-menu-item hover-effect"
+            trigger="click"
+          >
             <div class="avatar-wrapper">
-              <img :src="user.avatarName ? baseApi + '/avatar/' + user.avatarName : Avatar" class="user-avatar">
-              <i class="el-icon-caret-bottom" />
+              <img
+                :src="
+                  user.avatarName
+                    ? baseApi + '/avatar/' + user.avatarName
+                    : Avatar
+                "
+                class="user-avatar"
+              >
+              <el-icon><elu-icon-caret-bottom /></el-icon>
             </div>
             <el-dropdown-menu slot="dropdown">
-              <span style="display:block;" @click="show = true">
-                <el-dropdown-item>
-                  布局设置
-                </el-dropdown-item>
+              <span style="display: block" @click="show = true">
+                <el-dropdown-item> 布局设置 </el-dropdown-item>
               </span>
               <router-link to="/user/center">
-                <el-dropdown-item>
-                  个人中心
-                </el-dropdown-item>
+                <el-dropdown-item> 个人中心 </el-dropdown-item>
               </router-link>
-              <span style="display:block;" @click="open">
-                <el-dropdown-item divided>
-                  退出登录
-                </el-dropdown-item>
+              <span style="display: block" @click="open">
+                <el-dropdown-item divided> 退出登录 </el-dropdown-item>
               </span>
             </el-dropdown-menu>
           </el-dropdown>
@@ -55,6 +69,7 @@
 </template>
 
 <script>
+import { CaretBottom as EluIconCaretBottom } from '@element-plus/icons';
 import { mapGetters } from 'vuex';
 import Breadcrumb from '@/components/Breadcrumb';
 import Hamburger from '@/components/Hamburger';
@@ -73,21 +88,17 @@ export default {
     Screenfull,
     SizeSelect,
     Search,
-    Doc
+    Doc,
+    EluIconCaretBottom,
   },
   data() {
     return {
       Avatar: Avatar,
-      dialogVisible: false
+      dialogVisible: false,
     };
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'device',
-      'user',
-      'baseApi'
-    ]),
+    ...mapGetters(['sidebar', 'device', 'user', 'baseApi']),
     show: {
       get() {
         return this.$store.state.settings.showSettings;
@@ -95,10 +106,10 @@ export default {
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'showSettings',
-          value: val
+          value: val,
         });
-      }
-    }
+      },
+    },
   },
   methods: {
     toggleSideBar() {
@@ -108,7 +119,7 @@ export default {
       this.$confirm('确定注销并退出系统吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         this.logout();
       });
@@ -117,8 +128,8 @@ export default {
       this.$store.dispatch('LogOut').then(() => {
         location.reload();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -127,7 +138,7 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
   color: rgb(191, 203, 217);
   background-color: rgb(48, 65, 86);
   .hamburger-container {
@@ -135,11 +146,11 @@ export default {
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
@@ -172,10 +183,10 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }
@@ -194,7 +205,7 @@ export default {
           border-radius: 10px;
         }
 
-        .el-icon-caret-bottom {
+        .elu-icon-caret-bottom {
           cursor: pointer;
           position: absolute;
           right: -20px;

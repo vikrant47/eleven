@@ -15,24 +15,24 @@ export default {
       type: null,
       default() {
         return null;
-      }
+      },
     },
     evalContext: {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     widget: {
       type: Object,
       default() {
         return null;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
-      formData: { [this.widget.fieldName]: this.value }
+      formData: { [this.widget.fieldName]: this.value },
     };
   },
   watch: {
@@ -41,11 +41,9 @@ export default {
     },
     value(newValue) {
       this.formData = { [this.widget.fieldName]: newValue };
-    }
+    },
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     sanitizeWidget() {
       const widget = this.widget;
@@ -65,21 +63,31 @@ export default {
       return widget;
     },
     getWidgetInstance(widgetJson, engineForm) {
-      const widgetInstance = new FormWidgetService().getWidgetInstance(widgetJson);
+      const widgetInstance = new FormWidgetService().getWidgetInstance(
+        widgetJson
+      );
       widgetInstance.setFormId(engineForm.getId());
       engineForm.addWidgetRef(widgetInstance);
       widgetInstance.setForm(engineForm);
       widgetInstance.init();
       // this.$options.widgets[fieldName] = widgetInstance;
-      engineForm.triggerProcessors(new WidgetEvent(FORM_EVENTS.widget.init, widgetInstance, widgetJson), {});
+      engineForm.triggerProcessors(
+        new WidgetEvent(FORM_EVENTS.widget.init, widgetInstance, widgetJson),
+        {}
+      );
       return widgetInstance;
     },
     setValue(event, widget) {
       const previousValue = _.get(this.formData, widget.fieldName);
       // this.$set(config, 'defaultValue', event);
-      if (previousValue !== event) { // TODO: handle concurrent field value update here using debounce
+      if (previousValue !== event) {
+        // TODO: handle concurrent field value update here using debounce
         if (widget.fieldName.indexOf('.') > 0) {
-          const result = TemplateEngine.walk(widget.fieldName, this.formData, -1);
+          const result = TemplateEngine.walk(
+            widget.fieldName,
+            this.formData,
+            -1
+          );
           this.$set(result.value, result.prop, event);
           delete this.formData[widget.fieldName];
         } else {
@@ -87,17 +95,23 @@ export default {
         }
         this.engineForm.setRecord(this.formData);
         this.$emit('fieldValueUpdated', widget, event);
-        this.engineForm.triggerProcessors(new WidgetEvent(FORM_EVENTS.widget.updateValue, widget, {
-          previous: previousValue,
-          current: event,
-          value: event
-        }), {});
+        this.engineForm.triggerProcessors(
+          new WidgetEvent(FORM_EVENTS.widget.updateValue, widget, {
+            previous: previousValue,
+            current: event,
+            value: event,
+          }),
+          {}
+        );
       }
-    }
+    },
   },
   render() {
     const engineForm = new EngineForm();
-    const widgetInstance = this.getWidgetInstance(Engine.clone(this.sanitizeWidget()), engineForm);
+    const widgetInstance = this.getWidgetInstance(
+      Engine.clone(this.sanitizeWidget()),
+      engineForm
+    );
     Object.assign(this.formData, engineForm.getRecord());
     return (
       <div class='field-wrapper'>
@@ -120,6 +134,7 @@ export default {
             }}
           />
         </el-form>
-      </div>);
-  }
+      </div>
+    );
+  },
 };

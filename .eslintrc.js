@@ -188,6 +188,8 @@ module.exports = {
       objectsInObjects: false
     }],
     'array-bracket-spacing': [2, 'never'],
-    'object-literal-key-quotes': [0, 'never']
+    'object-literal-key-quotes': [0, 'never'],
+    'no-prototype-builtins': [0],
+    'vue/no-mutating-props': [0],
   }
 };

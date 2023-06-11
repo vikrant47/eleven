@@ -3,28 +3,28 @@ import { EngineAction } from '@/modules/engine/core/engine.action';
 import { Engine } from '@/modules/engine/core/engine';
 
 export class EnginePopup extends EngineObservable {
-  static popups = []; // all the popups in the world
+  static popups = [] // all the popups in the world
   static sizes = {
     mini: '30%',
     small: '50%',
     medium: '70%',
     large: '90%',
-    huge: '100%'
-  };
+    huge: '100%',
+  }
   static events = {
     show: 'show',
-    hide: 'hide'
-  };
-  id = null;
-  _index = -1;
-  component = { type: null, props: null, instance: null };
-  visible = true;
-  actions = [];
-  width = '60%';
-  size = 'medium';
-  showCancel = true;
-  destroyOnClose = false;
-  loading = false;
+    hide: 'hide',
+  }
+  id = null
+  _index = -1
+  component = { type: null, props: null, instance: null }
+  visible = true
+  actions = []
+  width = '60%'
+  size = 'medium'
+  showCancel = true
+  destroyOnClose = false
+  loading = false
 
   static destroy(popId) {
     const index = EnginePopup.findIndex(popId);
@@ -32,7 +32,7 @@ export class EnginePopup extends EngineObservable {
   }
 
   static findIndex(popId) {
-    return EnginePopup.popups.findIndex(popup => popup.id === popId);
+    return EnginePopup.popups.findIndex((popup) => popup.id === popId);
   }
 
   static open(settings = {}) {
@@ -49,7 +49,7 @@ export class EnginePopup extends EngineObservable {
   }
 
   static get(popId) {
-    return EnginePopup.popups.find(popup => popup.id === popId);
+    return EnginePopup.popups.find((popup) => popup.id === popId);
   }
 
   constructor(settings = {}) {
@@ -81,15 +81,17 @@ export class EnginePopup extends EngineObservable {
 
   initActions() {
     if (this.showCancel) {
-      this.actions.push(new EngineAction({
-        label: 'Cancel',
-        icon: 'el-icon-close',
-        compiled: true,
-        script: () => {
-          this.destroy();
-        },
-        sort_order: 10000
-      }));
+      this.actions.push(
+        new EngineAction({
+          label: 'Cancel',
+          icon: 'elu-icon-close',
+          compiled: true,
+          script: () => {
+            this.destroy();
+          },
+          sort_order: 10000,
+        })
+      );
     }
     this.sortActions();
   }

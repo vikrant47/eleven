@@ -1,17 +1,17 @@
 <template>
   <div class="container">
-    <div v-if="showPallet===true" class="left-board">
+    <div v-if="showPallet === true" class="left-board">
       <!--<div class="logo-wrapper">
-        <div class="logo">
-          <img alt="logo"> Form Generator
-          <a class="github" href="https://github.com/JakHuang/form-generator" target="_blank">
-            <img src="https://github.githubassets.com/pinned-octocat.svg" alt>
-          </a>
-        </div>
-      </div>-->
+          <div class="logo">
+            <img alt="logo"> Form Generator
+            <a class="github" href="https://github.com/JakHuang/form-generator" target="_blank">
+              <img src="https://github.githubassets.com/pinned-octocat.svg" alt>
+            </a>
+          </div>
+        </div>-->
       <el-scrollbar class="left-scrollbar">
         <el-tab-pane class="components-list">
-          <el-tabs value="Fields" :stretch="true">
+          <el-tabs model-value="Fields" :stretch="true">
             <el-tab-pane
               v-for="(item, listIndex) in getFilteredPallet()"
               :key="listIndex"
@@ -35,7 +35,9 @@
                   @click="addWidget(element)"
                 >
                   <div class="components-body">
-                    <svg-icon :icon-class="element.palletSettings.icon||'component'" />
+                    <svg-icon
+                      :icon-class="element.palletSettings.icon || 'component'"
+                    />
                     {{ element.palletSettings.label }}
                   </div>
                 </div>
@@ -46,24 +48,28 @@
       </el-scrollbar>
     </div>
 
-    <div :class="showPallet?'center-board center-board-with-pallet': 'center-board'">
+    <div
+      :class="
+        showPallet ? 'center-board center-board-with-pallet' : 'center-board'
+      "
+    >
       <!--<div class="action-bar">
-        <el-button icon="el-icon-video-play" type="text" @click="run">
-          run
-        </el-button>
-        <el-button icon="el-icon-view" type="text" @click="showJson">
-          View json
-        </el-button>
-        <el-button icon="el-icon-download" type="text" @click="download">
-          Export vue file
-        </el-button>
-        <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy">
-          Copy code
-        </el-button>
-        <el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty">
-          Empty
-        </el-button>
-      </div>-->
+          <el-button icon="elu-icon-video-play" type="text" @click="run">
+            run
+          </el-button>
+          <el-button icon="elu-icon-view" type="text" @click="showJson">
+            View json
+          </el-button>
+          <el-button icon="elu-icon-download" type="text" @click="download">
+            Export vue file
+          </el-button>
+          <el-button class="copy-btn-main" icon="elu-icon-document-copy" type="text" @click="copy">
+            Copy code
+          </el-button>
+          <el-button class="delete-btn" icon="elu-icon-delete" type="text" @click="empty">
+            Empty
+          </el-button>
+        </div>-->
       <el-scrollbar class="center-scrollbar">
         <el-row class="center-board-row" :gutter="formConf.gutter">
           <el-form
@@ -102,7 +108,7 @@
         </el-row>
       </el-scrollbar>
     </div>
-    <div :id="'right-panel-wrapper-'+renderKey" class="right-panel-wrapper">
+    <div :id="'right-panel-wrapper-' + renderKey" class="right-panel-wrapper">
       <el-drawer
         :destroy-on-close="true"
         :modal-append-to-body="false"
@@ -132,21 +138,23 @@ import { saveAs } from 'file-saver';
 import ClipboardJS from 'clipboard';
 import RightPanel from '@/modules/form/components/widgets/form-designer/designer/RightPanel';
 import {
-  inputComponents, selectComponents, layoutComponents, formConf
+  inputComponents,
+  selectComponents,
+  layoutComponents,
+  formConf,
 } from '@/modules/form/components/generator/config';
+import { beautifierConf, titleCase, deepClone } from '@/modules/form/utils';
 import {
-  beautifierConf, titleCase, deepClone
-} from '@/modules/form/utils';
-import {
-  makeUpHtml, vueTemplate, vueScript, cssStyle
+  makeUpHtml,
+  vueTemplate,
+  vueScript,
+  cssStyle,
 } from '@/modules/form/components/generator/html';
 import { makeUpJs } from '@/modules/form/components/generator/js';
 import { makeUpCss } from '@/modules/form/components/generator/css';
 import drawingDefalut from '@/modules/form/components/generator/drawingDefalut';
 import DraggableItem from '@/modules/form/components/widgets/form-designer/designer/DraggableItem';
-import {
-  getIdGlobal, saveIdGlobal
-} from '@/modules/form/utils/db';
+import { getIdGlobal, saveIdGlobal } from '@/modules/form/utils/db';
 import loadBeautifier from '@/modules/form/utils/loadBeautifier';
 import { FormWidgetService } from '@/modules/form/services/form.widget.service';
 import { Engine } from '@/modules/engine/core/engine';
@@ -165,25 +173,25 @@ export default {
   components: {
     draggable,
     RightPanel,
-    DraggableItem
+    DraggableItem,
   },
   props: {
     showPallet: {
       type: Boolean,
-      default: true
+      default: true,
     },
     value: {
       type: Object,
       default() {
         return { widgets: [] };
-      }
+      },
     },
     pallet: {
       type: Array,
       default() {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -198,7 +206,9 @@ export default {
       selectComponents,
       layoutComponents,
       labelWidth: 100,
-      drawingList: this.initDrawingList(Engine.clone(this.value && this.value.widgets || [])),
+      drawingList: this.initDrawingList(
+        Engine.clone((this.value && this.value.widgets) || [])
+      ),
       drawingData: {},
       activeId: drawingDefalut[0].formId,
       drawerVisible: false,
@@ -218,13 +228,13 @@ export default {
         // return saveDrawingList(list.map(widget => Engine.marshall(widget, new FormWidgetService().getWidgetInstance(widget))));
       }),
       saveIdGlobalDebounce: debounce(340, saveIdGlobal),
-      leftComponents: this.pallet
+      leftComponents: this.pallet,
     };
   },
   computed: {
     filteredPallet() {
       return this.getFilteredPallet();
-    }
+    },
   },
   watch: {
     // eslint-disable-next-line func-names
@@ -236,53 +246,55 @@ export default {
       ) {
         return;
       }
-      this.activeWidget.placeholder = this.activeWidget.placeholder.replace(oldVal, '') + val;
+      this.activeWidget.placeholder =
+        this.activeWidget.placeholder.replace(oldVal, '') + val;
     },
     activeId: {
       handler(val) {
         oldActiveId = val;
       },
-      immediate: true
+      immediate: true,
     },
     idGlobal: {
       handler(val) {
         this.saveIdGlobalDebounce(val);
       },
-      immediate: true
+      immediate: true,
     },
     pallet: {
       handler(val) {
         // this.drawingList = [];
-      }
+      },
     },
     value: {
       handler(val) {
         if (val.widgets && val.widgets.length > 0) {
           this.drawingList = this.initDrawingList(val.widgets);
         }
-      }
-    }
+      },
+    },
   },
   mounted() {
     if (this.drawingList.length > 0) {
       this.activeFormItem(this.drawingList[0]);
     }
-    loadBeautifier(btf => {
+    loadBeautifier((btf) => {
       beautifier = btf;
     });
     this.hash = JSON.stringify(this.drawingList);
     const clipboard = new ClipboardJS('#copyNode', {
-      text: trigger => {
+      text: (trigger) => {
         const codeStr = this.generateCode();
         this.$notify({
           title: 'success',
-          message: 'The code has been copied to the clipboard and can be pasted.',
-          type: 'success'
+          message:
+            'The code has been copied to the clipboard and can be pasted.',
+          type: 'success',
         });
         return codeStr;
-      }
+      },
     });
-    clipboard.on('error', e => {
+    clipboard.on('error', (e) => {
       this.$message.error('Code copy failed');
     });
   },
@@ -301,7 +313,7 @@ export default {
     updateValue() {
       const value = Engine.clone(this.drawingList);
       this.$emit('input', {
-        widgets: value
+        widgets: value,
       }); // emitting event to top form item
       this.updateAllSelectedItems({ palletSettings: { hidden: true }});
       console.log('updated value ', value);
@@ -309,7 +321,7 @@ export default {
     getFilteredPallet() {
       return this.pallet.map((palletItem) => {
         return Object.assign({}, palletItem, {
-          list: palletItem.list.filter(item => !item.palletSettings.hidden)
+          list: palletItem.list.filter((item) => !item.palletSettings.hidden),
         });
       });
     },
@@ -321,7 +333,9 @@ export default {
       arr.reduce((pre, item, i) => {
         if (arr.length === i + 1) {
           pre[item] = val;
-        } else if (Object.prototype.toString.call(pre[item]) !== '[Object Object]') {
+        } else if (
+          Object.prototype.toString.call(pre[item]) !== '[Object Object]'
+        ) {
           pre[item] = {};
         }
         return pre[item];
@@ -330,9 +344,13 @@ export default {
     setRespData(component, respData) {
       const { dataPath, renderKey, dataConsumer } = component.widgetSettings;
       if (!dataPath || !dataConsumer) return;
-      const data = dataPath.split('.').reduce((pre, item) => pre[item], respData);
+      const data = dataPath
+        .split('.')
+        .reduce((pre, item) => pre[item], respData);
       this.setObjectValueByStringKeys(component, dataConsumer, data);
-      const i = this.drawingList.findIndex(item => item.widgetSettings.renderKey === renderKey);
+      const i = this.drawingList.findIndex(
+        (item) => item.widgetSettings.renderKey === renderKey
+      );
       if (i > -1) this.$set(this.drawingList, i, component);
     },
     fetchData(component) {
@@ -341,8 +359,8 @@ export default {
         this.setLoading(component, true);
         this.$axios({
           method,
-          url
-        }).then(resp => {
+          url,
+        }).then((resp) => {
           this.setLoading(component, false);
           this.setRespData(component, resp.data);
         });
@@ -351,7 +369,7 @@ export default {
     setLoading(component, val) {
       const { directives } = component;
       if (Array.isArray(directives)) {
-        const t = directives.find(d => d.name === 'loading');
+        const t = directives.find((d) => d.name === 'loading');
         if (t) t.value = val;
       }
     },
@@ -365,8 +383,14 @@ export default {
         if (item.widgetSettings.renderKey === renderKey) {
           return item;
         }
-        if (LAYOUT_WIDGETS.indexOf(item.widgetAlias) >= 0 && item.widgetSettings.children) {
-          const childItem = this.findWidgetByKey(renderKey, item.widgetSettings.children);
+        if (
+          LAYOUT_WIDGETS.indexOf(item.widgetAlias) >= 0 &&
+          item.widgetSettings.children
+        ) {
+          const childItem = this.findWidgetByKey(
+            renderKey,
+            item.widgetSettings.children
+          );
           if (childItem) {
             return childItem;
           }
@@ -376,7 +400,10 @@ export default {
     },
     syncConfig(property, widgetInstance) {
       if (property) {
-        const widget = this.findWidgetByKey(widgetInstance.widgetSettings.renderKey, this.drawingList);
+        const widget = this.findWidgetByKey(
+          widgetInstance.widgetSettings.renderKey,
+          this.drawingList
+        );
         if (widget) {
           const value = Engine.clone(_.get(widgetInstance, property));
           if (property.indexOf('.') > 0) {
@@ -387,9 +414,17 @@ export default {
             _.set(widget, property, value);
           }
           this.saveDrawingListDebounce(this.drawingList);
-          console.log('config synced', widgetInstance.fieldName, property, value);
+          console.log(
+            'config synced',
+            widgetInstance.fieldName,
+            property,
+            value
+          );
         } else {
-          console.warn('config synced failed! no widget found with key ', widgetInstance.widgetSettings.renderKey);
+          console.warn(
+            'config synced failed! no widget found with key ',
+            widgetInstance.widgetSettings.renderKey
+          );
         }
       }
     },
@@ -437,18 +472,19 @@ export default {
       this.saveDrawingListDebounce();
     },
     cloneWidget(original) {
-      const clone = deepClone(original);// deepClone(origin);
+      const clone = deepClone(original); // deepClone(origin);
       const fieldSettings = { clone };
       fieldSettings.span = this.formConf.span; // When generating code, it will make a streamlined judgment based on the span
       new FormWidgetService().createIdAndKey(clone);
-      fieldSettings.placeholder !== undefined && (clone.placeholder += fieldSettings.label);
+      fieldSettings.placeholder !== undefined &&
+        (clone.placeholder += fieldSettings.label);
       tempactiveWidget = clone;
       return tempactiveWidget;
     },
     AssembleFormData() {
       this.formModel = {
         fields: deepClone(this.drawingList),
-        ...this.formConf
+        ...this.formConf,
       };
     },
     generate(data) {
@@ -469,12 +505,14 @@ export default {
       document.getElementById('copyNode').click();
     },
     empty() {
-      this.$confirm('Are you sure you want to clear all components?', 'Prompt', { type: 'warning' }).then(
-        () => {
-          this.drawingList = [];
-          this.idGlobal = 100;
-        }
-      );
+      this.$confirm(
+        'Are you sure you want to clear all components?',
+        'Prompt',
+        { type: 'warning' }
+      ).then(() => {
+        this.drawingList = [];
+        this.idGlobal = 100;
+      });
     },
     drawingItemCopy(item, list) {
       const clone = deepClone(item);
@@ -489,7 +527,9 @@ export default {
         if (len) {
           this.activeFormItem(this.drawingList[len - 1]);
         }
-        this.updatedSelectedPalletItem(item, { palletSettings: { hidden: false }});
+        this.updatedSelectedPalletItem(item, {
+          palletSettings: { hidden: false },
+        });
         this.saveDrawingListDebounce();
       });
     },
@@ -529,10 +569,13 @@ export default {
       this.activeWidget.widgetSettings.widget = config.widget;
       this.activeWidget.widgetSettings.tagIcon = config.tagIcon;
       this.activeWidget.widgetSettings.document = config.document;
-      if (typeof this.activeWidget.widgetSettings.defaultValue === typeof config.defaultValue) {
+      if (
+        typeof this.activeWidget.widgetSettings.defaultValue ===
+        typeof config.defaultValue
+      ) {
         config.defaultValue = this.activeWidget.widgetSettings.defaultValue;
       }
-      Object.keys(newTag).forEach(key => {
+      Object.keys(newTag).forEach((key) => {
         if (this.activeWidget[key] !== undefined) {
           newTag[key] = this.activeWidget[key];
         }
@@ -541,12 +584,15 @@ export default {
       this.updateDrawingList(newTag, this.drawingList);
     },
     updateDrawingList(newTag, list) {
-      const index = list.findIndex(item => item.widgetSettings.formId === this.activeId);
+      const index = list.findIndex(
+        (item) => item.widgetSettings.formId === this.activeId
+      );
       if (index > -1) {
         list.splice(index, 1, newTag);
       } else {
-        list.forEach(item => {
-          if (Array.isArray(item.widgetSettings.children)) this.updateDrawingList(newTag, item.widgetSettings.children);
+        list.forEach((item) => {
+          if (Array.isArray(item.widgetSettings.children))
+          { this.updateDrawingList(newTag, item.widgetSettings.children); }
         });
       }
     },
@@ -554,11 +600,11 @@ export default {
       this.drawingList = deepClone(data.widgets);
       delete data.widgets;
       this.formConf = data.formConf || Engine.clone(formConf);
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 @import '../../../../styles/home';
 </style>

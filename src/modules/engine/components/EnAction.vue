@@ -21,7 +21,7 @@
       >
         {{ action.label }}
         <span class="separator">
-          <i class="el-icon-arrow-down el-icon--right" />
+          <el-icon class="elu-icon--right"><icon-arrow-down /></el-icon>
         </span>
       </el-button>
       <el-dropdown-menu
@@ -42,13 +42,15 @@
           :plain="child.style.plain"
           :loading="child.loading"
           :size="child.style.size"
-          @click="process($event,child)"
+          @click="process($event, child)"
         >{{ child.label }}
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <el-button
-      v-if="(!action.children || action.children.length===0) && !action.hidden"
+      v-if="
+        (!action.children || action.children.length === 0) && !action.hidden
+      "
       :id="action.id"
       :type="action.style.type"
       :children="action.children"
@@ -66,30 +68,34 @@
 </template>
 
 <script>
+import { ArrowDown as IconArrowDown } from '@element-plus/icons';
 
 import { EngineAction } from '@/modules/engine/core/engine.action';
 
 export default {
   name: 'EnAction',
+  components: {
+    IconArrowDown,
+  },
   props: {
     action: {
       type: EngineAction,
       default() {
         return new EngineAction();
-      }
+      },
     },
     event: {
       type: Object,
       default: () => {
         return {};
-      }
+      },
     },
     context: {
       type: Object,
       default: () => {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {};
@@ -108,21 +114,24 @@ export default {
       try {
         await action.execute(this.event, this.context);
       } catch (e) {
-        console.error('Error while processing action handler ', e, { context: this.context });
+        console.error('Error while processing action handler ', e, {
+          context: this.context,
+        });
       } finally {
         this.loading = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-.action-wrapper .parent-action .separator{
+.action-wrapper .parent-action .separator {
   margin-left: 5px;
   border-left: 1px solid white;
 }
-.action-wrapper .parent-action{
+
+.action-wrapper .parent-action {
   padding-right: 5px;
 }
 </style>

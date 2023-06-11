@@ -11,14 +11,14 @@ export class EngineFile {
     'image/gif': 'image',
     'application/xml': 'xml',
     'application/pdf': 'pdf',
-    'application/json': 'json'
-  };
+    'application/json': 'json',
+  }
   static FILE_TYPES = {
-    'jpg': 'image',
-    'png': 'image',
-    'jpeg': 'image',
-    'gif': 'image'
-  };
+    jpg: 'image',
+    png: 'image',
+    jpeg: 'image',
+    gif: 'image',
+  }
 
   static getFileTypeByPath(filePath) {
     const extension = filePath.split('.').pop();
@@ -28,7 +28,7 @@ export class EngineFile {
     return 'file';
   }
 
-  selected = false;
+  selected = false
 
   constructor(file) {
     Object.assign(this, file);
@@ -52,8 +52,8 @@ export class EngineFile {
 
 export class EngineFileService {
   static APIS = {
-    upload: '/engine/file/upload'
-  };
+    upload: '/engine/file/upload',
+  }
 
   static getApiUrl(api) {
     return '/api' + TenantService.getInstance().getBaseTenantUrl() + api;
@@ -64,10 +64,10 @@ export class EngineFileService {
     return this.getApiUrl(this.APIS.upload);
   }
 
-  selectableTypes = ['all'];
-  loading = false;
-  files = [];
-  pagination;
+  selectableTypes = ['all']
+  loading = false
+  files = []
+  pagination
 
   constructor(pagination = null) {
     this.pagination = pagination || new Pagination();
@@ -92,8 +92,8 @@ export class EngineFileService {
     try {
       return await new RestQuery('engine_system_files').findAll({
         where: {
-          parent_folder_id: this.rootFolder.id
-        }
+          parent_folder_id: this.rootFolder.id,
+        },
       });
     } finally {
       this.loading = false;
@@ -103,14 +103,11 @@ export class EngineFileService {
   async refresh(query = {}) {
     this.clearSelection();
     let condition = {
-      parent_folder_id: this.rootFolder.id
+      parent_folder_id: this.rootFolder.id,
     };
     if (!_.isEmpty(query)) {
       condition = {
-        '$and': [
-          condition,
-          query
-        ]
+        $and: [condition, query],
       };
     }
     this.loading = true;
@@ -119,10 +116,12 @@ export class EngineFileService {
         where: condition,
         page: this.pagination.page,
         limit: this.pagination.limit,
-        order: [{
-          field: 'name',
-          direction: 'asc'
-        }]
+        order: [
+          {
+            field: 'name',
+            direction: 'asc',
+          },
+        ],
       });
       this.files = response.contents.data.map((file) => {
         return new EngineFile(file);
@@ -140,7 +139,7 @@ export class EngineFileService {
   }
 
   getSelected() {
-    return this.files.filter(f => f.selected);
+    return this.files.filter((f) => f.selected);
   }
 
   clearSelection() {

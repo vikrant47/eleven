@@ -26,7 +26,10 @@
         />
         <!--Paging component-->
         <div class="list-footer">
-          <en-pagination :pagination-model="engineList.pagination" @refresh-click="engineList.refresh()" />
+          <en-pagination
+            :pagination-model="engineList.pagination"
+            @refresh-click="engineList.refresh()"
+          />
         </div>
       </div>
       <slot name="footer" />
@@ -50,50 +53,50 @@ export default {
   props: {
     lazy: {
       type: Boolean,
-      default: false
+      default: false,
     },
     height: {
       type: Number,
-      default: 460
+      default: 460,
     },
     rows: {
       type: Array,
-      default: null
+      default: null,
     },
     modelAlias: {
       type: String,
-      required: true
+      required: true,
     },
     fields: {
       type: Array,
       default: () => {
         return [];
-      }
+      },
     },
     pagination: {
       type: Object,
-      default: null
+      default: null,
     },
     remote: {
       type: Boolean,
-      default: true
+      default: true,
     },
     toolbar: {
       type: Boolean,
-      default: true
+      default: true,
     },
     selection: {
       type: String,
-      default: 'multiple'
+      default: 'multiple',
     },
     actions: {
       type: Array,
-      default: null
+      default: null,
     },
     list: {
       type: String,
-      default: 'default'
-    }
+      default: 'default',
+    },
   },
   data() {
     return {
@@ -107,8 +110,8 @@ export default {
         list: this.list,
         fields: this.fields,
         rows: this.rows || [],
-        actions: this.actions || []
-      })
+        actions: this.actions || [],
+      }),
     };
   },
   mounted() {
@@ -135,7 +138,11 @@ export default {
     },
     async cellClick($event, row, column) {
       const listEvent = new ListEvent(LIST_EVENTS.cell.click, this.engineList);
-      Object.assign(listEvent, { rowData: row, columnData: column, original: $event });
+      Object.assign(listEvent, {
+        rowData: row,
+        columnData: column,
+        original: $event,
+      });
       await this.engineList.triggerProcessors(listEvent, {});
       this.$emit('cellClick', $event, row, column);
     },
@@ -146,11 +153,9 @@ export default {
       this.form.id = null;
       this.form.createTime = null;
       this.crud.toAdd();
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

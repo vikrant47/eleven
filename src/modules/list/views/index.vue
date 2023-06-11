@@ -23,12 +23,9 @@ export default {
     this.list = this.$route.params.list;
   },
   methods: {
-    cellClick(event, row, column) {
-    }
-  }
-
+    cellClick(event, row, column) {},
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

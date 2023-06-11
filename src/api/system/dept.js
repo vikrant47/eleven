@@ -4,7 +4,7 @@ export function getDepts(params) {
   return request({
     url: 'api/dept',
     method: 'get',
-    params
+    params,
   });
 }
 
@@ -13,7 +13,7 @@ export function getDeptSuperior(ids) {
   return request({
     url: 'api/dept/superior',
     method: 'post',
-    data
+    data,
   });
 }
 
@@ -21,7 +21,7 @@ export function add(data) {
   return request({
     url: 'api/dept',
     method: 'post',
-    data
+    data,
   });
 }
 
@@ -29,7 +29,7 @@ export function del(ids) {
   return request({
     url: 'api/dept',
     method: 'delete',
-    data: ids
+    data: ids,
   });
 }
 
@@ -37,7 +37,7 @@ export function edit(data) {
   return request({
     url: 'api/dept',
     method: 'put',
-    data
+    data,
   });
 }
 

@@ -13,13 +13,28 @@
     <div v-else class="simple-rule">
       <el-row :gutter="24">
         <el-col :span="5">
-          <el-select v-model="rule.field" placeholder="Select" filterable @input="ruleUpdated">
-            <el-option v-for="field in fields" :key="field.id" :value="field.name" :label="field.label" />
+          <el-select
+            v-model="rule.field"
+            placeholder="Select"
+            filterable
+            @input="ruleUpdated"
+          >
+            <el-option
+              v-for="field in fields"
+              :key="field.id"
+              :value="field.name"
+              :label="field.label"
+            />
           </el-select>
         </el-col>
         <el-col :span="5">
           <div class="operator-wrapper">
-            <el-select v-model="rule.operator" placeholder="Select" filterable @input="ruleUpdated">
+            <el-select
+              v-model="rule.operator"
+              placeholder="Select"
+              filterable
+              @input="ruleUpdated"
+            >
               <el-option
                 v-for="operator in operators"
                 :key="operator.type"
@@ -33,29 +48,40 @@
           </div>
         </el-col>
         <el-col v-if="widget" :span="12">
-          <en-field v-if="inputs===1" :value="rule.data.value" :widget="widget" @input="valueUpdated" />
+          <en-field
+            v-if="inputs === 1"
+            :value="rule.data.value"
+            :widget="widget"
+            @input="valueUpdated"
+          />
           <div v-else class="multi-input">
             <en-field
               v-for="index in inputs"
               :key="index"
-              :value="rule.data.value[index-1]"
-              :widget="getWidgetConfigByIndex(index-1)"
-              @input="valueUpdated($event,index-1)"
+              :value="rule.data.value[index - 1]"
+              :widget="getWidgetConfigByIndex(index - 1)"
+              @input="valueUpdated($event, index - 1)"
             />
           </div>
         </el-col>
         <el-col :span="2">
           <div class="action-wrapper">
-            <el-button type="danger" plain icon="el-icon-delete" size="mini" @click="removeRule(rule)" />
+            <el-button
+              type="danger"
+              plain
+              :icon="EluIconDelete"
+              size="mini"
+              @click="removeRule(rule)"
+            />
           </div>
         </el-col>
       </el-row>
     </div>
-
   </div>
 </template>
 
 <script>
+import { Delete as EluIconDelete } from '@element-plus/icons';
 import EnField from '@/modules/form/components/engine/field/EnField';
 import { FieldTypeWidget } from '@/modules/engine/components/query-builder/models/QueryFieldTypeWdiegt';
 import { Engine } from '@/modules/engine/core/engine';
@@ -68,27 +94,34 @@ export default {
     EnField,
     QueryBuilder: () => {
       return import('@/modules/engine/components/query-builder/QueryBuilder');
-    }
+    },
   },
   props: {
     fields: {
       type: Array,
-      required: true
+      required: true,
     },
     operatorMappings: {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
-    value: { // {"id":"category","field":"category","type":"integer","input":"select","operator":"equal","value":2}
+    value: {
+      // {"id":"category","field":"category","type":"integer","input":"select","operator":"equal","value":2}
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      rule: Engine.clone(Object.assign({ operator: 'equal', data: { value: this.value.value }}, this.value))
+      rule: Engine.clone(
+        Object.assign(
+          { operator: 'equal', data: { value: this.value.value }},
+          this.value
+        )
+      ),
+      EluIconDelete,
     };
   },
   computed: {
@@ -96,27 +129,34 @@ export default {
       return this.getInputCount();
     },
     widget() {
-      if (this.rule.operator && this.operatorMappings[this.rule.operator].nb_inputs === 0) {
+      if (
+        this.rule.operator &&
+        this.operatorMappings[this.rule.operator].nb_inputs === 0
+      ) {
         return null;
       }
-      return this.rule.field && this.getFieldWidget(this.rule.field) || null;
+      return (this.rule.field && this.getFieldWidget(this.rule.field)) || null;
     },
     operators() {
-      const field = this.fields.find(field => field.name === this.rule.field);
+      const field = this.fields.find((field) => field.name === this.rule.field);
       if (field) {
-        return Object.values(this.operatorMappings).filter(operator => operator.apply_to.indexOf(field.type) >= 0);
+        return Object.values(this.operatorMappings).filter(
+          (operator) => operator.apply_to.indexOf(field.type) >= 0
+        );
       }
       return [];
-    }
+    },
   },
   watch: {
     value(newVal, oldVal) {
       this.rule = this.propValueToRule(newVal);
-    }
+    },
   },
   methods: {
     getWidgetConfigByIndex(index) {
-      return Object.assign({}, this.widget, { fieldName: 'ruleValue' + (index - 1) });
+      return Object.assign({}, this.widget, {
+        fieldName: 'ruleValue' + (index - 1),
+      });
     },
     propValueToRule(propValue) {
       const rule = propValue;
@@ -130,12 +170,14 @@ export default {
       return rule;
     },
     getInputCount() {
-      return this.rule.operator ? this.operatorMappings[this.rule.operator].nb_inputs : 0;
+      return this.rule.operator
+        ? this.operatorMappings[this.rule.operator].nb_inputs
+        : 0;
     },
     getFieldWidget(fieldName) {
       let widget = null;
       if (!this.rule.expression) {
-        const field = this.fields.find(field => field.name === fieldName);
+        const field = this.fields.find((field) => field.name === fieldName);
         if (!field) {
           return null;
         }
@@ -145,7 +187,7 @@ export default {
         engineForm.fillFieldConfig(fieldName, widget);
         Object.assign(widget.fieldSettings, {
           readOnly: false,
-          disabled: false
+          disabled: false,
         });
       } else {
         widget = Object.assign({}, FieldTypeWidget['string']);
@@ -185,12 +227,12 @@ export default {
         }
       }
       this.$emit('input', this.rule);
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .action-wrapper {
   display: flex;
 
@@ -226,5 +268,4 @@ export default {
     }
   }
 }
-
 </style>

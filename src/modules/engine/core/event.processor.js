@@ -1,7 +1,5 @@
-import vm from 'vm';
-
 export class EventProcessor {
-  static DEFAULT_CONTEXT = {};
+  static DEFAULT_CONTEXT = {}
 
   static buildContext(context = {}) {
     return Object.assign({}, context, this.DEFAULT_CONTEXT);
@@ -16,8 +14,8 @@ export class EventProcessor {
   }
 
   settings = {
-    handler: 'function(event,context){}'
-  };
+    handler: 'function(event,context){}',
+  }
 
   constructor(settings = {}) {
     this.settings = Object.assign(this.settings, settings);

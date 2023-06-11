@@ -1,9 +1,9 @@
 export const LIST_EVENTS = {
   query: {
-    prepare: 'query.prepare'
+    prepare: 'query.prepare',
   },
   action: {
-    click: 'action.click'
+    click: 'action.click',
   },
   list: {
     error: 'list.error',
@@ -11,18 +11,18 @@ export const LIST_EVENTS = {
     beforeRender: 'list.beforeRender',
     afterRender: 'list.afterRender',
     beforeDestroy: 'list.beforeDestroy',
-    beforeSubmit: 'list.beforeSubmit'
+    beforeSubmit: 'list.beforeSubmit',
   },
   definition: {
     beforeFetch: 'definition.beforeFetch',
-    fetch: 'definition.fetch'
+    fetch: 'definition.fetch',
   },
   cell: {
     click: 'cell.click',
     updateValue: 'widget.updateValue',
     beforeUpdateWidgetConfig: 'widget.updateWidgetConfigs',
     updateWidgetConfig: 'widget.updateWidgetConfigs',
-    error: 'widget.error'
+    error: 'widget.error',
   },
   model: {
     beforeFetch: 'model.beforeFetch',
@@ -34,13 +34,13 @@ export const LIST_EVENTS = {
     save: 'model.save',
     create: 'model.create',
     update: 'model.update',
-    delete: 'model.delete'
-  }
+    delete: 'model.delete',
+  },
 };
 
 export class ListEvent {
-  name;
-  list;
+  name
+  list
 
   constructor(name, list) {
     this.name = name;
@@ -57,8 +57,8 @@ export class ListEvent {
 }
 
 export class ListWidgetEvent extends ListEvent {
-  name;
-  widget;
+  name
+  widget
 
   constructor(name, widget, list) {
     super(name, list);

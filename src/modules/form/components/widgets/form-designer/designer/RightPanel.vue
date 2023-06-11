@@ -9,26 +9,26 @@ import { Engine } from '@/modules/engine/core/engine';
 export default {
   name: 'RightPanel',
   components: {
-    Parser
+    Parser,
   },
   props: {
     renderKey: {
       type: String,
-      default: null
+      default: null,
     },
     showField: {
-      type: Boolean
+      type: Boolean,
     },
     activeWidget: {
       type: Object,
-      required: true
+      required: true,
     },
     formConf: {
       type: Object,
       default() {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -38,7 +38,7 @@ export default {
       dialogVisible: false,
       iconsVisible: false,
       currentIconModel: null,
-      formModel: this.activeWidget
+      formModel: this.activeWidget,
     };
   },
   computed: {
@@ -47,7 +47,7 @@ export default {
         this.activeWidget.widgetSettings.document ||
         'https://element.eleme.cn/#/zh-CN/component/installation'
       );
-    }
+    },
   },
   watch: {
     /* 'formModel': {
@@ -64,17 +64,17 @@ export default {
       handler(val) {
         saveFormConf(val);
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     onResize(event) {
       event.stopPropagation();
       // console.log(this);
-      const wrapper = document.getElementById('right-panel-wrapper-' + this.renderKey);
+      const wrapper = document.getElementById(
+        'right-panel-wrapper-' + this.renderKey
+      );
       const drawer = wrapper.firstChild.firstChild.firstChild;
       if (!this.fullscreen) {
         drawer.className = 'el-drawer rtl full-screen';
@@ -85,17 +85,17 @@ export default {
       }
       return false;
     },
-    handleTabClick(tab, event) {
-
-    },
+    handleTabClick(tab, event) {},
     updateFieldValue(fieldName, value) {
       this.$set(this.activeWidget, fieldName, value);
       this.$emit('sync-config', fieldName, this.activeWidget);
-    }
+    },
   },
   render(createElement) {
     // const activeWidget = new FormWidgetService().getWidgetInstance(this.activeWidget);
-    const activeWidget = new FormWidgetService().getWidgetInstance(this.activeWidget);
+    const activeWidget = new FormWidgetService().getWidgetInstance(
+      this.activeWidget
+    );
     activeWidget.loadConfigForConfigSection();
     const widgetConfigForm = new EngineForm();
     widgetConfigForm.setFormConfig(activeWidget.loadBasicConfigSection());
@@ -115,58 +115,70 @@ export default {
     });
     formConfigForm.setRecord(activeWidget.configSection);*/
     const evalContext = { activeWidget: Engine.clone(activeWidget) };
-    return <div class='right-board' id={'right-board-' + this.id}>
-      <el-button
-        type='button'
-        class='el-button'
-        icon='el-icon-full-screen'
-        style={{ position: 'absolute', right: '0px', top: '0px', 'z-index': '9999' }}
-        onClick={this.onResize}
-      />
-      <el-tabs v-model={this.currentTab} class='center-tabs'>
-        <el-tab-pane label='Component properties' name='field'>
-          <div class='field-box'>
-            <el-scrollbar className='right-scrollbar'>
-              {createElement(Parser, {
-                props: { engineForm: widgetConfigForm, evalContext: evalContext },
-                on: {
-                  fieldValueUpdated: (widget, value) => {
-                    this.updateFieldValue(widget.fieldName, value);
-                  }
-                }
-              })}
-            </el-scrollbar>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label='Advance' name='advance'>
-          <div class='field-box'>
-            <el-scrollbar className='right-scrollbar'>
-              {createElement(Parser, {
-                props: { engineForm: advanceConfigForm, evalContext: evalContext },
-                on: {
-                  fieldValueUpdated: (widget, value) => {
-                    this.updateFieldValue(widget.fieldName, value);
-                  }
-                }
-              })}
-            </el-scrollbar>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label='Form attributes' name='form'>
-          <div class='field-box'>
-            <el-scrollbar className='right-scrollbar'>
-              {/* createElement(Parser, { props: { engineForm: formConfigForm, evalContext: { evalContext: evalContext }}})*/}
-            </el-scrollbar>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
-    </div>;
-  }
+    return (
+      <div class='right-board' id={'right-board-' + this.id}>
+        <el-button
+          type='button'
+          class='el-button'
+          icon='elu-icon-full-screen'
+          style={{
+            position: 'absolute',
+            right: '0px',
+            top: '0px',
+            'z-index': '9999',
+          }}
+          onClick={this.onResize}
+        />
+        <el-tabs v-model={this.currentTab} class='center-tabs'>
+          <el-tab-pane label='Component properties' name='field'>
+            <div class='field-box'>
+              <el-scrollbar className='right-scrollbar'>
+                {createElement(Parser, {
+                  props: {
+                    engineForm: widgetConfigForm,
+                    evalContext: evalContext,
+                  },
+                  on: {
+                    fieldValueUpdated: (widget, value) => {
+                      this.updateFieldValue(widget.fieldName, value);
+                    },
+                  },
+                })}
+              </el-scrollbar>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label='Advance' name='advance'>
+            <div class='field-box'>
+              <el-scrollbar className='right-scrollbar'>
+                {createElement(Parser, {
+                  props: {
+                    engineForm: advanceConfigForm,
+                    evalContext: evalContext,
+                  },
+                  on: {
+                    fieldValueUpdated: (widget, value) => {
+                      this.updateFieldValue(widget.fieldName, value);
+                    },
+                  },
+                })}
+              </el-scrollbar>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label='Form attributes' name='form'>
+            <div class='field-box'>
+              <el-scrollbar className='right-scrollbar'>
+                {/* createElement(Parser, { props: { engineForm: formConfigForm, evalContext: { evalContext: evalContext }}})*/}
+              </el-scrollbar>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    );
+  },
 };
 </script>
 
-<style lang='scss' scoped>
-
+<style lang="scss" scoped>
 .right-board {
   height: 100%;
   overflow: hidden;
@@ -191,5 +203,4 @@ export default {
     margin: 10px;
   }
 }
-
 </style>

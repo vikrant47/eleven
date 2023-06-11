@@ -1,11 +1,11 @@
 import { Engine } from '@/modules/engine/core/engine';
 
 export class EngineScript {
-  id;
-  name;
-  alias;
-  script;
-  compiled;
+  id
+  name
+  alias
+  script
+  compiled
 
   constructor(settings = {}) {
     Object.assign(this, settings);
@@ -25,7 +25,9 @@ export class EngineScript {
   }
 
   static emptyThrowableScript() {
-    return new EngineScript({ script: `()=>{throw new Error('Script not defined');}` });
+    return new EngineScript({
+      script: `()=>{throw new Error('Script not defined');}`,
+    });
   }
 
   static emptyScript() {
@@ -35,7 +37,12 @@ export class EngineScript {
   static buildContext(context = {}, self) {
     const store = require('@/store');
     const defaultContext = require('@/modules/engine/context/index').default;
-    return Object.assign({ self: self }, context, store.state.user, defaultContext);
+    return Object.assign(
+      { self: self },
+      context,
+      store.state.user,
+      defaultContext
+    );
   }
 
   compile() {

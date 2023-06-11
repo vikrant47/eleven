@@ -2,7 +2,7 @@ import { WIDGETS } from '@/modules/form/components/widgets/base-widget/widgets';
 
 export const ITEM_LAYOUT = {
   colFormItem: 'colFormItem',
-  rowFormItem: 'rowFormItem'
+  rowFormItem: 'rowFormItem',
 };
 export const DEFAULT_CONFIG_SECTION = {
   'fieldSettings.type': {
@@ -10,7 +10,7 @@ export const DEFAULT_CONFIG_SECTION = {
 
     fieldName: 'fieldSettings.type',
     fieldSettings: {
-      placeholder: 'Please Select Type'
+      placeholder: 'Please Select Type',
     },
     widgetSettings: {
       labelWidth: 0,
@@ -19,24 +19,30 @@ export const DEFAULT_CONFIG_SECTION = {
       widgetIcon: 'select',
       defaultValue: 'text',
       required: true,
-      triggers: [{
-        action: 'show',
-        condition: '${activeWidget.widgetAlias===\'input\'}'
-      }],
-      visible: false
+      triggers: [
+        {
+          action: 'show',
+          condition: "${activeWidget.widgetAlias==='input'}",
+        },
+      ],
+      visible: false,
     },
     slot: {
-      options: [{
-        label: 'Single Line Text',
-        value: 'text'
-      }, {
-        label: 'Multiline Text',
-        value: 'textarea'
-      }, {
-        label: 'Password',
-        value: 'password'
-      }]
-    }
+      options: [
+        {
+          label: 'Single Line Text',
+          value: 'text',
+        },
+        {
+          label: 'Multiline Text',
+          value: 'textarea',
+        },
+        {
+          label: 'Password',
+          value: 'password',
+        },
+      ],
+    },
   },
   fieldName: {
     fieldName: 'fieldName',
@@ -49,14 +55,14 @@ export const DEFAULT_CONFIG_SECTION = {
       labelWidth: 0,
       span: 24,
       label: 'Field',
-      required: true
+      required: true,
       /* targetModel: 'engine_fields',
       key: 'name',
       displayField: 'label',
       where: {
         model: '${form.model}'
       }*/
-    }
+    },
   },
   'widgetSettings.label': {
     fieldName: 'widgetSettings.label',
@@ -66,8 +72,8 @@ export const DEFAULT_CONFIG_SECTION = {
       labelWidth: 0,
       span: 24,
       label: 'Label',
-      required: true
-    }
+      required: true,
+    },
   },
   'fieldSettings.title': {
     fieldName: 'fieldSettings.title',
@@ -77,34 +83,38 @@ export const DEFAULT_CONFIG_SECTION = {
       labelWidth: 0,
       span: 24,
       label: 'Title',
-      required: false
-    }
+      required: false,
+    },
   },
   'fieldSettings.placeholder': {
     fieldName: 'fieldSettings.placeholder',
     widgetSettings: {
       labelWidth: 0,
       span: 24,
-      label: 'Placeholder'
-    }
+      label: 'Placeholder',
+    },
   },
   'fieldSettings.size': {
     fieldName: 'fieldSettings.size',
     widgetSettings: {
       labelWidth: 0,
       span: 24,
-      label: 'Size'
+      label: 'Size',
     },
     widgetAlias: WIDGETS.select,
 
     slot: {
-      options: [{
-        label: 'Large', value: 'large'
-      },
-      {
-        label: 'small', value: 'small'
-      }]
-    }
+      options: [
+        {
+          label: 'Large',
+          value: 'large',
+        },
+        {
+          label: 'small',
+          value: 'small',
+        },
+      ],
+    },
   },
   'widgetSettings.showLabel': {
     fieldName: 'widgetSettings.showLabel',
@@ -114,8 +124,8 @@ export const DEFAULT_CONFIG_SECTION = {
       labelWidth: 0,
       span: 24,
       label: 'Show Label',
-      default: true
-    }
+      default: true,
+    },
   },
   'widgetSettings.labelWidth': {
     fieldName: 'widgetSettings.labelWidth',
@@ -126,8 +136,8 @@ export const DEFAULT_CONFIG_SECTION = {
       span: 24,
       defaultValue: 100,
       label: 'Label Width',
-      min: 0
-    }
+      min: 0,
+    },
   },
   'widgetSettings.span': {
     fieldName: 'widgetSettings.span',
@@ -138,8 +148,8 @@ export const DEFAULT_CONFIG_SECTION = {
       span: 24,
       label: 'Span',
       min: 0,
-      max: 100
-    }
+      max: 100,
+    },
   },
   'fieldSettings.icon': {
     fieldName: 'fieldSettings.icon',
@@ -148,8 +158,8 @@ export const DEFAULT_CONFIG_SECTION = {
     widgetSettings: {
       labelWidth: 0,
       span: 24,
-      label: 'Icon'
-    }
+      label: 'Icon',
+    },
   },
   'fieldSettings.disabled': {
     widgetAlias: WIDGETS.switch,
@@ -159,8 +169,8 @@ export const DEFAULT_CONFIG_SECTION = {
       labelWidth: 0,
       span: 24,
       label: 'Disabled',
-      default: false
-    }
+      default: false,
+    },
   },
   'widgetSettings.required': {
     widgetAlias: WIDGETS.switch,
@@ -170,8 +180,8 @@ export const DEFAULT_CONFIG_SECTION = {
       labelWidth: 0,
       span: 24,
       label: 'Required',
-      default: false
-    }
+      default: false,
+    },
   },
   'widgetSettings.triggers': {
     fieldName: 'widgetSettings.triggers',
@@ -180,46 +190,53 @@ export const DEFAULT_CONFIG_SECTION = {
     widgetSettings: {
       labelWidth: 0,
       repeaterConfig: {
-        widgets: [{
-          fieldName: 'action',
-          widgetSettings: {
-            labelWidth: 0,
-            span: 24,
-            label: 'Action'
-          },
-          widgetAlias: WIDGETS.select,
+        widgets: [
+          {
+            fieldName: 'action',
+            widgetSettings: {
+              labelWidth: 0,
+              span: 24,
+              label: 'Action',
+            },
+            widgetAlias: WIDGETS.select,
 
-          slot: {
-            options: [{
-              label: 'Show',
-              value: 'show'
-            }, {
-              label: 'Hide',
-              value: 'hide'
-            }, {
-              label: 'Slug',
-              value: 'slug'
-            }]
-          }
-        }, {
-          fieldName: 'condition',
-          widgetAlias: WIDGETS.input,
-
-          fieldSettings: {
-            type: 'textarea'
+            slot: {
+              options: [
+                {
+                  label: 'Show',
+                  value: 'show',
+                },
+                {
+                  label: 'Hide',
+                  value: 'hide',
+                },
+                {
+                  label: 'Slug',
+                  value: 'slug',
+                },
+              ],
+            },
           },
-          widgetSettings: {
-            labelWidth: 0,
-            span: 24,
-            label: 'Condition'
-          }
-        }]
+          {
+            fieldName: 'condition',
+            widgetAlias: WIDGETS.input,
+
+            fieldSettings: {
+              type: 'textarea',
+            },
+            widgetSettings: {
+              labelWidth: 0,
+              span: 24,
+              label: 'Condition',
+            },
+          },
+        ],
       },
       advance: true,
       label: 'Triggers',
       language: 'javascript',
-      parse: true
-    }
+      parse: true,
+    },
   },
   'widgetSettings.defaultValue': {
     fieldName: 'widgetSettings.defaultValue',
@@ -227,8 +244,8 @@ export const DEFAULT_CONFIG_SECTION = {
       labelWidth: 0,
       span: 24,
       label: 'Default',
-      required: false
-    }
+      required: false,
+    },
   },
   'fieldSettings.showWordLimit': {
     fieldName: 'fieldSettings.showWordLimit',
@@ -237,9 +254,9 @@ export const DEFAULT_CONFIG_SECTION = {
     widgetSettings: {
       labelWidth: 0,
       span: 24,
-      label: 'Show Limit'
-    }
-  }
+      label: 'Show Limit',
+    },
+  },
 };
 export const DEFAULT_FORM_CONFIG = [
   {
@@ -247,32 +264,42 @@ export const DEFAULT_FORM_CONFIG = [
     widgetSettings: {
       labelWidth: 0,
       label: 'Label Suffix',
-      required: true
-    }
-  }, {
+      required: true,
+    },
+  },
+  {
     widgetAlias: WIDGETS.number,
 
     fieldName: 'labelWidth',
     widgetSettings: {
       labelWidth: 0,
       label: 'Label Width',
-      required: true
-    }
-  }, {
+      required: true,
+    },
+  },
+  {
     fieldName: 'labelPosition',
     widgetSettings: {
       labelWidth: 0,
-      label: 'Label Position'
+      label: 'Label Position',
     },
     widgetAlias: WIDGETS.select,
 
     slot: {
-      options: [{
-        label: 'Left', value: 'left'
-      }, {
-        label: 'Right', value: 'right'
-      }, {
-        label: 'Top', value: 'top'
-      }]
-    }
-  }];
+      options: [
+        {
+          label: 'Left',
+          value: 'left',
+        },
+        {
+          label: 'Right',
+          value: 'right',
+        },
+        {
+          label: 'Top',
+          value: 'top',
+        },
+      ],
+    },
+  },
+];

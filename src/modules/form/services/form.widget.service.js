@@ -3,8 +3,8 @@ import { WidgetTypes } from '@/modules/form/components/widgets/base-widget/widge
 import { Engine } from '@/modules/engine/core/engine';
 
 export class FormWidgetService {
-  static RENDER_KEY_COUNTER = 0;
-  widgetInstances = {};
+  static RENDER_KEY_COUNTER = 0
+  widgetInstances = {}
 
   /** Add id and key in widget*/
   createIdAndKey(widget, idGlobal = new Date().getTime()) {
@@ -19,7 +19,9 @@ export class FormWidgetService {
       delete widgetSettings.label; // Row Form Item does not need to configure the label attribute
     }
     if (Array.isArray(widgetSettings.children)) {
-      widgetSettings.children = widgetSettings.children.map(childItem => childItem.createIdAndKey(idGlobal));
+      widgetSettings.children = widgetSettings.children.map((childItem) =>
+        childItem.createIdAndKey(idGlobal)
+      );
     }
     return widget;
   }
@@ -28,7 +30,9 @@ export class FormWidgetService {
     const widgetSettings = widget.widgetSettings;
     widgetSettings.renderKey = `KEY_${FormWidgetService.RENDER_KEY_COUNTER++}${+new Date()}`;
     if (Array.isArray(widgetSettings.children)) {
-      widgetSettings.children = widgetSettings.children.map(childItem => this.createRenderKey(childItem));
+      widgetSettings.children = widgetSettings.children.map((childItem) =>
+        this.createRenderKey(childItem)
+      );
     }
     return widget;
   }
@@ -36,7 +40,7 @@ export class FormWidgetService {
   /** Clone given widget or array of widget*/
   clone(object) {
     if (Array.isArray(object)) {
-      return object.map(item => item.clone());
+      return object.map((item) => item.clone());
     }
     return object.clone();
   }
@@ -50,11 +54,11 @@ export class FormWidgetService {
   }
 
   getWidgetByClass(widgetClass) {
-    return _.values(WidgetTypes).find(type => type.name === widgetClass);
+    return _.values(WidgetTypes).find((type) => type.name === widgetClass);
   }
 
   serializeWidgets(widgets) {
-    return JSON.stringify(widgets.map(widget => widget.marshall()));
+    return JSON.stringify(widgets.map((widget) => widget.marshall()));
   }
 
   unserializeWidget(serialized) {
@@ -62,7 +66,7 @@ export class FormWidgetService {
       serialized = JSON.parse(serialized);
     }
     if (Array.isArray(serialized)) {
-      return serialized.map(widget => this.getWidgetInstance(widget));
+      return serialized.map((widget) => this.getWidgetInstance(widget));
     }
     return this.getWidgetInstance(serialized);
   }
@@ -109,7 +113,7 @@ export class FormWidgetService {
     if (!Array.isArray(widgets)) {
       widgets = [widgets];
     }
-    return widgets.map(widget => this.getWidgetInstance(widget));
+    return widgets.map((widget) => this.getWidgetInstance(widget));
   }
 
   /** Return the widget instance from given json*/
@@ -118,15 +122,23 @@ export class FormWidgetService {
       widgetJSON = JSON.parse(widgetJSON);
     }
     let Widget = null;
-    if (typeof widgetJSON.widgetAlias !== 'string' && typeof widgetJSON.widgetClass !== 'string') {
-      throw new Error('Invalid json, widgetAlias / widgetClass key doesn\'t exists');
+    if (
+      typeof widgetJSON.widgetAlias !== 'string' &&
+      typeof widgetJSON.widgetClass !== 'string'
+    ) {
+      throw new Error(
+        "Invalid json, widgetAlias / widgetClass key doesn't exists"
+      );
     } else if (typeof widgetJSON.widgetAlias === 'string') {
       Widget = this.getWidgetByAlias(widgetJSON.widgetAlias);
     } else {
       Widget = this.getWidgetByClass(widgetJSON.widgetClass);
     }
     if (!Widget) {
-      throw new Error('Invalid json,No matching widgetAlias / widgetClass found ' + JSON.stringify(widgetJSON));
+      throw new Error(
+        'Invalid json,No matching widgetAlias / widgetClass found ' +
+          JSON.stringify(widgetJSON)
+      );
     }
     widgetJSON = Engine.clone(widgetJSON);
     const widget = Engine.unmarshall(widgetJSON, new Widget());
@@ -137,4 +149,3 @@ export class FormWidgetService {
     return widget;
   }
 }
-

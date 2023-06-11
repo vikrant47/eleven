@@ -6,10 +6,10 @@ const install = function(Vue) {
       if (this.$options.dicts instanceof Array) {
         const dict = {
           dict: {},
-          label: {}
+          label: {},
         };
         return {
-          dict
+          dict,
         };
       }
       return {};
@@ -22,7 +22,7 @@ const install = function(Vue) {
           });
         });
       }
-    }
+    },
   });
 };
 

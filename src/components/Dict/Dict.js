@@ -1,6 +1,3 @@
-import {app} from '@/main';
-import { get as getDictDetail } from '@/api/system/dictDetail';
-
 export default class Dict {
   constructor(dict) {
     this.dict = dict;
@@ -11,8 +8,8 @@ export default class Dict {
       throw new Error('need Dict names');
     }
     const ps = [];
-    names.forEach(n => {
-      /*Vue.set(this.dict.dict, n, {});
+    names.forEach((n) => {
+      /* Vue.set(this.dict.dict, n, {});
       Vue.set(this.dict.label, n, {});
       Vue.set(this.dict, n, []);
       ps.push(getDictDetail(n).then(data => {

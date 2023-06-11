@@ -1,16 +1,24 @@
-`
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}">
+  <div class="sidebar-logo-container" :class="{ collapse: collapse }">
     <transition name="sidebarLogoFade">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
+      <router-link
+        v-if="collapse"
+        key="collapse"
+        class="sidebar-logo-link"
+        to="/"
+      >
         <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ $store.state.user.application.name }} </h1>
+        <h1 v-else class="sidebar-title">
+          {{ $store.state.user.application.name }}
+        </h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <el-dropdown @command="onExecuteNavigation">
           <div class="el-dropdown-link">
             <img v-if="logo" :src="logo" class="sidebar-logo">
-            <h1 class="sidebar-title">{{ $store.state.user.application.name }} </h1>
+            <h1 class="sidebar-title">
+              {{ $store.state.user.application.name }}
+            </h1>
           </div>
           <el-dropdown-menu slot="dropdown" class="app-menu">
             <el-dropdown-item
@@ -32,21 +40,23 @@
 import Logo from '@/assets/images/logo.png';
 import { NavigationService } from '@/modules/navigation/services/navigation.service';
 import store from '@/store';
+import { ElDropdownMenu } from 'element-plus';
 
 export default {
   name: 'SidebarLogo',
+  components: { ElDropdownMenu },
   props: {
     collapse: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       title: 'Zion',
       logo: Logo,
       applist: NavigationService.getInstance('applist'),
-      store: store
+      store: store,
     };
   },
   mounted() {
@@ -58,8 +68,8 @@ export default {
   methods: {
     onExecuteNavigation(navigation) {
       this.applist.executeNavigation(navigation.meta);
-    }
-  }
+    },
+  },
 };
 </script>
 

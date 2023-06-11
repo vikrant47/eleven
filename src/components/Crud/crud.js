@@ -1,9 +1,9 @@
 import { download } from '@/api/data';
 import { parseTime, downloadFile } from '@/utils/index';
-import {app} from '@/main';
 import { ModelService } from '@/modules/engine/services/model.service';
 import { RestQuery } from '@/modules/engine/services/rest.query';
 import { EngineList } from '@/modules/list/engine-api/engine.list';
+import { Vue } from '@/main';
 
 /**
  * CRUD configuration
@@ -36,22 +36,17 @@ function CRUD(options) {
     // Form Form
     form: {},
     // Reset form
-    defaultForm: () => {
-    },
+    defaultForm: () => {},
     // Sorting rules, default id Descending order, Support multi-field sorting ['id,desc', 'createTime,asc']
     sort: ['id,desc'],
     // waiting time
     time: 50,
     // CRUD Method
     crudMethod: {
-      add: (form) => {
-      },
-      del: (id) => {
-      },
-      edit: (form) => {
-      },
-      get: (id) => {
-      }
+      add: (form) => {},
+      del: (id) => {},
+      edit: (form) => {},
+      get: (id) => {},
     },
     // Which buttons are displayed on the homepage action bar
     optShow: {
@@ -59,14 +54,14 @@ function CRUD(options) {
       edit: true,
       del: true,
       download: true,
-      reset: true
+      reset: true,
     },
     // Customize some extended attributes
     props: {},
     // Prepare on the homepage
     queryOnPresenterCreated: true,
     // Debug switch
-    debug: false
+    debug: false,
   };
   options = mergeOptions(defaultOptions, options);
   const data = {
@@ -78,25 +73,38 @@ function CRUD(options) {
       edit: CRUD.STATUS.NORMAL,
       // Add or edit status
       get cu() {
-        if (this.add === CRUD.STATUS.NORMAL && this.edit === CRUD.STATUS.NORMAL) {
+        if (
+          this.add === CRUD.STATUS.NORMAL &&
+          this.edit === CRUD.STATUS.NORMAL
+        ) {
           return CRUD.STATUS.NORMAL;
-        } else if (this.add === CRUD.STATUS.PREPARED || this.edit === CRUD.STATUS.PREPARED) {
+        } else if (
+          this.add === CRUD.STATUS.PREPARED ||
+          this.edit === CRUD.STATUS.PREPARED
+        ) {
           return CRUD.STATUS.PREPARED;
-        } else if (this.add === CRUD.STATUS.PROCESSING || this.edit === CRUD.STATUS.PROCESSING) {
+        } else if (
+          this.add === CRUD.STATUS.PROCESSING ||
+          this.edit === CRUD.STATUS.PROCESSING
+        ) {
           return CRUD.STATUS.PROCESSING;
         }
-        throw new Error('wrong crud\'s cu status');
+        throw new Error("wrong crud's cu status");
       },
       // title
       get title() {
-        return this.add > CRUD.STATUS.NORMAL ? `Add ${crud.title}` : this.edit > CRUD.STATUS.NORMAL ? `Edit ${crud.title}` : crud.title;
-      }
+        return this.add > CRUD.STATUS.NORMAL
+          ? `Add ${crud.title}`
+          : this.edit > CRUD.STATUS.NORMAL
+            ? `Edit ${crud.title}`
+            : crud.title;
+      },
     },
     msg: {
       submit: 'Submitted successfully',
       add: 'Added successfully',
       edit: 'Edit successfully',
-      del: 'successfully deleted'
+      del: 'successfully deleted',
     },
     page: {
       // page number
@@ -104,11 +112,11 @@ function CRUD(options) {
       // Number of data per page
       limit: 15,
       // Total number of data
-      total: 0
+      total: 0,
     },
     order: {
       attribute: 'updated_at',
-      direction: 'DESC'
+      direction: 'DESC',
     },
     definition: { list: {}, form: {}},
     // Overall loading
@@ -116,7 +124,7 @@ function CRUD(options) {
     // Exported Loading
     downloadLoading: false,
     // Deleted Loading
-    delAllLoading: false
+    delAllLoading: false,
   };
   const methods = {
     /**
@@ -146,20 +154,23 @@ function CRUD(options) {
       return new Promise((resolve, reject) => {
         crud.loading = true;
         // request data
-        new ModelService(crud.modelAlias).requestDefinition({
-          list: crud.list
-        }).then(definition => {
-          crud.definition = new EngineList(definition).sanitizeDefinition();
-          // time Show table in milliseconds
-          setTimeout(() => {
+        new ModelService(crud.modelAlias)
+          .requestDefinition({
+            list: crud.list,
+          })
+          .then((definition) => {
+            crud.definition = new EngineList(definition).sanitizeDefinition();
+            // time Show table in milliseconds
+            setTimeout(() => {
+              crud.loading = false;
+              callVmHook(crud, CRUD.HOOK.afterLoadDefinition);
+            }, crud.time);
+            resolve(data);
+          })
+          .catch((err) => {
             crud.loading = false;
-            callVmHook(crud, CRUD.HOOK.afterLoadDefinition);
-          }, crud.time);
-          resolve(data);
-        }).catch(err => {
-          crud.loading = false;
-          reject(err);
-        });
+            reject(err);
+          });
       });
     },
     // Refresh
@@ -170,29 +181,38 @@ function CRUD(options) {
       return new Promise((resolve, reject) => {
         crud.loading = true;
         // request data
-        new RestQuery(this.modelAlias).paginate({
-          page: crud.page.page,
-          limit: crud.page.limit,
-          order: [{ attribute: crud.order.attribute, direction: crud.order.direction }]
-        }).then(result => {
-          const table = crud.getTable();
-          if (table && table.lazy) { // Lazy load child node data, clear the loaded data
-            table.store.states.treeData = {};
-            table.store.states.lazyTreeNodeMap = {};
-          }
-          crud.page.total = result.total;
-          crud.data = result.data;
-          crud.resetDataStatus();
-          // time Show table in milliseconds
-          setTimeout(() => {
+        new RestQuery(this.modelAlias)
+          .paginate({
+            page: crud.page.page,
+            limit: crud.page.limit,
+            order: [
+              {
+                attribute: crud.order.attribute,
+                direction: crud.order.direction,
+              },
+            ],
+          })
+          .then((result) => {
+            const table = crud.getTable();
+            if (table && table.lazy) {
+              // Lazy load child node data, clear the loaded data
+              table.store.states.treeData = {};
+              table.store.states.lazyTreeNodeMap = {};
+            }
+            crud.page.total = result.total;
+            crud.data = result.data;
+            crud.resetDataStatus();
+            // time Show table in milliseconds
+            setTimeout(() => {
+              crud.loading = false;
+              callVmHook(crud, CRUD.HOOK.afterRefresh);
+            }, crud.time);
+            resolve(result);
+          })
+          .catch((err) => {
             crud.loading = false;
-            callVmHook(crud, CRUD.HOOK.afterRefresh);
-          }, crud.time);
-          resolve(result);
-        }).catch(err => {
-          crud.loading = false;
-          reject(err);
-        });
+            reject(err);
+          });
       });
     },
     /**
@@ -200,7 +220,12 @@ function CRUD(options) {
      */
     toAdd() {
       crud.resetForm();
-      if (!(callVmHook(crud, CRUD.HOOK.beforeToAdd, crud.form) && callVmHook(crud, CRUD.HOOK.beforeToCU, crud.form))) {
+      if (
+        !(
+          callVmHook(crud, CRUD.HOOK.beforeToAdd, crud.form) &&
+          callVmHook(crud, CRUD.HOOK.beforeToCU, crud.form)
+        )
+      ) {
         return;
       }
       crud.status.add = CRUD.STATUS.PREPARED;
@@ -213,7 +238,12 @@ function CRUD(options) {
      */
     toEdit(data) {
       crud.resetForm(JSON.parse(JSON.stringify(data)));
-      if (!(callVmHook(crud, CRUD.HOOK.beforeToEdit, crud.form) && callVmHook(crud, CRUD.HOOK.beforeToCU, crud.form))) {
+      if (
+        !(
+          callVmHook(crud, CRUD.HOOK.beforeToEdit, crud.form) &&
+          callVmHook(crud, CRUD.HOOK.beforeToCU, crud.form)
+        )
+      ) {
         return;
       }
       crud.status.edit = CRUD.STATUS.PREPARED;
@@ -277,7 +307,7 @@ function CRUD(options) {
       if (!callVmHook(crud, CRUD.HOOK.beforeValidateCU)) {
         return;
       }
-      crud.findVM('form').$refs['form'].validate(valid => {
+      crud.findVM('form').$refs['form'].validate((valid) => {
         if (!valid) {
           return;
         }
@@ -299,16 +329,19 @@ function CRUD(options) {
         return;
       }
       crud.status.add = CRUD.STATUS.PROCESSING;
-      crud.crudMethod.add(crud.form).then(() => {
-        crud.status.add = CRUD.STATUS.NORMAL;
-        crud.resetForm();
-        crud.addSuccessNotify();
-        callVmHook(crud, CRUD.HOOK.afterSubmit);
-        crud.toQuery();
-      }).catch(() => {
-        crud.status.add = CRUD.STATUS.PREPARED;
-        callVmHook(crud, CRUD.HOOK.afterAddError);
-      });
+      crud.crudMethod
+        .add(crud.form)
+        .then(() => {
+          crud.status.add = CRUD.STATUS.NORMAL;
+          crud.resetForm();
+          crud.addSuccessNotify();
+          callVmHook(crud, CRUD.HOOK.afterSubmit);
+          crud.toQuery();
+        })
+        .catch(() => {
+          crud.status.add = CRUD.STATUS.PREPARED;
+          callVmHook(crud, CRUD.HOOK.afterAddError);
+        });
     },
     /**
      * Executive edit
@@ -318,17 +351,21 @@ function CRUD(options) {
         return;
       }
       crud.status.edit = CRUD.STATUS.PROCESSING;
-      crud.crudMethod.edit(crud.form).then(() => {
-        crud.status.edit = CRUD.STATUS.NORMAL;
-        crud.getDataStatus(crud.getDataId(crud.form)).edit = CRUD.STATUS.NORMAL;
-        crud.editSuccessNotify();
-        crud.resetForm();
-        callVmHook(crud, CRUD.HOOK.afterSubmit);
-        crud.refresh();
-      }).catch(() => {
-        crud.status.edit = CRUD.STATUS.PREPARED;
-        callVmHook(crud, CRUD.HOOK.afterEditError);
-      });
+      crud.crudMethod
+        .edit(crud.form)
+        .then(() => {
+          crud.status.edit = CRUD.STATUS.NORMAL;
+          crud.getDataStatus(crud.getDataId(crud.form)).edit =
+            CRUD.STATUS.NORMAL;
+          crud.editSuccessNotify();
+          crud.resetForm();
+          callVmHook(crud, CRUD.HOOK.afterSubmit);
+          crud.refresh();
+        })
+        .catch(() => {
+          crud.status.edit = CRUD.STATUS.PREPARED;
+          callVmHook(crud, CRUD.HOOK.afterEditError);
+        });
     },
     /**
      * Execute delete
@@ -340,7 +377,7 @@ function CRUD(options) {
       const ids = [];
       if (data instanceof Array) {
         delAll = true;
-        data.forEach(val => {
+        data.forEach((val) => {
           ids.push(this.getDataId(val));
         });
       } else {
@@ -353,53 +390,62 @@ function CRUD(options) {
       if (!delAll) {
         dataStatus.delete = CRUD.STATUS.PROCESSING;
       }
-      return crud.crudMethod.del(ids).then(() => {
-        if (delAll) {
-          crud.delAllLoading = false;
-        } else {
-          dataStatus.delete = CRUD.STATUS.PREPARED;
-        }
-        crud.dleChangePage(1);
-        crud.delSuccessNotify();
-        callVmHook(crud, CRUD.HOOK.afterDelete, data);
-        crud.refresh();
-      }).catch(() => {
-        if (delAll) {
-          crud.delAllLoading = false;
-        } else {
-          dataStatus.delete = CRUD.STATUS.PREPARED;
-        }
-      });
+      return crud.crudMethod
+        .del(ids)
+        .then(() => {
+          if (delAll) {
+            crud.delAllLoading = false;
+          } else {
+            dataStatus.delete = CRUD.STATUS.PREPARED;
+          }
+          crud.dleChangePage(1);
+          crud.delSuccessNotify();
+          callVmHook(crud, CRUD.HOOK.afterDelete, data);
+          crud.refresh();
+        })
+        .catch(() => {
+          if (delAll) {
+            crud.delAllLoading = false;
+          } else {
+            dataStatus.delete = CRUD.STATUS.PREPARED;
+          }
+        });
     },
     /**
      * Universal export
      */
     doExport() {
       crud.downloadLoading = true;
-      download(crud.url + '/download', crud.getQueryParams()).then(result => {
-        downloadFile(result, crud.title + '数据', 'xlsx');
-        crud.downloadLoading = false;
-      }).catch(() => {
-        crud.downloadLoading = false;
-      });
+      download(crud.url + '/download', crud.getQueryParams())
+        .then((result) => {
+          downloadFile(result, crud.title + '数据', 'xlsx');
+          crud.downloadLoading = false;
+        })
+        .catch(() => {
+          crud.downloadLoading = false;
+        });
     },
     /**
      * Get condition parameters
      */
     getQueryParams: function() {
       // Clear the case where the parameter has no value
-      Object.keys(crud.query).length !== 0 && Object.keys(crud.query).forEach(item => {
-        if (crud.query[item] === null || crud.query[item] === '') crud.query[item] = undefined;
-      });
-      Object.keys(crud.params).length !== 0 && Object.keys(crud.params).forEach(item => {
-        if (crud.params[item] === null || crud.params[item] === '') crud.params[item] = undefined;
-      });
+      Object.keys(crud.query).length !== 0 &&
+        Object.keys(crud.query).forEach((item) => {
+          if (crud.query[item] === null || crud.query[item] === '')
+          { crud.query[item] = undefined; }
+        });
+      Object.keys(crud.params).length !== 0 &&
+        Object.keys(crud.params).forEach((item) => {
+          if (crud.params[item] === null || crud.params[item] === '')
+          { crud.params[item] = undefined; }
+        });
       return {
         page: crud.page.page - 1,
         limit: crud.page.limit,
         order: crud.order,
         ...crud.query,
-        ...crud.params
+        ...crud.params,
       };
     },
     // Current page change
@@ -415,7 +461,10 @@ function CRUD(options) {
     },
     // Change the order order
     sortHandler(e) {
-      crud.order = { direction: e.order === 'ascending' ? 'ASC' : 'DESC', attribute: e.prop };
+      crud.order = {
+        direction: e.order === 'ascending' ? 'ASC' : 'DESC',
+        attribute: e.prop,
+      };
       return crud.refresh();
     },
     // Prevent the request for no data due to the wrong page number when deleting the last data on the second page, or when multiple selections are made to delete the data on the second page
@@ -435,7 +484,7 @@ function CRUD(options) {
     resetQuery(toQuery = true) {
       const defaultQuery = JSON.parse(JSON.stringify(crud.defaultQuery));
       const query = crud.query;
-      Object.keys(query).forEach(key => {
+      Object.keys(query).forEach((key) => {
         query[key] = defaultQuery[key];
       });
       // Reset parameters
@@ -449,7 +498,11 @@ function CRUD(options) {
      * @param {Array} data Digital
      */
     resetForm(data) {
-      const form = data || (typeof crud.defaultForm === 'object' ? JSON.parse(JSON.stringify(crud.defaultForm)) : crud.defaultForm.apply(crud.findVM('form')));
+      const form =
+        data ||
+        (typeof crud.defaultForm === 'object'
+          ? JSON.parse(JSON.stringify(crud.defaultForm))
+          : crud.defaultForm.apply(crud.findVM('form')));
       const crudFrom = crud.form;
       for (const key in form) {
         if (crudFrom.hasOwnProperty(key)) {
@@ -466,10 +519,10 @@ function CRUD(options) {
       const dataStatus = {};
 
       function resetStatus(datas) {
-        datas.forEach(e => {
+        datas.forEach((e) => {
           dataStatus[crud.getDataId(e)] = {
             delete: 0,
-            edit: 0
+            edit: 0,
           };
           if (e.children) {
             resetStatus(e.children);
@@ -494,7 +547,7 @@ function CRUD(options) {
     selectAllChange(selection) {
       // 如果选中的数目与请求到的数目相同就选中子节点，否则就清空选中
       if (selection && selection.length === crud.data.length) {
-        selection.forEach(val => {
+        selection.forEach((val) => {
           crud.selectChange(selection, val);
         });
       } else {
@@ -508,11 +561,13 @@ function CRUD(options) {
      */
     selectChange(selection, row) {
       // 如果selection中存在row代表是选中，否则是取消选中
-      if (selection.find(val => {
-        return crud.getDataId(val) === crud.getDataId(row);
-      })) {
+      if (
+        selection.find((val) => {
+          return crud.getDataId(val) === crud.getDataId(row);
+        })
+      ) {
         if (row.children) {
-          row.children.forEach(val => {
+          row.children.forEach((val) => {
             crud.getTable().toggleRowSelection(val, true);
             selection.push(val);
             if (val.children) {
@@ -531,7 +586,7 @@ function CRUD(options) {
      */
     toggleRowSelection(selection, data) {
       if (data.children) {
-        data.children.forEach(val => {
+        data.children.forEach((val) => {
           crud.getTable().toggleRowSelection(val, false);
           if (val.children) {
             crud.toggleRowSelection(selection, val);
@@ -540,13 +595,13 @@ function CRUD(options) {
       }
     },
     findVM(type) {
-      return crud.vms.find(vm => vm && vm.type === type).vm;
+      return crud.vms.find((vm) => vm && vm.type === type).vm;
     },
     notify(title, type = CRUD.NOTIFICATION_TYPE.INFO) {
       crud.vms[0].vm.$notify({
         title,
         type,
-        duration: 2500
+        duration: 2500,
       });
     },
     updateProp(name, value) {
@@ -569,18 +624,18 @@ function CRUD(options) {
         const lazyTreeNodeMap = table.store.states.lazyTreeNodeMap;
         row.children = lazyTreeNodeMap[crud.getDataId(row)];
         if (row.children) {
-          row.children.forEach(ele => {
+          row.children.forEach((ele) => {
             const id = crud.getDataId(ele);
             if (that.dataStatus[id] === undefined) {
               that.dataStatus[id] = {
                 delete: 0,
-                edit: 0
+                edit: 0,
               };
             }
           });
         }
       });
-    }
+    },
   };
   const crud = Object.assign({}, data);
   // Observability
@@ -601,13 +656,14 @@ function CRUD(options) {
     registerVM(type, vm, index = -1) {
       const vmObj = {
         type,
-        vm: vm
+        vm: vm,
       };
       if (index < 0) {
         this.vms.push(vmObj);
         return;
       }
-      if (index < 4) { // Built-in reserved VM number
+      if (index < 4) {
+        // Built-in reserved VM number
         this.vms[index] = vmObj;
         return;
       }
@@ -624,7 +680,8 @@ function CRUD(options) {
           continue;
         }
         if (this.vms[i].type === type && this.vms[i].vm === vm) {
-          if (i < 4) { // Built-in reserved VM number
+          if (i < 4) {
+            // Built-in reserved VM number
             this.vms[i] = undefined;
           } else {
             this.vms.splice(i, 1);
@@ -632,7 +689,7 @@ function CRUD(options) {
           break;
         }
       }
-    }
+    },
   });
   // Freeze processing, if you need to expand the data, use crud.update Prop(name, value), accessed in the form of crud.props.name, this is responsive and can be used for data binding
   Object.freeze(crud);
@@ -652,8 +709,8 @@ function callVmHook(crud, hook) {
   }
   // Some components play multiple roles and need to be de-duplicated when calling hooks
   const vmSet = new Set();
-  crud.vms.forEach(vm => vm && vmSet.add(vm.vm));
-  vmSet.forEach(vm => {
+  crud.vms.forEach((vm) => vm && vmSet.add(vm.vm));
+  vmSet.forEach((vm) => {
     if (vm[hook]) {
       ret = vm[hook].apply(vm, nargs) !== false && ret;
     }
@@ -666,7 +723,7 @@ function callVmHook(crud, hook) {
 
 function mergeOptions(src, opts) {
   const optsRet = {
-    ...src
+    ...src,
   };
   for (const key in src) {
     if (opts.hasOwnProperty(key)) {
@@ -698,24 +755,30 @@ function lookupCrud(vm, tag) {
  */
 function presenter(crud) {
   if (crud) {
-    console.warn('[CRUD warn]: ' + 'please use $options.cruds() { return CRUD(...) or [CRUD(...), ...] }');
+    console.warn(
+      '[CRUD warn]: ' +
+        'please use $options.cruds() { return CRUD(...) or [CRUD(...), ...] }'
+    );
   }
   return {
     data() {
       // Returning crud in data is to associate crud with the current instance, and the component observes changes in crud-related attributes
       return {
-        crud: this.crud
+        crud: this.crud,
       };
     },
     beforeCreate() {
       this.$crud = this.$crud || {};
-      let cruds = this.$options.cruds instanceof Function ? this.$options.cruds() : crud;
+      let cruds =
+        this.$options.cruds instanceof Function ? this.$options.cruds() : crud;
       if (!(cruds instanceof Array)) {
         cruds = [cruds];
       }
-      cruds.forEach(ele => {
+      cruds.forEach((ele) => {
         if (this.$crud[ele.tag]) {
-          console.error('[CRUD error]: ' + 'crud with tag [' + ele.tag + ' is already exist');
+          console.error(
+            '[CRUD error]: ' + 'crud with tag [' + ele.tag + ' is already exist'
+          );
         }
         this.$crud[ele.tag] = ele;
         ele.registerVM('presenter', this, 0);
@@ -723,7 +786,7 @@ function presenter(crud) {
       this.crud = this.$crud['defalut'] || cruds[0];
     },
     methods: {
-      parseTime
+      parseTime,
     },
     created() {
       for (const k in this.$crud) {
@@ -742,7 +805,7 @@ function presenter(crud) {
       if (this.$refs.table !== undefined) {
         this.crud.attchTable();
       }
-    }
+    },
   };
 }
 
@@ -754,7 +817,7 @@ function header() {
     data() {
       return {
         crud: this.crud,
-        query: this.crud.query
+        query: this.crud.query,
       };
     },
     beforeCreate() {
@@ -763,7 +826,7 @@ function header() {
     },
     destroyed() {
       this.crud.unregisterVM('header', this);
-    }
+    },
   };
 }
 
@@ -775,16 +838,17 @@ function definition() {
     data() {
       // Returning crud in data is to associate crud with the current instance, and the component observes changes in crud-related attributes
       return {
-        crud: this.crud
+        crud: this.crud,
       };
     },
     beforeCreate() {
       this.$crud = this.$crud || {};
-      let cruds = this.$options.cruds instanceof Function ? this.$options.cruds() : crud;
+      let cruds =
+        this.$options.cruds instanceof Function ? this.$options.cruds() : crud;
       if (!(cruds instanceof Array)) {
         cruds = [cruds];
       }
-      cruds.forEach(ele => {
+      cruds.forEach((ele) => {
         ele.registerVM('definition', this, 5);
       });
       this.crud = this.$crud['defalut'] || cruds[0];
@@ -810,7 +874,7 @@ function definition() {
       if (this.$refs.table !== undefined) {
         this.crud.attchTable();
       }
-    }
+    },
   };
 }
 
@@ -822,7 +886,7 @@ function pagination() {
     data() {
       return {
         crud: this.crud,
-        page: this.crud.page
+        page: this.crud.page,
       };
     },
     beforeCreate() {
@@ -831,7 +895,7 @@ function pagination() {
     },
     destroyed() {
       this.crud.unregisterVM('pagination', this);
-    }
+    },
   };
 }
 
@@ -843,7 +907,7 @@ function form(defaultForm) {
     data() {
       return {
         crud: this.crud,
-        form: this.crud.form
+        form: this.crud.form,
       };
     },
     beforeCreate() {
@@ -856,7 +920,7 @@ function form(defaultForm) {
     },
     destroyed() {
       this.crud.unregisterVM('form', this);
-    }
+    },
   };
 }
 
@@ -865,13 +929,13 @@ function form(defaultForm) {
  */
 function crud(options = {}) {
   const defaultOptions = {
-    type: undefined
+    type: undefined,
   };
   options = mergeOptions(defaultOptions, options);
   return {
     data() {
       return {
-        crud: this.crud
+        crud: this.crud,
       };
     },
     beforeCreate() {
@@ -880,7 +944,7 @@ function crud(options = {}) {
     },
     destroyed() {
       this.crud.unregisterVM(options.type, this);
-    }
+    },
   };
 }
 
@@ -931,7 +995,7 @@ CRUD.HOOK = {
   /** 提交 - 之后 */
   afterSubmit: 'afterCrudSubmitCU',
   afterAddError: 'afterCrudAddError',
-  afterEditError: 'afterCrudEditError'
+  afterEditError: 'afterCrudEditError',
 };
 
 /**
@@ -940,7 +1004,7 @@ CRUD.HOOK = {
 CRUD.STATUS = {
   NORMAL: 0,
   PREPARED: 1,
-  PROCESSING: 2
+  PROCESSING: 2,
 };
 
 /**
@@ -950,16 +1014,9 @@ CRUD.NOTIFICATION_TYPE = {
   SUCCESS: 'success',
   WARNING: 'warning',
   INFO: 'info',
-  ERROR: 'error'
+  ERROR: 'error',
 };
 
 export default CRUD;
 
-export {
-  presenter,
-  header,
-  form,
-  pagination,
-  crud,
-  definition
-};
+export { presenter, header, form, pagination, crud, definition };

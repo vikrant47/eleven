@@ -21,22 +21,25 @@ export default function loadMonaco(cb) {
     fullscreen: true,
     lock: true,
     text: '编辑器资源初始化中...',
-    spinner: 'el-icon-loading',
-    background: 'rgba(255, 255, 255, 0.5)'
+    spinner: 'elu-icon-loading',
+    background: 'rgba(255, 255, 255, 0.5)',
   });
 
   !window.require && (window.require = {});
   !window.require.paths && (window.require.paths = {});
   window.require.paths.vs = vs;
 
-  loadScriptQueue([
-    `${vs}/loader.js`,
-    `${vs}/editor/editor.main.nls.js`,
-    `${vs}/editor/editor.main.js`
-  ], () => {
-    loading.close();
-    // eslint-disable-next-line no-undef
-    monacoEidtor = monaco;
-    cb(monacoEidtor);
-  });
+  loadScriptQueue(
+    [
+      `${vs}/loader.js`,
+      `${vs}/editor/editor.main.nls.js`,
+      `${vs}/editor/editor.main.js`,
+    ],
+    () => {
+      loading.close();
+      // eslint-disable-next-line no-undef
+      monacoEidtor = monaco;
+      cb(monacoEidtor);
+    }
+  );
 }

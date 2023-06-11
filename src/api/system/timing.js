@@ -4,7 +4,7 @@ export function add(data) {
   return request({
     url: 'api/jobs',
     method: 'post',
-    data
+    data,
   });
 }
 
@@ -12,7 +12,7 @@ export function del(ids) {
   return request({
     url: 'api/jobs',
     method: 'delete',
-    data: ids
+    data: ids,
   });
 }
 
@@ -20,21 +20,21 @@ export function edit(data) {
   return request({
     url: 'api/jobs',
     method: 'put',
-    data
+    data,
   });
 }
 
 export function updateIsPause(id) {
   return request({
     url: 'api/jobs/' + id,
-    method: 'put'
+    method: 'put',
   });
 }
 
 export function execution(id) {
   return request({
     url: 'api/jobs/exec/' + id,
-    method: 'put'
+    method: 'put',
   });
 }
 

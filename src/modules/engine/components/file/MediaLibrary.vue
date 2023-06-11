@@ -1,8 +1,8 @@
 <template>
   <div v-loading="fileService.loading" class="file-explorer-wrapper">
     <div class="navigation">
-      <el-button icon="el-icon-back" class="back nav-button" />
-      <el-button icon="el-icon-right" class="next nav-button" />
+      <el-button :icon="EluIconBack" class="back nav-button" />
+      <el-button :icon="EluIconRight" class="next nav-button" />
       <div class="path">
         <el-input v-model="currentPath" readonly />
       </div>
@@ -12,7 +12,7 @@
         v-for="file in fileService.files"
         :key="file.id"
         :span="4"
-        :class="{'selected':file.selected===true}"
+        :class="{ selected: file.selected === true }"
         @click="toggleSelect(file)"
         @dblclick="explorer(file)"
       >
@@ -24,16 +24,16 @@
             @change="selectionChanged()"
           >
         </div>
-        <div v-if="file.content_type==='folder'" class="folder file-item">
+        <div v-if="file.content_type === 'folder'" class="folder file-item">
           <span>
-            <i class="el-icon-folder" />
+            <el-icon><elu-icon-folder /></el-icon>
           </span>
           <span class="icon-name">{{ file.name }}</span>
         </div>
         <div v-else class="file file-item">
           <div
             v-if="file.isImage()"
-            :style="{'background-image': 'url(' + file.getUrl() + ')'}"
+            :style="{ 'background-image': 'url(' + file.getUrl() + ')' }"
             class="image-file"
           >
             <span class="icon-name">{{ file.name }}</span>
@@ -44,13 +44,16 @@
         </div>
       </li>
     </ul>
-    <div v-else class="empty-folder">
-      No files exists in this directory
-    </div>
+    <div v-else class="empty-folder">No files exists in this directory</div>
   </div>
 </template>
 
 <script>
+import {
+  Folder as EluIconFolder,
+  Back as EluIconBack,
+  Right as EluIconRight,
+} from '@element-plus/icons';
 
 import { EngineFileService } from '@/modules/engine/services/engine.file.service';
 import $router from '@/router/routers';
@@ -60,30 +63,39 @@ import { Engine } from '@/modules/engine/core/engine';
 
 export default {
   name: 'EnMediaLibrary',
+  components: {
+    EluIconFolder,
+  },
   props: {
     rootFolder: {
       type: String,
-      default: process.env.VUE_APP_ROOT_MEDIA_FOLDER_ID
+      default: process.env.VUE_APP_ROOT_MEDIA_FOLDER_ID,
     },
     engineList: {
       type: EngineList,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       currentPath: '/',
       files: [],
-      fileService: new EngineFileService(this.engineList && this.engineList.pagination)
+      fileService: new EngineFileService(
+        this.engineList && this.engineList.pagination
+      ),
+      EluIconBack,
+      EluIconRight,
     };
   },
   watch: {
     async '$route.query.folderId'() {
       if (this.fileService.rootFolder.id !== this.$route.query.folderId) {
-        await this.fileService.init(this.$route.query.folderId || this.rootFolder);
+        await this.fileService.init(
+          this.$route.query.folderId || this.rootFolder
+        );
       }
       await this.refresh();
-    }
+    },
   },
   created() {
     if (this.engineList) {
@@ -92,7 +104,11 @@ export default {
     this.$emit('created', { service: this.fileService });
   },
   async mounted() {
-    await this.fileService.init(this.rootFolder === process.env.VUE_APP_ROOT_MEDIA_FOLDER_ID && this.$route.query.folderId || this.rootFolder);
+    await this.fileService.init(
+      (this.rootFolder === process.env.VUE_APP_ROOT_MEDIA_FOLDER_ID &&
+        this.$route.query.folderId) ||
+        this.rootFolder
+    );
     await this.refresh();
     if (this.engineList) {
       this.engineList.settings.remote = false;
@@ -113,8 +129,7 @@ export default {
       }
       this.currentPath = this.fileService.rootFolder.path;
     },
-    toggleSelect(file) {
-    },
+    toggleSelect(file) {},
     selectionChanged() {
       if (this.engineList) {
         this.engineList.selection = this.fileService.getSelected();
@@ -126,11 +141,13 @@ export default {
         // router.push({ path: 'register', query: { plan: 'private' }});
         $router.push({
           path: $router.currentRoute.path,
-          query: Object.assign({}, $router.currentRoute.query, { folderId: file.id })
+          query: Object.assign({}, $router.currentRoute.query, {
+            folderId: file.id,
+          }),
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -7,14 +7,14 @@ export default class ListDesignerWidget extends BaseWidget {
     Object.assign(this.widgetSettings, {
       span: 24,
       pallet: [],
-      layout: ITEM_LAYOUT.colFormItem
+      layout: ITEM_LAYOUT.colFormItem,
     });
   }
 
   palletSettings = {
     label: 'List Designer',
-    icon: 'list'
-  };
+    icon: 'list',
+  }
 
   clearPallets() {
     this.widgetSettings.pallet.length = 0;
@@ -43,12 +43,12 @@ export default class ListDesignerWidget extends BaseWidget {
     if (this.designMode) {
       return h('div', {
         domProps: {
-          innerHTML: '<h3>List Designer</h3>'
+          innerHTML: '<h3>List Designer</h3>',
         },
         class: {},
         style: {
-          width: '500px'
-        }
+          width: '500px',
+        },
       });
     } else {
       const value = this.getValue() || { widgets: [] };
@@ -60,17 +60,21 @@ export default class ListDesignerWidget extends BaseWidget {
         }
         value.widgets = widgets;
       }*/
-      return h(ListDesigner, {
-        on: {
-          input: (value) => {
-            this.setValue(value, false);
-          }
+      return h(
+        ListDesigner,
+        {
+          on: {
+            input: (value) => {
+              this.setValue(value, false);
+            },
+          },
+          props: {
+            value: value,
+            pallet: this.getPallet(config),
+          },
         },
-        props: {
-          value: value,
-          pallet: this.getPallet(config)
-        }
-      }, this.getChildren());
+        this.getChildren()
+      );
     }
   }
 }

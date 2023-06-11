@@ -10,7 +10,10 @@ export class TemplateEngine {
   static evalExpression(expression, context) {
     expression = expression.trim();
     if (expression.startsWith('${') && expression.endsWith('}')) {
-      return this.evalString(expression.substring(2, expression.length - 1), context);
+      return this.evalString(
+        expression.substring(2, expression.length - 1),
+        context
+      );
     }
     return expression;
   }

@@ -8,14 +8,14 @@ export default class FormDesignerWidget extends BaseWidget {
     Object.assign(this.widgetSettings, {
       span: 24,
       pallet: [],
-      layout: ITEM_LAYOUT.colFormItem
+      layout: ITEM_LAYOUT.colFormItem,
     });
   }
 
   palletSettings = {
     label: 'Form Designer',
-    icon: 'form'
-  };
+    icon: 'form',
+  }
 
   clearPallets() {
     this.widgetSettings.pallet = [];
@@ -28,16 +28,18 @@ export default class FormDesignerWidget extends BaseWidget {
   }
 
   overrideWidgetSettings(widgetSettings) {
-    const FormWidgetService = require('@/modules/form/services/form.widget.service').FormWidgetService;
+    const FormWidgetService =
+      require('@/modules/form/services/form.widget.service').FormWidgetService;
     widgetSettings.pallet.push({
       title: 'Custom',
-      list: new FormWidgetService().getWidgetInstancesAsArray()
+      list: new FormWidgetService().getWidgetInstancesAsArray(),
     });
     return widgetSettings;
   }
 
   getPallet(widgetSettings) {
-    const FormWidgetService = require('@/modules/form/services/form.widget.service').FormWidgetService;
+    const FormWidgetService =
+      require('@/modules/form/services/form.widget.service').FormWidgetService;
     return widgetSettings.pallet.map((entry) => {
       entry.list = entry.list.map((widget) => {
         if (!(widget instanceof BaseWidget)) {
@@ -54,26 +56,30 @@ export default class FormDesignerWidget extends BaseWidget {
     if (this.designMode) {
       return h('div', {
         domProps: {
-          innerHTML: '<h3>Form Designer</h3>'
+          innerHTML: '<h3>Form Designer</h3>',
         },
         class: {},
         style: {
-          width: '500px'
-        }
+          width: '500px',
+        },
       });
     } else {
-      return h(FormDesigner, {
-        on: {
-          input: (value) => {
-            this.setValue(value, false);
-            console.log('Value updated ', value, this.fieldName);
-          }
+      return h(
+        FormDesigner,
+        {
+          on: {
+            input: (value) => {
+              this.setValue(value, false);
+              console.log('Value updated ', value, this.fieldName);
+            },
+          },
+          props: {
+            value: config.attrs.value,
+            pallet: this.getPallet(config),
+          },
         },
-        props: {
-          value: config.attrs.value,
-          pallet: this.getPallet(config)
-        }
-      }, this.getChildren());
+        this.getChildren()
+      );
     }
   }
 }

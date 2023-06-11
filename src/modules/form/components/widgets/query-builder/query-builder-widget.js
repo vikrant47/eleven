@@ -8,8 +8,8 @@ import { TemplateEngine } from '@/modules/engine/core/template.engine';
 export default class QueryBuilderWidget extends BaseWidget {
   palletSettings = {
     label: 'Icon',
-    icon: 'icon'
-  };
+    icon: 'icon',
+  }
 
   overrideConfigSection(configSectionWidgets) {
     return Object.assign(configSectionWidgets, {
@@ -20,8 +20,8 @@ export default class QueryBuilderWidget extends BaseWidget {
           labelWidth: 100,
           span: 24,
           label: 'Reference Model',
-          advance: true
-        }
+          advance: true,
+        },
       },
       'widgetSettings.showApply': {
         fieldName: 'widgetSettings.showApply',
@@ -30,8 +30,8 @@ export default class QueryBuilderWidget extends BaseWidget {
           labelWidth: 100,
           span: 24,
           label: 'Show Apply',
-          advance: true
-        }
+          advance: true,
+        },
       },
       'fieldSettings.fields': {
         widgetAlias: WIDGETS.codeEditor,
@@ -41,14 +41,14 @@ export default class QueryBuilderWidget extends BaseWidget {
           span: 24,
           label: 'Fields',
           required: false,
-          language: 'json'
-        }
-      }
+          language: 'json',
+        },
+      },
     });
   }
 
-  modelAlias;
-  fields = [];
+  modelAlias
+  fields = []
 
   mounted() {
     if (this.fieldSettings.fields) {
@@ -69,8 +69,9 @@ export default class QueryBuilderWidget extends BaseWidget {
         this.modelAlias = model;
         const result = await new RestQuery('engine_fields').findAll({
           where: {
-            [Engine.isUUID(model) ? 'engine_model_id' : 'engine_model_alias']: model
-          }
+            [Engine.isUUID(model) ? 'engine_model_id' : 'engine_model_alias']:
+              model,
+          },
         });
         this.setFields(result.contents);
       }

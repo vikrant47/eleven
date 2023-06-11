@@ -8,7 +8,7 @@ const user = {
     roles: [],
     application: {},
     // Used when loading the menu for the first time
-    loadMenus: false
+    loadMenus: false,
   },
 
   mutations: {
@@ -26,7 +26,7 @@ const user = {
     },
     SET_LOAD_MENUS: (state, loadMenus) => {
       state.loadMenus = loadMenus;
-    }
+    },
   },
 
   actions: {
@@ -34,41 +34,52 @@ const user = {
     Login({ commit }, userInfo) {
       const rememberMe = userInfo.rememberMe;
       return new Promise((resolve, reject) => {
-        login(userInfo.username, userInfo.password, userInfo.code, userInfo.uuid).then(res => {
-          const contents = res.contents;
-          setToken(contents.token, rememberMe);
-          commit('SET_TOKEN', contents.token);
-          setUserInfo(contents, commit);
-          // Used when loading the menu for the first time, See specifically src Under the directory permission.js
-          commit('SET_LOAD_MENUS', true);
-          resolve(res);
-        }).catch(error => {
-          reject(error);
-        });
+        login(
+          userInfo.username,
+          userInfo.password,
+          userInfo.code,
+          userInfo.uuid
+        )
+          .then((res) => {
+            const contents = res.contents;
+            setToken(contents.token, rememberMe);
+            commit('SET_TOKEN', contents.token);
+            setUserInfo(contents, commit);
+            // Used when loading the menu for the first time, See specifically src Under the directory permission.js
+            commit('SET_LOAD_MENUS', true);
+            resolve(res);
+          })
+          .catch((error) => {
+            reject(error);
+          });
       });
     },
 
     // Get user information
     GetInfo({ commit }) {
       return new Promise((resolve, reject) => {
-        getInfo().then(res => {
-          setUserInfo(res.contents, commit);
-          resolve(res);
-        }).catch(error => {
-          reject(error);
-        });
+        getInfo()
+          .then((res) => {
+            setUserInfo(res.contents, commit);
+            resolve(res);
+          })
+          .catch((error) => {
+            reject(error);
+          });
       });
     },
     // Sign out
     LogOut({ commit }) {
       return new Promise((resolve, reject) => {
-        logout().then(res => {
-          logOut(commit);
-          resolve();
-        }).catch(error => {
-          logOut(commit);
-          reject(error);
-        });
+        logout()
+          .then((res) => {
+            logOut(commit);
+            resolve();
+          })
+          .catch((error) => {
+            logOut(commit);
+            reject(error);
+          });
       });
     },
 
@@ -76,8 +87,8 @@ const user = {
       return new Promise((resolve, reject) => {
         commit('SET_LOAD_MENUS', false);
       });
-    }
-  }
+    },
+  },
 };
 
 export const logOut = (commit) => {

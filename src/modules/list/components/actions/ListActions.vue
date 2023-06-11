@@ -10,14 +10,11 @@ export default {
       type: Array,
       default() {
         return [];
-      }
-    }
+      },
+    },
   },
-  created() {
-  }
+  created() {},
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

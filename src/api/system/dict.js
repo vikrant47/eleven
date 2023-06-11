@@ -3,7 +3,7 @@ import request from '@/utils/request';
 export function getDicts() {
   return request({
     url: 'api/dict/all',
-    method: 'get'
+    method: 'get',
   });
 }
 
@@ -11,7 +11,7 @@ export function add(data) {
   return request({
     url: 'api/dict',
     method: 'post',
-    data
+    data,
   });
 }
 
@@ -19,7 +19,7 @@ export function del(ids) {
   return request({
     url: 'api/dict/',
     method: 'delete',
-    data: ids
+    data: ids,
   });
 }
 
@@ -27,7 +27,7 @@ export function edit(data) {
   return request({
     url: 'api/dict',
     method: 'put',
-    data
+    data,
   });
 }
 

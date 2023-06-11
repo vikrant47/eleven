@@ -4,7 +4,11 @@ import _ from 'lodash';
 import { TemplateEngine } from '@/modules/engine/core/template.engine';
 import { FormWidgetService } from '@/modules/form/services/form.widget.service';
 import { EngineForm } from '@/modules/form/engine-api/engine.form';
-import { FORM_EVENTS, FormEvent, WidgetEvent } from '@/modules/form/engine-api/form-events';
+import {
+  FORM_EVENTS,
+  FormEvent,
+  WidgetEvent,
+} from '@/modules/form/engine-api/form-events';
 import { Engine } from '@/modules/engine/core/engine';
 
 const ruleTrigger = {
@@ -16,7 +20,7 @@ const ruleTrigger = {
   'el-cascader': 'change',
   'el-time-picker': 'change',
   'el-date-picker': 'change',
-  'el-rate': 'change'
+  'el-rate': 'change',
 };
 const layouts = {
   colFormItem(h, widget) {
@@ -33,7 +37,11 @@ const layouts = {
     const child = renderChildren.apply(this, arguments);
     widgetInstance.setPreviewMode(this.previewMode);
     return (
-      <render widget={widgetInstance} {...{ on: listeners }} wrapper={true} form-model={formData}
+      <render
+        widget={widgetInstance}
+        {...{ on: listeners }}
+        wrapper={true}
+        form-model={formData}
         eval-context={this.context}
       >
         {child}
@@ -50,20 +58,24 @@ const layouts = {
     const widgetSettings = widget.widgetSettings;
     let child = renderChildren.apply(this, arguments);
     if (widgetSettings.type === 'flex') {
-      child = <el-row
-        type={widgetSettings.type}
-        justify={widgetSettings.justify}
-        align={widgetSettings.align}
-        /* class={this.widgetSettings.visible ? 'visible' : 'hidden'}*/
-      >
-        <el-card>
-          {child}
-        </el-card>
-      </el-row>;
+      child = (
+        <el-row
+          type={widgetSettings.type}
+          justify={widgetSettings.justify}
+          align={widgetSettings.align}
+          /* class={this.widgetSettings.visible ? 'visible' : 'hidden'}*/
+        >
+          <el-card>{child}</el-card>
+        </el-row>
+      );
     }
     return (
       <el-col span={widgetSettings.span}>
-        <el-row gutter={widgetSettings.gutter} /* class={widgetSettings.visible ? 'visible' : 'hidden'}*/>
+        <el-row
+          gutter={
+            widgetSettings.gutter
+          } /* class={widgetSettings.visible ? 'visible' : 'hidden'}*/
+        >
           <el-card class='widget-row-card box-card'>
             <div slot='header' class='clearfix'>
               <span>{widgetSettings.label}</span>
@@ -73,14 +85,20 @@ const layouts = {
         </el-row>
       </el-col>
     );
-  }
+  },
 };
 
 function renderFrom(h) {
   const { formConf } = this;
 
   return (
-    <div class={this.containsSection ? 'form-parser form-parser-with-sections' : 'form-parser'}>
+    <div
+      class={
+        this.containsSection
+          ? 'form-parser form-parser-with-sections'
+          : 'form-parser'
+      }
+    >
       <el-row gutter={formConf.gutter}>
         <el-form
           size={formConf.size}
@@ -101,16 +119,20 @@ function renderFrom(h) {
 }
 
 function formBtns(h) {
-  return <el-col>
-    <el-form-item size='large'>
-      <el-button type='primary' onClick={this.submitForm}>提交</el-button>
-      <el-button onClick={this.resetForm}>Reset</el-button>
-    </el-form-item>
-  </el-col>;
+  return (
+    <el-col>
+      <el-form-item size='large'>
+        <el-button type='primary' onClick={this.submitForm}>
+          提交
+        </el-button>
+        <el-button onClick={this.resetForm}>Reset</el-button>
+      </el-form-item>
+    </el-col>
+  );
 }
 
 function renderFormItem(h, elementList, formModel) {
-  return elementList.map(widget => {
+  return elementList.map((widget) => {
     const config = widget.widgetSettings || {};
     const layout = layouts[config.layout || 'colFormItem'];
 
@@ -137,7 +159,10 @@ function getWidgetInstance(widgetJson) {
     widgetInstance.setForm(this.engineForm);
     widgetInstance.init();
     this.$options.widgets[fieldName] = widgetInstance;
-    this.engineForm.triggerProcessors(new WidgetEvent(FORM_EVENTS.widget.init, widgetInstance, widgetJson), {});
+    this.engineForm.triggerProcessors(
+      new WidgetEvent(FORM_EVENTS.widget.init, widgetInstance, widgetJson),
+      {}
+    );
   }
   return this.$options.widgets[fieldName];
 }
@@ -152,7 +177,7 @@ const debouncedCallbacks = {
       }
     }
     widgetUpdateQueue = {};
-  }, 100)
+  }, 100),
 };
 
 function bulkUpdateValue(value, config, widget) {
@@ -164,7 +189,8 @@ function setValue(event, config, widget) {
   if (typeof event !== 'undefined') {
     const previousValue = _.get(this.formData, widget.fieldName);
     // this.$set(config, 'defaultValue', event);
-    if (previousValue !== event) { // TODO: handle concurrent field value update here using debounce
+    if (previousValue !== event) {
+      // TODO: handle concurrent field value update here using debounce
       if (widget.fieldName.indexOf('.') > 0) {
         const result = TemplateEngine.walk(widget.fieldName, this.formData, -1);
         this.$set(result.value, result.prop, event);
@@ -174,11 +200,14 @@ function setValue(event, config, widget) {
       }
       this.engineForm.setRecord(this.formData);
       this.$emit('fieldValueUpdated', widget, event);
-      this.engineForm.triggerProcessors(new WidgetEvent(FORM_EVENTS.widget.updateValue, widget, {
-        previous: previousValue,
-        current: event,
-        value: event
-      }), {});
+      this.engineForm.triggerProcessors(
+        new WidgetEvent(FORM_EVENTS.widget.updateValue, widget, {
+          previous: previousValue,
+          current: event,
+          value: event,
+        }),
+        {}
+      );
     }
   }
 }
@@ -194,13 +223,15 @@ function buildListeners(widget) {
   const listeners = {};
 
   // Bind this and event to the methods in __methods__
-  Object.keys(methods).forEach(key => {
-    listeners[key] = event => methods[key].call(this, event);
+  Object.keys(methods).forEach((key) => {
+    listeners[key] = (event) => methods[key].call(this, event);
   });
   // response render.js Neutral vModel $emit('input', val)
-  listeners.bulk_input_update = event => bulkUpdateValue.call(this, event, config, widget);
-  listeners.input_update = event => setValue.call(this, event, config, widget);
-  listeners['widget-data'] = event => setWidgetData.call(this, event, config, widget);
+  listeners.bulk_input_update = (event) =>
+    bulkUpdateValue.call(this, event, config, widget);
+  listeners.input_update = (event) => setValue.call(this, event, config, widget);
+  listeners['widget-data'] = (event) =>
+    setWidgetData.call(this, event, config, widget);
 
   return listeners;
 }
@@ -208,19 +239,19 @@ function buildListeners(widget) {
 export default {
   name: 'Parser',
   components: {
-    Render
+    Render,
   },
   props: {
     engineForm: {
       type: EngineForm,
-      required: true
+      required: true,
     },
     evalContext: {
       type: Object,
       default() {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -229,7 +260,7 @@ export default {
       // formData: this.engineForm.getRecord(),
       formConf: this.engineForm.getFormConfig(),
       context: Object.assign({ form: this.engineForm }, this.evalContext),
-      previewMode: this.engineForm.settings.previewMode
+      previewMode: this.engineForm.settings.previewMode,
     };
   },
   computed: {
@@ -239,8 +270,8 @@ export default {
       },
       set(newValue) {
         // this.engineForm.setRecord(newValue);
-      }
-    }
+      },
+    },
   },
   async mounted() {
     if (!this.formConf.rules) {
@@ -260,11 +291,14 @@ export default {
   },
   methods: {
     initFormData(widgets, formModel) {
-      widgets.forEach(widget => {
+      widgets.forEach((widget) => {
         // widget.setFormModel(this.formConf.model);
         const { widgetSettings } = widget;
         const value = _.get(formModel, widget.fieldName);
-        if (widget.fieldName && (typeof value === 'undefined' || value === null)) {
+        if (
+          widget.fieldName &&
+          (typeof value === 'undefined' || value === null)
+        ) {
           _.set(formModel, widget.fieldName, widgetSettings.defaultValue);
         }
         if (widgetSettings.children) {
@@ -273,19 +307,23 @@ export default {
       });
     },
     buildRules(componentList, rules) {
-      componentList.forEach(widget => {
+      componentList.forEach((widget) => {
         const config = widget.widgetSettings;
         if (Array.isArray(config.regList)) {
           if (config.required) {
-            const required = { required: config.required, message: widget.placeholder };
+            const required = {
+              required: config.required,
+              message: widget.placeholder,
+            };
             if (Array.isArray(config.defaultValue)) {
               required.type = 'array';
               required.message = `Please select at least one ${config.label}`;
             }
-            required.message === undefined && (required.message = `${config.label} Can not be empty`);
+            required.message === undefined &&
+              (required.message = `${config.label} Can not be empty`);
             config.regList.push(required);
           }
-          rules[widget.fieldName] = config.regList.map(item => {
+          rules[widget.fieldName] = config.regList.map((item) => {
             // eslint-disable-next-line no-eval
             item.pattern && (item.pattern = eval(item.pattern));
             item.trigger = ruleTrigger && ruleTrigger[config.widget];
@@ -300,17 +338,20 @@ export default {
       this.$refs[this.formConf.formRef].resetFields();
     },
     submitForm() {
-      this.$refs[this.formConf.formRef].validate(valid => {
+      this.$refs[this.formConf.formRef].validate((valid) => {
         if (!valid) return false;
         // TriggerTheSubmitEvent
-        this.engineForm.triggerProcessors(new FormEvent(FORM_EVENTS.form.beforeSubmit, this.formData), {});
+        this.engineForm.triggerProcessors(
+          new FormEvent(FORM_EVENTS.form.beforeSubmit, this.formData),
+          {}
+        );
         this.$emit('submit', this.formData);
         return true;
       });
-    }
+    },
   },
   render(h) {
     return renderFrom.call(this, h);
-  }
+  },
 };
 </script>

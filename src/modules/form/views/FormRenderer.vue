@@ -6,7 +6,7 @@
       :form-id="formId"
       :record-id="recordId"
       :remote="true"
-      :preview-mode="view==='preview'"
+      :preview-mode="view === 'preview'"
     />
   </div>
 </template>
@@ -21,13 +21,10 @@ export default {
     modelAlias: { type: String, default: null },
     recordId: { type: String, default: 'new' },
     formId: { type: String, default: 'default' },
-    view: { type: String, default: 'edit' }
+    view: { type: String, default: 'edit' },
   },
-  beforeCreate() {
-  }
+  beforeCreate() {},
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

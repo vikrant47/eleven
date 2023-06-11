@@ -7,8 +7,7 @@ const callbacks = {};
  */
 function loadScript(src, callback) {
   const existingScript = document.getElementById(src);
-  const cb = callback || (() => {
-  });
+  const cb = callback || (() => {});
   if (!existingScript) {
     callbacks[src] = [];
     const $script = document.createElement('script');
@@ -16,7 +15,8 @@ function loadScript(src, callback) {
     $script.id = src;
     $script.async = 1;
     document.body.appendChild($script);
-    const onEnd = 'onload' in $script ? stdOnEnd.bind($script) : ieOnEnd.bind($script);
+    const onEnd =
+      'onload' in $script ? stdOnEnd.bind($script) : ieOnEnd.bind($script);
     onEnd($script);
   }
 
@@ -25,7 +25,7 @@ function loadScript(src, callback) {
   function stdOnEnd(script) {
     script.onload = () => {
       this.onerror = this.onload = null;
-      callbacks[src].forEach(item => {
+      callbacks[src].forEach((item) => {
         item(null, script);
       });
       delete callbacks[src];
@@ -40,7 +40,7 @@ function loadScript(src, callback) {
     script.onreadystatechange = () => {
       if (this.readyState !== 'complete' && this.readyState !== 'loaded') return;
       this.onreadystatechange = null;
-      callbacks[src].forEach(item => {
+      callbacks[src].forEach((item) => {
         item(null, script);
       });
       delete callbacks[src];
@@ -55,7 +55,9 @@ function loadScript(src, callback) {
  */
 export function loadScriptQueue(list, cb) {
   const first = list.shift();
-  list.length ? loadScript(first, () => loadScriptQueue(list, cb)) : loadScript(first, cb);
+  list.length
+    ? loadScript(first, () => loadScriptQueue(list, cb))
+    : loadScript(first, cb);
 }
 
 export default loadScript;

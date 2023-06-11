@@ -4,8 +4,8 @@ import { WIDGETS } from '@/modules/form/components/widgets/base-widget/widgets';
 export default class SelectWidget extends BaseWidget {
   palletSettings = {
     label: 'Select',
-    icon: 'select'
-  };
+    icon: 'select',
+  }
 
   overrideConfigSection(configSectionWidgets) {
     Object.assign(configSectionWidgets, {
@@ -17,9 +17,9 @@ export default class SelectWidget extends BaseWidget {
           labelWidth: 100,
           span: 24,
           label: 'Multiple',
-          advance: true
-        }
-      }
+          advance: true,
+        },
+      },
     });
     if (!this.isWidgetWithField()) {
       return Object.assign(configSectionWidgets, {
@@ -31,52 +31,54 @@ export default class SelectWidget extends BaseWidget {
             label: 'Choices',
             advance: true,
             repeaterConfig: {
-              'widgets': [
+              widgets: [
                 {
-                  'fieldName': 'label',
-                  'designMode': false,
-                  'widgetAlias': WIDGETS.input,
-                  'widgetSettings': {
+                  fieldName: 'label',
+                  designMode: false,
+                  widgetAlias: WIDGETS.input,
+                  widgetSettings: {
                     span: 24,
-                    'label': 'Label',
-                    'required': true
-                  }
+                    label: 'Label',
+                    required: true,
+                  },
                 },
                 {
-                  'fieldName': 'value',
-                  'designMode': false,
-                  'widgetAlias': WIDGETS.input,
+                  fieldName: 'value',
+                  designMode: false,
+                  widgetAlias: WIDGETS.input,
                   span: 24,
-                  'widgetSettings': {
+                  widgetSettings: {
                     span: 24,
-                    'label': 'Value',
-                    'required': true
-                  }
-                }
-
-              ]
-            }
-          }
-        }
+                    label: 'Value',
+                    required: true,
+                  },
+                },
+              ],
+            },
+          },
+        },
       });
     }
     return configSectionWidgets;
   }
 
   overrideFieldSettings(fieldSettings) {
-    return Object.assign({
-      multiple: false,
-      collapseTags: false,
-      clearable: true,
-      filterable: true,
-      allowCreate: false,
-      defaultFirstOption: false
-    }, fieldSettings);
+    return Object.assign(
+      {
+        multiple: false,
+        collapseTags: false,
+        clearable: true,
+        filterable: true,
+        allowCreate: false,
+        defaultFirstOption: false,
+      },
+      fieldSettings
+    );
   }
 
   slot = {
-    options: []
-  };
+    options: [],
+  }
 
   options(h, key) {
     const list = [];
@@ -84,8 +86,14 @@ export default class SelectWidget extends BaseWidget {
       if (typeof this.slot.options === 'string') {
         this.slot.options = JSON.parse(this.slot.options);
       }
-      this.slot.options.forEach(item => {
-        list.push(<el-option label={item.label} value={item.value} disabled={item.disabled}/>);
+      this.slot.options.forEach((item) => {
+        list.push(
+          <el-option
+            label={item.label}
+            value={item.value}
+            disabled={item.disabled}
+          />
+        );
       });
     }
     return list;

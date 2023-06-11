@@ -1,18 +1,18 @@
 import { EngineScript } from '@/modules/engine/core/engine.script';
 
 export class EngineAction extends EngineScript {
-  children = [];
+  children = []
   style = {
-    icon: 'el-icon-check',
+    icon: 'elu-icon-check',
     plain: true,
     shape: 'plain',
     size: 'small',
-    type: 'plain'
-  };
-  label;
-  loading = false;
-  parent;
-  hidden = false;
+    type: 'plain',
+  }
+  label
+  loading = false
+  parent
+  hidden = false
 
   constructor(settings = {}) {
     super(settings);
@@ -40,4 +40,3 @@ export class EngineAction extends EngineScript {
     this.hidden = true;
   }
 }
-

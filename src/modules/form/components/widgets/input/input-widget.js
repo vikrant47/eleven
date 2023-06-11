@@ -3,8 +3,8 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 export default class InputWidget extends BaseWidget {
   palletSettings = {
     label: 'Input',
-    icon: 'input'
-  };
+    icon: 'input',
+  }
 
   constructor(settings = {}) {
     if (settings.fieldSettings && settings.fieldSettings.type === 'password') {

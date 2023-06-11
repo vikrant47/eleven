@@ -3,12 +3,12 @@ import { WIDGETS } from '@/modules/form/components/widgets/base-widget/widgets';
 import RicheditorWidget from '@/modules/form/components/widgets/richeditor/richeditor-widget';
 
 export default class CodeEditorWidget extends RicheditorWidget {
-  formItemConfig = {};
+  formItemConfig = {}
   palletSettings = {
     label: 'Rich Editor',
-    icon: 'edit'
-  };
-  fullscreen = false;
+    icon: 'edit',
+  }
+  fullscreen = false
 
   overrideConfigSection(configSectionWidgets) {
     Object.assign(configSectionWidgets, {
@@ -17,33 +17,48 @@ export default class CodeEditorWidget extends RicheditorWidget {
         widgetAlias: WIDGETS.switch,
         widgetSettings: {
           label: 'Parse JSON',
-          advance: true
-        }
+          advance: true,
+        },
       },
       'widgetSettings.language': {
         fieldName: 'widgetSettings.language',
         widgetAlias: WIDGETS.select,
         widgetSettings: {
-          label: 'Language'
+          label: 'Language',
         },
         slot: {
-          options: [{
-            label: 'Javascript', value: 'javascript'
-          }, {
-            label: 'Html', value: 'html'
-          }, {
-            label: 'Css', value: 'css'
-          }, {
-            label: 'Plain', value: 'plain'
-          }, {
-            label: 'JSON', value: 'json'
-          }, {
-            label: 'Php', value: 'php'
-          }, {
-            label: 'Rich Editor', value: 'rich_editor'
-          }]
-        }
-      }
+          options: [
+            {
+              label: 'Javascript',
+              value: 'javascript',
+            },
+            {
+              label: 'Html',
+              value: 'html',
+            },
+            {
+              label: 'Css',
+              value: 'css',
+            },
+            {
+              label: 'Plain',
+              value: 'plain',
+            },
+            {
+              label: 'JSON',
+              value: 'json',
+            },
+            {
+              label: 'Php',
+              value: 'php',
+            },
+            {
+              label: 'Rich Editor',
+              value: 'rich_editor',
+            },
+          ],
+        },
+      },
     });
     return configSectionWidgets;
   }
@@ -74,7 +89,7 @@ export default class CodeEditorWidget extends RicheditorWidget {
           }
         }
         _this.setValue(value);
-      }
+      },
     };
   }
 
@@ -94,13 +109,13 @@ export default class CodeEditorWidget extends RicheditorWidget {
       on: this.getEvents(config),
       style: {
         width: config.width,
-        height: config.height
+        height: config.height,
       },
       props: {
         language: config.language,
         options: { automaticLayout: true },
-        value: value || ''
-      }
+        value: value || '',
+      },
     };
     const vEditor = h(MonacoEditor, options);
     setTimeout(() => {
@@ -109,32 +124,45 @@ export default class CodeEditorWidget extends RicheditorWidget {
         editor.layout();
       }
     }, 500); // render issue fixed
-    return (<div class='code-editor-wrapper' id={'code-editor-wrapper' + this.id} style={{ width: this.width }}>
-      <el-button
-        type='button'
-        class='el-button'
-        icon='el-icon-full-screen'
-        style={{ position: 'absolute', right: '0px', top: '0px', 'z-index': '99' }}
-        onClick={event => {
-          event.stopPropagation();
-          // console.log(this);
-          const wrapper = document.getElementById('code-editor-wrapper' + this.id);
-          if (!this.fullscreen) {
-            wrapper.className = 'code-editor-wrapper full-screen';
-            this.fullscreen = true;
-          } else {
-            wrapper.className = 'code-editor-wrapper';
-            this.fullscreen = false;
-          }
-          setTimeout(() => {
-            const editor = vEditor.componentInstance.getEditor();
-            editor.layout();
-          }, 500);
-          return false;
-        }}
-      />
-      {vEditor}
-    </div>);
+    return (
+      <div
+        class='code-editor-wrapper'
+        id={'code-editor-wrapper' + this.id}
+        style={{ width: this.width }}
+      >
+        <el-button
+          type='button'
+          class='el-button'
+          icon='elu-icon-full-screen'
+          style={{
+            position: 'absolute',
+            right: '0px',
+            top: '0px',
+            'z-index': '99',
+          }}
+          onClick={(event) => {
+            event.stopPropagation();
+            // console.log(this);
+            const wrapper = document.getElementById(
+              'code-editor-wrapper' + this.id
+            );
+            if (!this.fullscreen) {
+              wrapper.className = 'code-editor-wrapper full-screen';
+              this.fullscreen = true;
+            } else {
+              wrapper.className = 'code-editor-wrapper';
+              this.fullscreen = false;
+            }
+            setTimeout(() => {
+              const editor = vEditor.componentInstance.getEditor();
+              editor.layout();
+            }, 500);
+            return false;
+          }}
+        />
+        {vEditor}
+      </div>
+    );
   }
 
   componentRender(component, h) {

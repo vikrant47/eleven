@@ -3,10 +3,14 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 export default class colorPickerWidget extends BaseWidget {
   palletSettings = {
     label: 'Color Picker',
-    icon: 'color-picker'
-  };
+    icon: 'color-picker',
+  }
 
   componentRender(component, h) {
-    return h('el-color-picker', this.getComponentConfig(component), this.getChildren());
+    return h(
+      'el-color-picker',
+      this.getComponentConfig(component),
+      this.getChildren()
+    );
   }
 }

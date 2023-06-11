@@ -7,11 +7,11 @@ import draggable from 'vuedraggable';
 import _ from 'lodash';
 
 export default class RepeaterWidget extends FormDesignerWidget {
-  forms;
+  forms
   palletSettings = {
     label: 'Repeater',
-    icon: 'el-icon-coin'
-  };
+    icon: 'elu-icon-coin',
+  }
   transient = [
     'transient',
     'forms',
@@ -25,8 +25,8 @@ export default class RepeaterWidget extends FormDesignerWidget {
     'data',
     'componentConfig',
     'fieldSettings..*',
-    'widgetSettings..*'
-  ];
+    'widgetSettings..*',
+  ]
 
   overrideConfigSection(configSectionWidgets) {
     return Object.assign(configSectionWidgets, {
@@ -37,9 +37,9 @@ export default class RepeaterWidget extends FormDesignerWidget {
           labelWidth: 100,
           span: 24,
           label: 'Single',
-          advance: true
-        }
-      }
+          advance: true,
+        },
+      },
     });
   }
 
@@ -64,8 +64,11 @@ export default class RepeaterWidget extends FormDesignerWidget {
 
   unmarshallWidgets(widgets) {
     return widgets.map((marshalledWidget) => {
-      marshalledWidget.widgetAlias = marshalledWidget.widgetAlias ? marshalledWidget.widgetAlias : WIDGETS.input;
-      const FormWidgetService = require('../../../services/form.widget.service').FormWidgetService;
+      marshalledWidget.widgetAlias = marshalledWidget.widgetAlias
+        ? marshalledWidget.widgetAlias
+        : WIDGETS.input;
+      const FormWidgetService =
+        require('../../../services/form.widget.service').FormWidgetService;
       const widget = new FormWidgetService().getWidgetInstance(marshalledWidget);
       return widget;
     });
@@ -101,19 +104,23 @@ export default class RepeaterWidget extends FormDesignerWidget {
   componentRender(component, h) {
     // const config = this.getComponentConfig(component);
     if (this.designMode) {
-      return h(FormDesigner, {
-        on: {
-          input: (value) => {
-            this.widgetSettings.repeaterConfig = value;
-            this.syncConfig('widgetSettings.repeaterConfig');
-          }
+      return h(
+        FormDesigner,
+        {
+          on: {
+            input: (value) => {
+              this.widgetSettings.repeaterConfig = value;
+              this.syncConfig('widgetSettings.repeaterConfig');
+            },
+          },
+          props: {
+            showPallet: false,
+            value: this.widgetSettings.repeaterConfig,
+            pallet: [],
+          },
         },
-        props: {
-          showPallet: false,
-          value: this.widgetSettings.repeaterConfig,
-          pallet: []
-        }
-      }, this.getChildren());
+        this.getChildren()
+      );
     } else {
       const value = this.getValue();
       this.forms = value.map((record, i) => {
@@ -126,46 +133,65 @@ export default class RepeaterWidget extends FormDesignerWidget {
   getRepeaterTemplate(h, value) {
     return (
       <draggable
-        class={'repeater-wrapper ' + (this.widgetSettings.doNotRepeat === true ? 'repeater-wrapper-no-repeat' : '')}
-        list={value} animation='340' onChange={() => {
+        class={
+          'repeater-wrapper ' +
+          (this.widgetSettings.doNotRepeat === true
+            ? 'repeater-wrapper-no-repeat'
+            : '')
+        }
+        list={value}
+        animation='340'
+        onChange={() => {
           this.setValue(value);
           this.repaint();
-        }}>
+        }}
+      >
         {this.forms.map((form, index) => {
           return (
             <div class='repeater-item'>
-              <button class='close-btn' type='button' title='Delete' onClick={event => {
-                this.deleteRepeaterItem(index, form);
-                this.repaint();
-                event.stopPropagation();
-              }}>
-                <i class='el-icon-close'/>
+              <button
+                class='close-btn'
+                type='button'
+                title='Delete'
+                onClick={(event) => {
+                  this.deleteRepeaterItem(index, form);
+                  this.repaint();
+                  event.stopPropagation();
+                }}
+              >
+                <i class='elu-icon-close' />
               </button>
               {h(Parser, {
                 style: {
-                  padding: '0'
+                  padding: '0',
                 },
-                props: { engineForm: form, evalContext: {}}, on: {
+                props: { engineForm: form, evalContext: {}},
+                on: {
                   fieldValueUpdated: () => {
                     const value = this.getValue();
                     value[index] = form.getRecord();
                     this.setValue(value);
-                  }
-                }
+                  },
+                },
               })}
             </div>
           );
         })}
-        <el-button class='add-item' title='Add' size='mini' type='primary' onClick={event => {
-          this.addRepeaterItem(this.forms.length, {});
-          this.repaint();
-          event.stopPropagation();
-        }}>
-          <i className='el-icon-document-add'/>
+        <el-button
+          class='add-item'
+          title='Add'
+          size='mini'
+          type='primary'
+          onClick={(event) => {
+            this.addRepeaterItem(this.forms.length, {});
+            this.repaint();
+            event.stopPropagation();
+          }}
+        >
+          <i className='elu-icon-document-add' />
           Add
         </el-button>
       </draggable>
     );
   }
 }
-

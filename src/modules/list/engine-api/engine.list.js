@@ -13,42 +13,42 @@ import { EngineNotification } from '@/modules/engine/services/engine.notificatio
 export class EngineList extends EngineDefinitionService {
   static views = {
     tabular: TabularListView,
-    mediaLibrary: MediaLibrary
-  };
-  defaultView = true;
+    mediaLibrary: MediaLibrary,
+  }
+  defaultView = true
   definition = {
     list: {
-      fields: []
-    }
-  };
-  $viewRef = null;
-  columns = [];
-  rows = [];
+      fields: [],
+    },
+  }
+  $viewRef = null
+  columns = []
+  rows = []
   order = {
     attribute: 'updated_at',
-    direction: 'DESC'
-  };
+    direction: 'DESC',
+  }
   pagination = {
     // page number
     page: 0,
     // Number of rows per page
     limit: 15,
     // Total number of rows
-    total: 0
-  };
+    total: 0,
+  }
   settings = {
     list: 'default',
     modelAlias: null,
     remote: true,
     showLoader: true,
-    loaderDelay: 30
-  };
-  condition = {};
-  quickSearchValue = null;
-  selection = [];
-  lazy = false;
-  modelAssociation = null;
-  filterQuery = null;
+    loaderDelay: 30,
+  }
+  condition = {}
+  quickSearchValue = null
+  selection = []
+  lazy = false
+  modelAssociation = null
+  filterQuery = null
   constructor(settings) {
     super();
     this.settings = Object.assign(this.settings, settings);
@@ -69,7 +69,10 @@ export class EngineList extends EngineDefinitionService {
 
   getViewName() {
     let component = this.definition.list.type;
-    if (component === 'external_url' && this.definition.list.external_url.startsWith('renderer:')) {
+    if (
+      component === 'external_url' &&
+      this.definition.list.external_url.startsWith('renderer:')
+    ) {
       component = this.definition.list.external_url.replace('renderer:', '');
     }
     return EngineList.views[component] ? component : 'tabular';
@@ -81,18 +84,21 @@ export class EngineList extends EngineDefinitionService {
   }
 
   getSelectedFieldIds() {
-    return this.definition.list.config.widgets.map(widget => widget.id);
+    return this.definition.list.config.widgets.map((widget) => widget.id);
   }
 
   getSelectedFields() {
     const fieldIds = this.getSelectedFieldIds();
-    return this.getFields().filter(field => fieldIds.indexOf(field.id) >= 0);
+    return this.getFields().filter((field) => fieldIds.indexOf(field.id) >= 0);
   }
 
   registerEvents() {
-    this.pagination.on([Pagination.events.sizeChange, Pagination.events.currentChange], () => {
-      this.refresh();
-    });
+    this.pagination.on(
+      [Pagination.events.sizeChange, Pagination.events.currentChange],
+      () => {
+        this.refresh();
+      }
+    );
   }
 
   populateActions() {
@@ -112,7 +118,9 @@ export class EngineList extends EngineDefinitionService {
     const conditions = [];
     if (this.quickSearchValue && this.quickSearchValue.trim().length > 0) {
       const sds = new SearchDataService();
-      const quickSearch = sds.getQuickSearchOperatorByValue(this.quickSearchValue);
+      const quickSearch = sds.getQuickSearchOperatorByValue(
+        this.quickSearchValue
+      );
       if (this.definition.list) {
         let searchableColumns = 0;
         let widgets = this.getWidgets();
@@ -122,9 +130,14 @@ export class EngineList extends EngineDefinitionService {
         widgets.forEach((column) => {
           if (column.searchable) {
             searchableColumns = searchableColumns + 1;
-            if (!quickSearch.supportedTypes || quickSearch.supportedTypes.indexOf(column.type) > -1) {
+            if (
+              !quickSearch.supportedTypes ||
+              quickSearch.supportedTypes.indexOf(column.type) > -1
+            ) {
               if (quickSearch.op) {
-                conditions.push({ [column.name]: { [quickSearch.op]: quickSearch.value }});
+                conditions.push({
+                  [column.name]: { [quickSearch.op]: quickSearch.value },
+                });
               } else {
                 conditions.push({ [column.name]: quickSearch.value });
               }
@@ -134,13 +147,13 @@ export class EngineList extends EngineDefinitionService {
         if (searchableColumns > 0 && conditions.length === 0) {
           EngineNotification.getInstance().showMessage({
             type: 'info',
-            message: 'No column qualified for given search'
+            message: 'No column qualified for given search',
           });
         }
       }
 
       if (conditions.length > 0) {
-        return { '$or': conditions };
+        return { $or: conditions };
       }
     }
     return null;
@@ -160,10 +173,7 @@ export class EngineList extends EngineDefinitionService {
     if (qsCondition) {
       if (!_.isEmpty(this.condition)) {
         return {
-          '$and': [
-            this.condition,
-            qsCondition
-          ]
+          $and: [this.condition, qsCondition],
         };
       }
       return qsCondition;
@@ -183,7 +193,9 @@ export class EngineList extends EngineDefinitionService {
 
   async refresh() {
     this.emit(LIST_EVENTS.model.beforeFetch);
-    await this.triggerProcessors(new ListEvent(LIST_EVENTS.model.beforeFetch, this));
+    await this.triggerProcessors(
+      new ListEvent(LIST_EVENTS.model.beforeFetch, this)
+    );
     if (this.settings.remote === false) {
       await this.triggerProcessors(new ListEvent(LIST_EVENTS.model.fetch, this));
       this.emit(LIST_EVENTS.model.fetch, this.rows);
@@ -192,7 +204,7 @@ export class EngineList extends EngineDefinitionService {
     this.enableLoading();
     try {
       const selectedFields = this.getSelectedFields();
-      const selectedFieldNames = selectedFields.map(field => field.name);
+      const selectedFieldNames = selectedFields.map((field) => field.name);
       // request rows
       const query = {
         fields: selectedFieldNames,
@@ -201,13 +213,17 @@ export class EngineList extends EngineDefinitionService {
         where: await this.getQuery(),
         include: this.getIncludeStatement(selectedFieldNames),
         normalizedWhere: this.filterQuery,
-        order: [{
-          field: this.order.attribute,
-          direction: this.order.direction
-        }]
+        order: [
+          {
+            field: this.order.attribute,
+            direction: this.order.direction,
+          },
+        ],
       };
       await this.syncEmit('beforeQuery', query);
-      const response = await new RestQuery(this.settings.modelAlias).paginate(query);
+      const response = await new RestQuery(this.settings.modelAlias).paginate(
+        query
+      );
       this.pagination.total = response.contents.total;
       this.rows = response.contents.data;
       // time Show table in milliseconds
@@ -229,7 +245,9 @@ export class EngineList extends EngineDefinitionService {
   }
 
   getColumnNames() {
-    return this.definition.list.fields.filter(column => column.field.indexOf('[') < 0).map(column => column.field);
+    return this.definition.list.fields
+      .filter((column) => column.field.indexOf('[') < 0)
+      .map((column) => column.field);
   }
 
   /** Adding formatters for columns**/
@@ -237,10 +255,11 @@ export class EngineList extends EngineDefinitionService {
     if (this.definition.list.config.widgets) {
       const configFields = this.definition.list.config.widgets;
       const fieldsWithId = this.getFieldsByKey('id');
-      this.definition.list.config.widgets = configFields.map(field => {
+      this.definition.list.config.widgets = configFields.map((field) => {
         field = Object.assign({}, fieldsWithId[field.id], field);
         field.visible = !field.hidden;
-        field.config = LIST_WIDGETS[field.list_renderer] || LIST_WIDGETS['input'];
+        field.config =
+          LIST_WIDGETS[field.list_renderer] || LIST_WIDGETS['input'];
         return field;
       });
     }
@@ -263,14 +282,19 @@ export class EngineList extends EngineDefinitionService {
     if (this.definitionLoaded === false) {
       try {
         this.emit(LIST_EVENTS.definition.beforeLoadDefinition);
-        await this.triggerProcessors(new ListEvent(LIST_EVENTS.definition.beforeFetch, this));
+        await this.triggerProcessors(
+          new ListEvent(LIST_EVENTS.definition.beforeFetch, this)
+        );
         if (this.settings.remote === false) {
           this.sanitizeDefinition();
         }
         this.enableLoading();
         // request data
-        const response = await new ModelService(this.settings.modelAlias).requestDefinition({
-          list: this.settings.list === 'default' ? 'default' : this.settings.list
+        const response = await new ModelService(
+          this.settings.modelAlias
+        ).requestDefinition({
+          list:
+            this.settings.list === 'default' ? 'default' : this.settings.list,
         });
         this.definition = response.contents;
         this.sanitizeDefinition();
@@ -280,7 +304,9 @@ export class EngineList extends EngineDefinitionService {
         }, this.settings.loaderDelay);
         this.emit(LIST_EVENTS.definition.fetch, this.definition);
         this.definitionLoaded = true;
-        await this.triggerProcessors(new ListEvent(LIST_EVENTS.definition.fetch, this));
+        await this.triggerProcessors(
+          new ListEvent(LIST_EVENTS.definition.fetch, this)
+        );
         return this.definition;
       } catch (err) {
         this.disableLoading();

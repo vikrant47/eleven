@@ -1,7 +1,15 @@
 import variables from '@/assets/styles/element-variables.scss';
 import defaultSettings from '@/settings';
 
-const { tagsView, fixedHeader, sidebarLogo, uniqueOpened, showFooter, footerTxt, caseNumber } = defaultSettings;
+const {
+  tagsView,
+  fixedHeader,
+  sidebarLogo,
+  uniqueOpened,
+  showFooter,
+  footerTxt,
+  caseNumber,
+} = defaultSettings;
 
 const state = {
   theme: variables.theme,
@@ -12,7 +20,7 @@ const state = {
   uniqueOpened: uniqueOpened,
   showFooter: showFooter,
   footerTxt: footerTxt,
-  caseNumber: caseNumber
+  caseNumber: caseNumber,
 };
 
 const mutations = {
@@ -20,19 +28,18 @@ const mutations = {
     if (state.hasOwnProperty(key)) {
       state[key] = value;
     }
-  }
+  },
 };
 
 const actions = {
   changeSetting({ commit }, data) {
     commit('CHANGE_SETTING', data);
-  }
+  },
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 };
-

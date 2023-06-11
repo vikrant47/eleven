@@ -4,6 +4,6 @@ export function del(keys) {
   return request({
     url: 'auth/online',
     method: 'delete',
-    data: keys
+    data: keys,
   });
 }

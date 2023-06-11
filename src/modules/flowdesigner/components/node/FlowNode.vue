@@ -6,7 +6,6 @@
 </template>
 
 <script>
-
 import { EngineFlowNode } from '@/modules/flowdesigner/engine-api/engine.flow.node';
 
 export default {
@@ -17,6 +16,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

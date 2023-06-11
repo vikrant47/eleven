@@ -10,15 +10,17 @@
         @submit="submitForm"
       />
     </div>
-    <div v-if="showRelatedRecords && engineForm.relatedRecords.length" class="related-record-wrapper">
+    <div
+      v-if="showRelatedRecords && engineForm.relatedRecords.length"
+      class="related-record-wrapper"
+    >
       <RelatedRecord :engine-form="engineForm" />
     </div>
   </div>
 </template>
 
 <script>
-
-import {Vue} from '@/main';
+import { Vue } from '@/main';
 import Parser from '@/modules/form/components/widgets/form-designer/render/Parser';
 import { EngineForm } from '@/modules/form/engine-api/engine.form';
 import { FormEventHandler } from '@/modules/form/services/form.event.handler';
@@ -35,21 +37,21 @@ export default {
   props: {
     previewMode: {
       type: Boolean,
-      default: false
+      default: false,
     },
     toolbar: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showRelatedRecords: {
       type: Boolean,
-      default: true
+      default: true,
     },
     formConfig: {
       type: Object,
       default: () => {
         return {};
-      }
+      },
     },
     modelAlias: {
       type: String,
@@ -58,34 +60,34 @@ export default {
     },
     recordId: {
       type: String,
-      default: 'new'
+      default: 'new',
     },
     remote: {
       type: Boolean,
-      default: true
+      default: true,
     },
     actions: {
       type: Array,
-      default: null
+      default: null,
     },
     formId: {
       type: String,
-      default: 'default'
+      default: 'default',
     },
     controls: {
       type: Object,
       default: () => {
         return {
-          tabs: []
+          tabs: [],
         };
-      }
+      },
     },
     record: {
       type: Object,
       default() {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -98,8 +100,8 @@ export default {
         recordId: this.recordId,
         controls: this.controls,
         record: this.record || {},
-        actions: this.actions || []
-      })
+        actions: this.actions || [],
+      }),
     };
   },
   beforeCreate() {
@@ -112,24 +114,31 @@ export default {
     } else {
       this.engineForm.setRecord({});
     }
-    await this.engineForm.triggerProcessors(new FormEvent(FORM_EVENTS.form.afterRender), {});
+    await this.engineForm.triggerProcessors(
+      new FormEvent(FORM_EVENTS.form.afterRender),
+      {}
+    );
   },
   beforeDestroy() {
-    this.engineForm.triggerProcessors(new FormEvent(FORM_EVENTS.form.beforeDestroy), {});
+    this.engineForm.triggerProcessors(
+      new FormEvent(FORM_EVENTS.form.beforeDestroy),
+      {}
+    );
   },
   updated() {
-    this.engineForm.triggerProcessors(new FormEvent(FORM_EVENTS.form.beforeRender), {});
+    this.engineForm.triggerProcessors(
+      new FormEvent(FORM_EVENTS.form.beforeRender),
+      {}
+    );
   },
   methods: {
-    submitForm() {
-
-    }
-  }
+    submitForm() {},
+  },
 };
 </script>
 
-<style lang='scss'>
-.form-parser-wrapper{
+<style lang="scss">
+.form-parser-wrapper {
   margin-bottom: 15px;
 }
 @import '../../../styles/home';

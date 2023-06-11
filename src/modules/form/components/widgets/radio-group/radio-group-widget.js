@@ -3,22 +3,32 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 export default class RadioGroupWidget extends BaseWidget {
   palletSettings = {
     label: 'Radio',
-    icon: 'radio'
-  };
+    icon: 'radio',
+  }
 
   options(h, key) {
     const list = [];
-    this.slot.options.forEach(item => {
+    this.slot.options.forEach((item) => {
       if (this.widgetSettings.optionType === 'button') {
-        list.push(<el-radio-button label={item.value}>{item.label}</el-radio-button>);
+        list.push(
+          <el-radio-button label={item.value}>{item.label}</el-radio-button>
+        );
       } else {
-        list.push(<el-radio label={item.value} border={this.fieldSettings.border}>{item.label}</el-radio>);
+        list.push(
+          <el-radio label={item.value} border={this.fieldSettings.border}>
+            {item.label}
+          </el-radio>
+        );
       }
     });
     return list;
   }
 
   componentRender(component, h) {
-    return h('el-radio-group', this.getComponentConfig(component), this.getChildren(h));
+    return h(
+      'el-radio-group',
+      this.getComponentConfig(component),
+      this.getChildren(h)
+    );
   }
 }

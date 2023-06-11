@@ -7,7 +7,8 @@ export const WidgetTypes = {
   [WIDGETS.select]: require('../select/select-widget').default,
   [WIDGETS.cascader]: require('../cascader/cascader-widget').default,
   [WIDGETS.radioGroup]: require('../radio-group/radio-group-widget').default,
-  [WIDGETS.checkboxGroup]: require('../checkbox-group/checkbox-group-widget').default,
+  [WIDGETS.checkboxGroup]: require('../checkbox-group/checkbox-group-widget')
+    .default,
   [WIDGETS.switch]: require('../switch/switch-widget').default,
   [WIDGETS.row]: require('../row/row-widget').default,
   [WIDGETS.time]: require('../time/time-widget').default,
@@ -16,16 +17,21 @@ export const WidgetTypes = {
   [WIDGETS.button]: require('../button/button-widget').default,
   [WIDGETS.rate]: require('../rate/rate-widget').default,
   [WIDGETS.colorPicker]: require('../color-picker/color-picker-widget').default,
-  [WIDGETS.formDesigner]: require('../form-designer/form-designer-widget').default,
-  [WIDGETS.listDesigner]: require('../list-designer/list-designer-widget').default,
+  [WIDGETS.formDesigner]: require('../form-designer/form-designer-widget')
+    .default,
+  [WIDGETS.listDesigner]: require('../list-designer/list-designer-widget')
+    .default,
   [WIDGETS.reference]: require('../reference/reference-widget').default,
   [WIDGETS.icon]: require('../icon-picker/icon-picker-widget').default,
   [WIDGETS.divider]: require('../divider/divider-widget').default,
   [WIDGETS.repeater]: require('../repeater/repeater-widget').default,
   [WIDGETS.codeEditor]: require('../code-editor/code-editor-widget').default,
   [WIDGETS.fileUpload]: require('../fileupload/file-upload-widget').default,
-  [WIDGETS.multiReference]: require('../multi-reference/multi-reference-widget').default,
-  [WIDGETS.fileReference]: require('../file-reference/file-reference-widget').default,
-  [WIDGETS.queryBuilder]: require('../query-builder/query-builder-widget').default,
+  [WIDGETS.multiReference]: require('../multi-reference/multi-reference-widget')
+    .default,
+  [WIDGETS.fileReference]: require('../file-reference/file-reference-widget')
+    .default,
+  [WIDGETS.queryBuilder]: require('../query-builder/query-builder-widget')
+    .default,
   [WIDGETS.crontab]: require('../crontab/crontab-widget').default,
 };

@@ -1,3 +1,1 @@
-export class WidgetHelper {
-
-}
+export class WidgetHelper {}

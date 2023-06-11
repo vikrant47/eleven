@@ -4,7 +4,7 @@ import { createApp } from 'vue';
 
 import 'normalize.css/normalize.css';
 
-// import Element from 'element-plus';
+import 'element-plus/dist/index.css';
 //
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
@@ -24,29 +24,23 @@ import 'echarts-gl';
 // custom css
 import './assets/styles/custom.scss';
 import router from './router/routers';
+import ElementPlus from 'element-plus';
 import store from './store';
+import './router/index';
+import './assets/icons';
+import './modules/engine/filters/index';
+import dict from './components/Dict';
+import permission from './components/Permission';
+
 const app = createApp(App);
+app.use(ElementPlus);
 app.use(router);
 app.use(store);
-const initApp = () => {
-// Data Dictionary
-  const dict = require('./components/Dict');
-
-  const store = require('./store').default;
-  const permission = require('./components/Permission').default;
-  require('./router/index'); // permission control
-  require('./assets/icons'); // permission control
-// filters
-  require('./modules/engine/filters/index');
-  // const i18n = require('./lang'); // Internationalization
-  app.use(VueHighlightJS);
-  app.use(mavonEditor);
-  app.use(permission);
-  app.use(dict);
-  // app.use(i18n);
-};
+app.use(VueHighlightJS);
+app.use(mavonEditor);
+app.use(permission);
+app.use(dict);
 app.mount('#app');
-process.nextTick(initApp);
 /*
 Vue.use(Element, {
   size: localStorage.getItem('size') || 'small', // set element-plus default size

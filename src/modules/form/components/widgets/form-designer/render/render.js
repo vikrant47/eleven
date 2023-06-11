@@ -90,30 +90,31 @@ export default {
   props: {
     widget: {
       type: BaseWidget,
-      required: true
+      required: true,
     },
     formModel: {
       type: Object,
-      require: true
+      require: true,
     },
     evalContext: {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
-    wrapper: { // weather to create wrapper divs
+    wrapper: {
+      // weather to create wrapper divs
       type: Boolean,
       default() {
         return true;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       flag: true,
       methods: this.widget.getMethods(),
-      render: { key: new Date().getTime() }
+      render: { key: new Date().getTime() },
     };
   },
   watch: {},
@@ -131,13 +132,13 @@ export default {
     if (this.widget.designMode !== true) {
       template = h('el-col', this.widget.getWrapperConfig(), [
         h('el-form-item', this.widget.getFormItemConfig(), [
-          this.widget.renderWidget(this, h)
-        ])
+          this.widget.renderWidget(this, h),
+        ]),
       ]);
     } else {
       template = this.widget.renderWidget(this, h);
     }
     this.widget.afterRender();
     return template;
-  }
+  },
 };

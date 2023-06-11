@@ -1,3 +1,1 @@
-export class FormEventHandler {
-
-}
+export class FormEventHandler {}

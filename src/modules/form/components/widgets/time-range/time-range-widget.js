@@ -3,6 +3,6 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 export default class TimeRangeWidget extends BaseWidget {
   palletSettings = {
     label: 'Time Range',
-    icon: 'timerange'
-  };
+    icon: 'timerange',
+  }
 }

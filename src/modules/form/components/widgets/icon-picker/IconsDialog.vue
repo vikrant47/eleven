@@ -13,9 +13,9 @@
         <el-input
           v-model="key"
           size="mini"
-          :style="{width: '260px'}"
+          :style="{ width: '260px' }"
           placeholder="Please enter the icon name"
-          prefix-icon="el-icon-search"
+          :prefix-icon="EluIconSearch"
           clearable
         />
       </div>
@@ -23,7 +23,7 @@
         <li
           v-for="icon in iconList"
           :key="icon"
-          :class="active===icon?'active-item':''"
+          :class="active === icon ? 'active-item' : ''"
           @click="onSelect(icon)"
         >
           <i :class="icon" />
@@ -33,10 +33,12 @@
     </el-dialog>
   </div>
 </template>
+
 <script>
+import { Search as EluIconSearch } from '@element-plus/icons';
 import iconList from '@/modules/form/utils/icon.json';
 
-const originList = iconList.map(name => `el-icon-${name}`);
+const originList = iconList.map((name) => `elu-icon-${name}`);
 
 export default {
   name: 'IconsDialog',
@@ -44,40 +46,41 @@ export default {
   props: {
     value: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
       iconList: originList,
       active: null,
-      key: ''
+      key: '',
+      EluIconSearch,
     };
   },
   watch: {
     key(val) {
       if (val) {
-        this.iconList = originList.filter(name => name.indexOf(val) > -1);
+        this.iconList = originList.filter((name) => name.indexOf(val) > -1);
       } else {
         this.iconList = originList;
       }
-    }
+    },
   },
   methods: {
     onOpen() {
       this.active = this.value;
       this.key = '';
     },
-    onClose() {
-    },
+    onClose() {},
     onSelect(icon) {
       this.active = icon;
       this.$emit('select', icon);
       this.$emit('update:visible', false);
-    }
-  }
+    },
+  },
 };
 </script>
+
 <style lang="scss" scoped>
 .icon-ul {
   margin: 0;
@@ -102,7 +105,7 @@ export default {
 
     &.active-item {
       background: #e1f3fb;
-      color: #7a6df0
+      color: #7a6df0;
     }
 
     > i {

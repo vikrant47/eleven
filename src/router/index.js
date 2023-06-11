@@ -1,12 +1,12 @@
 import router from './routers';
 import Config from '@/settings';
 import NProgress from 'nprogress'; // progress bar
-import 'nprogress/nprogress.css';// progress bar style
+import 'nprogress/nprogress.css'; // progress bar style
 import { getToken } from '@/utils/auth'; // getToken from cookie
 
-NProgress.configure({ showSpinner: false });// NProgress Configuration
+NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
-const whiteList = ['/login'];// no redirect whitelist
+const whiteList = ['/login']; // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
@@ -23,7 +23,8 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     /* has no token*/
-    if (whiteList.indexOf(to.path) !== -1) { // In the whitelist without login, enter directly
+    if (whiteList.indexOf(to.path) !== -1) {
+      // In the whitelist without login, enter directly
       next();
     } else {
       next(`/login?redirect=${to.fullPath}`); // Otherwise all redirect to the login page

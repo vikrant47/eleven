@@ -5,12 +5,12 @@ import ruleTrigger from './ruleTrigger';
 const units = {
   KB: '1024',
   MB: '1024 / 1024',
-  GB: '1024 / 1024 / 1024'
+  GB: '1024 / 1024 / 1024',
 };
 let confGlobal;
 const inheritAttrs = {
   file: '',
-  dialog: 'inheritAttrs: false,'
+  dialog: 'inheritAttrs: false,',
 };
 
 /**
@@ -28,8 +28,17 @@ export function makeUpJs(formConfig, type) {
   const uploadVarList = [];
   const created = [];
 
-  formConfig.fields.forEach(el => {
-    buildAttributes(el, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, created);
+  formConfig.fields.forEach((el) => {
+    buildAttributes(
+      el,
+      dataList,
+      ruleList,
+      optionsList,
+      methodList,
+      propsList,
+      uploadVarList,
+      created
+    );
   });
 
   const script = buildexport(
@@ -48,7 +57,16 @@ export function makeUpJs(formConfig, type) {
 }
 
 // 构建组件属性
-function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, created) {
+function buildAttributes(
+  scheme,
+  dataList,
+  ruleList,
+  optionsList,
+  methodList,
+  propsList,
+  uploadVarList,
+  created
+) {
   const config = scheme.component;
   const slot = scheme.slot;
   buildData(scheme, dataList);
@@ -86,8 +104,17 @@ function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, pr
 
   // 构建子级组件属性
   if (config.children) {
-    config.children.forEach(item => {
-      buildAttributes(item, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, created);
+    config.children.forEach((item) => {
+      buildAttributes(
+        item,
+        dataList,
+        ruleList,
+        optionsList,
+        methodList,
+        propsList,
+        uploadVarList,
+        created
+      );
     });
   }
 }
@@ -100,9 +127,9 @@ function callInCreated(methodName, created) {
 // 混入处理函数
 function mixinMethod(type) {
   const list = [];
-  const
-    minxins = {
-      file: confGlobal.formBtns ? {
+  const minxins = {
+    file: confGlobal.formBtns
+      ? {
         submitForm: `submitForm() {
         this.$refs['${confGlobal.formRef}'].validate(valid => {
           if(!valid) return
@@ -111,28 +138,29 @@ function mixinMethod(type) {
       },`,
         resetForm: `resetForm() {
         this.$refs['${confGlobal.formRef}'].resetFields()
-      },`
-      } : null,
-      dialog: {
-        onOpen: 'onOpen() {},',
-        onClose: `onClose() {
+      },`,
+      }
+      : null,
+    dialog: {
+      onOpen: 'onOpen() {},',
+      onClose: `onClose() {
         this.$refs['${confGlobal.formRef}'].resetFields()
       },`,
-        close: `close() {
+      close: `close() {
         this.$emit('update:visible', false)
       },`,
-        handelConfirm: `handelConfirm() {
+      handelConfirm: `handelConfirm() {
         this.$refs['${confGlobal.formRef}'].validate(valid => {
           if(!valid) return
           this.close()
         })
-      },`
-      }
-    };
+      },`,
+    },
+  };
 
   const methods = minxins[type];
   if (methods) {
-    Object.keys(methods).forEach(key => {
+    Object.keys(methods).forEach((key) => {
       list.push(methods[key]);
     });
   }
@@ -155,17 +183,25 @@ function buildRules(scheme, ruleList) {
   const rules = [];
   if (ruleTrigger[config.widget]) {
     if (config.required) {
-      const type = isArray(config.defaultValue) ? 'type: \'array\',' : '';
-      let message = isArray(config.defaultValue) ? `请至少选择一个${config.label}` : scheme.placeholder;
+      const type = isArray(config.defaultValue) ? "type: 'array'," : '';
+      let message = isArray(config.defaultValue)
+        ? `请至少选择一个${config.label}`
+        : scheme.placeholder;
       if (message === undefined) message = `${config.label}不能为空`;
-      rules.push(`{ required: true, ${type} message: '${message}', trigger: '${ruleTrigger[config.widget]}' }`);
+      rules.push(
+        `{ required: true, ${type} message: '${message}', trigger: '${
+          ruleTrigger[config.widget]
+        }' }`
+      );
     }
     if (config.regList && isArray(config.regList)) {
-      config.regList.forEach(item => {
+      config.regList.forEach((item) => {
         if (item.pattern) {
           rules.push(
             // eslint-disable-next-line no-eval
-            `{ pattern: ${eval(item.pattern)}, message: '${item.message}', trigger: '${ruleTrigger[config.widget]}' }`
+            `{ pattern: ${eval(item.pattern)}, message: '${
+              item.message
+            }', trigger: '${ruleTrigger[config.widget]}' }`
           );
         }
       });
@@ -198,8 +234,7 @@ function buildBeforeUpload(scheme) {
   const unitNum = units[config.sizeUnit];
   let rightSizeCode = '';
   let acceptCode = '';
-  const
-    returnList = [];
+  const returnList = [];
   if (config.fileSize) {
     rightSizeCode = `let isRightSize = file.size / ${unitNum} < ${config.fileSize}
     if(!isRightSize){
@@ -246,7 +281,17 @@ function buildOptionMethod(methodName, model, methodList, scheme) {
 }
 
 // js整体拼接
-function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods, created) {
+function buildexport(
+  conf,
+  type,
+  data,
+  rules,
+  selectOptions,
+  uploadVar,
+  props,
+  methods,
+  created
+) {
   const str = `${exportDefault}{
   ${inheritAttrs[type]}
   components: {},

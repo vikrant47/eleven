@@ -92,13 +92,16 @@ export class AsyncEventObservable extends EngineObservable {
 
   async triggerCallbacks(eventName, ...args) {
     if (this.events[eventName]) {
-      await Promise.all(this.events[eventName].map(async(callback) => {
-        try {
-          await callback.apply(this, args);
-        } catch (e) {
-          throw e;
-        }
-      }));
+      await Promise.all(
+        this.events[eventName].map(async(callback) => {
+          try {
+            await callback.apply(this, args);
+          } catch (e) {
+            console.error(e);
+            throw e;
+          }
+        })
+      );
     }
   }
 }

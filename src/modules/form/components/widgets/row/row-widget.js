@@ -10,14 +10,14 @@ export default class RowWidget extends BaseWidget {
   }
   palletSettings = {
     label: 'Row',
-    icon: 'row'
-  };
+    icon: 'row',
+  }
   widgetSettings = {
     layout: ITEM_LAYOUT.rowFormItem,
     children: [],
     containsChild: true,
     span: 24,
-  };
+  }
 
   overrideConfigSection(configSectionWidgets) {
     return {
@@ -27,8 +27,8 @@ export default class RowWidget extends BaseWidget {
         widgetSettings: {
           span: 24,
           label: 'Label',
-          required: true
-        }
+          required: true,
+        },
       },
       'widgetSettings.span': {
         fieldName: 'widgetSettings.span',
@@ -37,16 +37,16 @@ export default class RowWidget extends BaseWidget {
           span: 24,
           label: 'Span',
           min: 0,
-          max: 100
-        }
+          max: 100,
+        },
       },
       'fieldSettings.icon': {
         fieldName: 'fieldSettings.icon',
         widgetAlias: WIDGETS.icon,
         widgetSettings: {
           span: 24,
-          label: 'Icon'
-        }
+          label: 'Icon',
+        },
       },
       'fieldSettings.disabled': {
         widgetAlias: WIDGETS.switch,
@@ -54,8 +54,8 @@ export default class RowWidget extends BaseWidget {
         widgetSettings: {
           span: 24,
           label: 'Disabled',
-          default: false
-        }
+          default: false,
+        },
       },
       'widgetSettings.triggers': {
         fieldName: 'widgetSettings.triggers',
@@ -64,44 +64,50 @@ export default class RowWidget extends BaseWidget {
         widgetSettings: {
           labelWidth: 0,
           repeaterConfig: {
-            widgets: [{
-              fieldName: 'action',
-              widgetSettings: {
-                labelWidth: 0,
-                span: 24,
-                label: 'Action'
-              },
-              widgetAlias: WIDGETS.select,
+            widgets: [
+              {
+                fieldName: 'action',
+                widgetSettings: {
+                  labelWidth: 0,
+                  span: 24,
+                  label: 'Action',
+                },
+                widgetAlias: WIDGETS.select,
 
-              slot: {
-                options: [{
-                  label: 'Show',
-                  value: 'show'
-                }, {
-                  label: 'Hide',
-                  value: 'hide'
-                }]
-              }
-            }, {
-              fieldName: 'condition',
-              widgetAlias: WIDGETS.input,
-
-              fieldSettings: {
-                type: 'textarea'
+                slot: {
+                  options: [
+                    {
+                      label: 'Show',
+                      value: 'show',
+                    },
+                    {
+                      label: 'Hide',
+                      value: 'hide',
+                    },
+                  ],
+                },
               },
-              widgetSettings: {
-                labelWidth: 0,
-                span: 24,
-                label: 'Action'
-              }
-            }]
+              {
+                fieldName: 'condition',
+                widgetAlias: WIDGETS.input,
+
+                fieldSettings: {
+                  type: 'textarea',
+                },
+                widgetSettings: {
+                  labelWidth: 0,
+                  span: 24,
+                  label: 'Action',
+                },
+              },
+            ],
           },
           advance: true,
           label: 'Triggers',
           language: 'javascript',
-          parse: true
-        }
-      }
+          parse: true,
+        },
+      },
     };
   }
 

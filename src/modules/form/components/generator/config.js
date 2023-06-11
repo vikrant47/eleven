@@ -9,7 +9,7 @@ export const formConf = {
   gutter: 15,
   disabled: false,
   span: 24,
-  formBtns: true
+  formBtns: true,
 };
 
 // Input components 【Left Panel】
@@ -29,12 +29,12 @@ export const inputComponents = [
       span: 24,
       document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/input',
       // Regular check rule
-      regList: []
+      regList: [],
     },
     // Component slot properties
     slot: {
       prepend: '',
-      append: ''
+      append: '',
     },
     // The rest are attributes that can be written directly on the widgetSettings level
     placeholder: 'please enter',
@@ -45,7 +45,7 @@ export const inputComponents = [
     maxlength: null,
     'show-word-limit': false,
     readonly: false,
-    disabled: false
+    disabled: false,
   },
   {
     widgetSettings: {
@@ -60,19 +60,19 @@ export const inputComponents = [
       span: 24,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/input'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/input',
     },
     type: 'textarea',
     placeholder: 'please enter',
     autosize: {
       minRows: 4,
-      maxRows: 4
+      maxRows: 4,
     },
     style: { width: '100%' },
     maxlength: null,
     'show-word-limit': false,
     readonly: false,
-    disabled: false
+    disabled: false,
   },
   {
     widgetSettings: {
@@ -87,11 +87,11 @@ export const inputComponents = [
       span: 24,
       required: true,
       regList: [],
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/input'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/input',
     },
     slot: {
       prepend: '',
-      append: ''
+      append: '',
     },
     placeholder: 'Please Enter',
     'show-password': true,
@@ -102,7 +102,7 @@ export const inputComponents = [
     maxlength: null,
     'show-word-limit': false,
     readonly: false,
-    disabled: false
+    disabled: false,
   },
   {
     widgetSettings: {
@@ -117,7 +117,7 @@ export const inputComponents = [
       layout: 'colFormItem',
       required: true,
       regList: [],
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/input-number'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/input-number',
     },
     placeholder: '',
     min: undefined,
@@ -126,7 +126,7 @@ export const inputComponents = [
     'step-strictly': false,
     precision: undefined,
     'controls-position': '',
-    disabled: false
+    disabled: false,
   },
   {
     widgetSettings: {
@@ -141,12 +141,12 @@ export const inputComponents = [
       layout: 'colFormItem',
       required: true,
       regList: [],
-      document: 'http://tinymce.ax-z.cn'
+      document: 'http://tinymce.ax-z.cn',
     },
     placeholder: 'please enter',
     height: 300, // Editor height
-    branding: false // Hide the brand mark in the lower right corner
-  }
+    branding: false, // Hide the brand mark in the lower right corner
+  },
 ];
 
 // Selective components 【Left Panel】
@@ -163,23 +163,26 @@ export const selectComponents = [
       required: true,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/select'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/select',
     },
     slot: {
-      options: [{
-        label: 'Option one',
-        value: 1
-      }, {
-        label: 'Option two',
-        value: 2
-      }]
+      options: [
+        {
+          label: 'Option one',
+          value: 1,
+        },
+        {
+          label: 'Option two',
+          value: 2,
+        },
+      ],
     },
     placeholder: 'please choose',
     style: { width: '100%' },
     clearable: true,
     disabled: false,
     filterable: false,
-    multiple: false
+    multiple: false,
   },
   {
     widgetSettings: {
@@ -199,18 +202,22 @@ export const selectComponents = [
       required: true,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/cascader'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/cascader',
     },
-    options: [{
-      id: 1,
-      value: 1,
-      label: 'Option 1',
-      children: [{
-        id: 2,
-        value: 2,
-        label: 'Option 1-1'
-      }]
-    }],
+    options: [
+      {
+        id: 1,
+        value: 1,
+        label: 'Option 1',
+        children: [
+          {
+            id: 2,
+            value: 2,
+            label: 'Option 1-1',
+          },
+        ],
+      },
+    ],
     placeholder: 'please choose',
     style: { width: '100%' },
     props: {
@@ -218,14 +225,14 @@ export const selectComponents = [
         multiple: false,
         label: 'label',
         value: 'value',
-        children: 'children'
-      }
+        children: 'children',
+      },
     },
     'show-all-levels': true,
     disabled: false,
     clearable: true,
     filterable: false,
-    separator: '/'
+    separator: '/',
   },
   {
     widgetSettings: {
@@ -242,20 +249,23 @@ export const selectComponents = [
       regList: [],
       required: true,
       border: false,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/radio'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/radio',
     },
     slot: {
-      options: [{
-        label: 'Option one',
-        value: 1
-      }, {
-        label: 'Option two',
-        value: 2
-      }]
+      options: [
+        {
+          label: 'Option one',
+          value: 1,
+        },
+        {
+          label: 'Option two',
+          value: 2,
+        },
+      ],
     },
     style: {},
     size: 'medium',
-    disabled: false
+    disabled: false,
   },
   {
     widgetSettings: {
@@ -272,22 +282,25 @@ export const selectComponents = [
       regList: [],
       changeTag: true,
       border: false,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/checkbox'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/checkbox',
     },
     slot: {
-      options: [{
-        label: 'Option one',
-        value: 1
-      }, {
-        label: 'Option two',
-        value: 2
-      }]
+      options: [
+        {
+          label: 'Option one',
+          value: 1,
+        },
+        {
+          label: 'Option two',
+          value: 2,
+        },
+      ],
     },
     style: {},
     size: 'medium',
     min: null,
     max: null,
-    disabled: false
+    disabled: false,
   },
   {
     widgetSettings: {
@@ -302,7 +315,7 @@ export const selectComponents = [
       required: true,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/switch'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/switch',
     },
     style: {},
     disabled: false,
@@ -311,7 +324,7 @@ export const selectComponents = [
     'active-color': null,
     'inactive-color': null,
     'active-value': true,
-    'inactive-value': false
+    'inactive-value': false,
   },
   {
     widgetSettings: {
@@ -326,14 +339,14 @@ export const selectComponents = [
       required: true,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/slider'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/slider',
     },
     disabled: false,
     min: 0,
     max: 100,
     step: 1,
     'show-stops': false,
-    range: false
+    range: false,
   },
   {
     widgetSettings: {
@@ -348,17 +361,17 @@ export const selectComponents = [
       required: true,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/time-picker'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/time-picker',
     },
     placeholder: 'please choose',
     style: { width: '100%' },
     disabled: false,
     clearable: true,
     'picker-options': {
-      selectableRange: '00:00:00-23:59:59'
+      selectableRange: '00:00:00-23:59:59',
     },
     format: 'HH:mm:ss',
-    'value-format': 'HH:mm:ss'
+    'value-format': 'HH:mm:ss',
   },
   {
     widgetSettings: {
@@ -373,7 +386,7 @@ export const selectComponents = [
       required: true,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/time-picker'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/time-picker',
     },
     style: { width: '100%' },
     disabled: false,
@@ -383,7 +396,7 @@ export const selectComponents = [
     'start-placeholder': 'Starting time',
     'end-placeholder': 'End Time',
     format: 'HH:mm:ss',
-    'value-format': 'HH:mm:ss'
+    'value-format': 'HH:mm:ss',
   },
   {
     widgetSettings: {
@@ -398,7 +411,7 @@ export const selectComponents = [
       required: true,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/date-picker'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/date-picker',
     },
     placeholder: 'please choose',
     type: 'date',
@@ -407,7 +420,7 @@ export const selectComponents = [
     clearable: true,
     format: 'yyyy-MM-dd',
     'value-format': 'yyyy-MM-dd',
-    readonly: false
+    readonly: false,
   },
   {
     widgetSettings: {
@@ -422,7 +435,7 @@ export const selectComponents = [
       layout: 'colFormItem',
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/date-picker'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/date-picker',
     },
     style: { width: '100%' },
     type: 'daterange',
@@ -433,7 +446,7 @@ export const selectComponents = [
     clearable: true,
     format: 'yyyy-MM-dd',
     'value-format': 'yyyy-MM-dd',
-    readonly: false
+    readonly: false,
   },
   {
     widgetSettings: {
@@ -448,14 +461,14 @@ export const selectComponents = [
       required: true,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/rate'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/rate',
     },
     style: {},
     max: 5,
     'allow-half': false,
     'show-text': false,
     'show-score': false,
-    disabled: false
+    disabled: false,
   },
   {
     widgetSettings: {
@@ -470,12 +483,12 @@ export const selectComponents = [
       required: true,
       regList: [],
       changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/color-picker'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/color-picker',
     },
     'show-alpha': false,
     'color-format': '',
     disabled: false,
-    size: 'medium'
+    size: 'medium',
   },
   {
     widgetSettings: {
@@ -494,10 +507,10 @@ export const selectComponents = [
       changeTag: true,
       fileSize: 2,
       sizeUnit: 'MB',
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/upload'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/upload',
     },
     slot: {
-      'list-type': true
+      'list-type': true,
     },
     action: 'https://jsonplaceholder.typicode.com/posts/',
     disabled: false,
@@ -505,8 +518,8 @@ export const selectComponents = [
     name: 'file',
     'auto-upload': true,
     'list-type': 'text',
-    multiple: false
-  }
+    multiple: false,
+  },
 ];
 
 // Layout widgetSettings 【Left Panel】
@@ -517,11 +530,12 @@ export const layoutComponents = [
       tagIcon: 'row',
       label: 'Row container',
       layoutTree: true,
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/layout#row-attributes'
+      document:
+        'https://element.eleme.cn/#/zh-CN/widgetSettings/layout#row-attributes',
     },
     type: 'default',
     justify: 'start',
-    align: 'top'
+    align: 'top',
   },
   {
     widgetSettings: {
@@ -533,18 +547,18 @@ export const layoutComponents = [
       tagIcon: 'button',
       span: 24,
       layout: 'colFormItem',
-      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/button'
+      document: 'https://element.eleme.cn/#/zh-CN/widgetSettings/button',
     },
     slot: {
-      default: 'Main button'
+      default: 'Main button',
     },
     type: 'primary',
-    icon: 'el-icon-search',
+    icon: 'elu-icon-search',
     round: false,
     size: 'medium',
     plain: false,
     circle: false,
-    disabled: false
+    disabled: false,
   },
   {
     widgetSettings: {
@@ -560,7 +574,7 @@ export const layoutComponents = [
       changeTag: true,
       labelWidth: null,
       label: 'Form',
-      dataType: Object
+      dataType: Object,
       /* method: 'get',
       dataPath: 'list',
       dataConsumer: 'data',
@@ -607,7 +621,7 @@ export const layoutComponents = [
                 default: 'Main button'
               },
               type: 'primary',
-              icon: 'el-icon-search',
+              icon: 'elu-icon-search',
               round: false,
               size: 'medium'
             }
@@ -617,13 +631,15 @@ export const layoutComponents = [
       }]*/
     },
     data: [],
-    directives: [{
-      name: 'loading',
-      value: false
-    }],
+    directives: [
+      {
+        name: 'loading',
+        value: false,
+      },
+    ],
     border: true,
     type: 'default',
     justify: 'start',
-    align: 'top'
-  }
+    align: 'top',
+  },
 ];

@@ -3,9 +3,9 @@
     <el-button
       :name="name"
       :icon="icon"
-      :circle="shape==='circle'"
-      :plain="shape==='plain'"
-      :round="shape==='round'"
+      :circle="shape === 'circle'"
+      :plain="shape === 'plain'"
+      :round="shape === 'round'"
       :type="type"
       @click="click($event)"
     >{{ label }}
@@ -20,43 +20,41 @@ export default {
     id: {
       type: String,
       require: true,
-      default: null
+      default: null,
     },
     label: {
       type: String,
       require: true,
-      default: null
+      default: null,
     },
     name: {
       type: String,
       require: true,
-      default: null
+      default: null,
     },
     shape: {
       type: String,
-      default: 'plain'
+      default: 'plain',
     },
     icon: {
       type: String,
-      default: 'el-icon-check'
+      default: 'elu-icon-check',
     },
     type: {
       type: String,
-      default: 'primary'
+      default: 'primary',
     },
     loading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     click(event) {
       this.$emit('click', event, this);
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

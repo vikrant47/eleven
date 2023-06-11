@@ -3,37 +3,35 @@
     {{ value }}
   </div>
 </template>
-<script>
 
+<script>
 export default {
   name: 'BaseWidget',
   props: {
     href: {
       type: Boolean,
-      default: false
+      default: false,
     },
     row: {
       type: Object,
-      required: true
+      required: true,
     },
     column: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     value() {
       return this.row[this.column.name];
-    }
+    },
   },
   methods: {
     click($event) {
       this.$emit('click', $event, this.row, this.column);
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -29,4 +29,3 @@ export function decrypt(txt) {
   return encryptor.decrypt(txt) */
   return txt;
 }
-

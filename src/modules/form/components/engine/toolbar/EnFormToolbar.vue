@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="10">
     <el-col :span="24">
-      <div class="action-form-wrapper" style="display: flex;">
+      <div class="action-form-wrapper" style="display: flex">
         <EnAction
           v-for="action in actions"
           :key="action.id"
@@ -17,11 +17,10 @@
       </div>
     </el-col>
   </el-row>
-
 </template>
 
 <script>
-import {Vue} from '@/main';
+import { Vue } from '@/main';
 import EnAction from '@/modules/engine/components/EnAction';
 
 export default {
@@ -30,13 +29,13 @@ export default {
   props: {
     actions: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
       engineForm: null,
-      formEventHandler: null
+      formEventHandler: null,
     };
   },
   created() {
@@ -46,7 +45,7 @@ export default {
     Vue.set(this, 'formEventHandler', formEventHandler);
     // this.$parent.crud.updateProp('searchToggle', true);
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

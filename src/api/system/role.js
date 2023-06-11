@@ -4,7 +4,7 @@ import request from '@/utils/request';
 export function getAll() {
   return request({
     url: 'api/roles/all',
-    method: 'get'
+    method: 'get',
   });
 }
 
@@ -12,21 +12,21 @@ export function add(data) {
   return request({
     url: 'api/roles',
     method: 'post',
-    data
+    data,
   });
 }
 
 export function get(id) {
   return request({
     url: 'api/roles/' + id,
-    method: 'get'
+    method: 'get',
   });
 }
 
 export function getLevel() {
   return request({
     url: 'api/roles/level',
-    method: 'get'
+    method: 'get',
   });
 }
 
@@ -34,7 +34,7 @@ export function del(ids) {
   return request({
     url: 'api/roles',
     method: 'delete',
-    data: ids
+    data: ids,
   });
 }
 
@@ -42,7 +42,7 @@ export function edit(data) {
   return request({
     url: 'api/roles',
     method: 'put',
-    data
+    data,
   });
 }
 
@@ -50,7 +50,7 @@ export function editMenu(data) {
   return request({
     url: 'api/roles/menu',
     method: 'put',
-    data
+    data,
   });
 }
 

@@ -7,7 +7,7 @@
           slot="left"
           class="filter-item"
           type="danger"
-          icon="el-icon-delete"
+          :icon="EluIconDelete"
           size="mini"
           :loading="crud.delAllLoading"
           @click="confirmDelAll()"
@@ -17,7 +17,13 @@
       </crudOperation>
     </div>
     <!--表格渲染-->
-    <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+    <el-table
+      ref="table"
+      v-loading="crud.loading"
+      :data="crud.data"
+      style="width: 100%"
+      @selection-change="crud.selectionChangeHandler"
+    >
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
@@ -32,13 +38,20 @@
       </el-table-column>
       <el-table-column prop="username" label="用户名" />
       <el-table-column prop="requestIp" label="IP" />
-      <el-table-column :show-overflow-tooltip="true" prop="address" label="IP来源" />
+      <el-table-column
+        :show-overflow-tooltip="true"
+        prop="address"
+        label="IP来源"
+      />
       <el-table-column prop="description" label="描述" />
       <el-table-column prop="browser" label="浏览器" />
       <el-table-column prop="time" label="请求耗时" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.time <= 300">{{ scope.row.time }}ms</el-tag>
-          <el-tag v-else-if="scope.row.time <= 1000" type="warning">{{ scope.row.time }}ms</el-tag>
+          <el-tag
+            v-else-if="scope.row.time <= 1000"
+            type="warning"
+          >{{ scope.row.time }}ms</el-tag>
           <el-tag v-else type="danger">{{ scope.row.time }}ms</el-tag>
         </template>
       </el-table-column>
@@ -54,17 +67,23 @@
 </template>
 
 <script>
-import Search from './search'
-import { delAllInfo } from '@/api/monitor/log'
-import CRUD, { presenter } from '@crud/crud'
-import crudOperation from '@crud/CRUD.operation'
-import pagination from '@crud/Pagination'
+import { Delete as EluIconDelete } from '@element-plus/icons';
+import Search from './search';
+import { delAllInfo } from '@/api/monitor/log';
+import CRUD, { presenter } from '@crud/crud';
+import crudOperation from '@crud/CRUD.operation';
+import pagination from '@crud/Pagination';
 
 export default {
   name: 'Log',
   components: { Search, crudOperation, pagination },
+  data() {
+    return {
+      EluIconDelete,
+    };
+  },
   cruds() {
-    return CRUD({ title: '日志', url: 'api/logs' })
+    return CRUD({ title: '日志', url: 'api/logs' });
   },
   mixins: [presenter()],
   created() {
@@ -72,31 +91,34 @@ export default {
       add: false,
       edit: false,
       del: false,
-      download: true
-    }
+      download: true,
+    };
   },
   methods: {
     confirmDelAll() {
       this.$confirm(`确认清空所有操作日志吗?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.crud.delAllLoading = true
-        delAllInfo().then(res => {
-          this.crud.delAllLoading = false
-          this.crud.dleChangePage(1)
-          this.crud.delSuccessNotify()
-          this.crud.toQuery()
-        }).catch(err => {
-          this.crud.delAllLoading = false
-          console.log(err.response.data.message)
-        })
-      }).catch(() => {
+        type: 'warning',
       })
-    }
-  }
-}
+        .then(() => {
+          this.crud.delAllLoading = true;
+          delAllInfo()
+            .then((res) => {
+              this.crud.delAllLoading = false;
+              this.crud.dleChangePage(1);
+              this.crud.delSuccessNotify();
+              this.crud.toQuery();
+            })
+            .catch((err) => {
+              this.crud.delAllLoading = false;
+              console.log(err.response.data.message);
+            });
+        })
+        .catch(() => {});
+    },
+  },
+};
 </script>
 
 <style>

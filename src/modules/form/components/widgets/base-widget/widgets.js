@@ -28,7 +28,6 @@ export const WIDGETS = {
   multiReference: 'multiReference',
   fileReference: 'fileReference',
   queryBuilder: 'queryBuilder',
-  crontab: 'crontab'
+  crontab: 'crontab',
 };
 export const LAYOUT_WIDGETS = [WIDGETS.row];
-

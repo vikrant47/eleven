@@ -2,27 +2,29 @@ import * as _ from 'lodash';
 
 export class Engine {
   /** Constants */
-  static TRANSIENTS = ['transient', '__ob__', 'undefined'];
+  static TRANSIENTS = ['transient', '__ob__', 'undefined']
   static NOTIFICATION_TYPE = {
     SUCCESS: 'success',
     WARNING: 'warning',
     INFO: 'info',
-    ERROR: 'error'
-  };
+    ERROR: 'error',
+  }
   static DEFAULT_SETTINGS = {
     notification: {
       type: this.NOTIFICATION_TYPE.SUCCESS,
-      duration: 2500
+      duration: 2500,
     },
     dataToTree: {
       idField: 'id',
       parentField: 'parentId',
-      comparator: null
-    }
-  };
+      comparator: null,
+    },
+  }
 
   static getMediaServerUrl(mediaFile = null) {
-    return process.env.VUE_APP_MEDIA_SERVER_URL + (mediaFile && mediaFile || '');
+    return (
+      process.env.VUE_APP_MEDIA_SERVER_URL + ((mediaFile && mediaFile) || '')
+    );
   }
 
   static notify(vm, options) {
@@ -41,7 +43,11 @@ export class Engine {
    * @param {Object} options
    */
   static convertToTree(data = [], options = {}) {
-    const settings = Object.assign({}, this.DEFAULT_SETTINGS.dataToTree, options);
+    const settings = Object.assign(
+      {},
+      this.DEFAULT_SETTINGS.dataToTree,
+      options
+    );
     if (typeof settings.comparator === 'function') {
       data = data.sort(settings.comparator);
     }
@@ -57,7 +63,7 @@ export class Engine {
         record.child = true;
       }
     }
-    return data.filter(record => !record.child);
+    return data.filter((record) => !record.child);
   }
 
   /**
@@ -116,14 +122,19 @@ export class Engine {
         }
       }
       if (Array.isArray(object)) {
-        return object.map(entry => this.marshall(entry, options));
+        return object.map((entry) => this.marshall(entry, options));
       } else if (typeof object === 'object') {
         const marshalled = {};
         const parsedTransients = this.parseTransients(object, options);
         for (const key in object) {
-          if (typeof object[key] !== undefined && !this.isTransientProp(parsedTransients, key)) {
+          if (
+            typeof object[key] !== undefined &&
+            !this.isTransientProp(parsedTransients, key)
+          ) {
             // console.log('marshaling children ', key, { transients: parsedTransients.children[key] });
-            marshalled[key] = this.marshall(object[key], { transients: parsedTransients.children[key] });
+            marshalled[key] = this.marshall(object[key], {
+              transients: parsedTransients.children[key],
+            });
           }
         }
         return marshalled;
@@ -147,7 +158,8 @@ export class Engine {
     if (instance) {
       if (typeof instance.unmarshall === 'function') {
         const unmarshalled = instance.unmarshall(object);
-        if (unmarshalled !== false) { // will be returned true if all handled by instance
+        if (unmarshalled !== false) {
+          // will be returned true if all handled by instance
           if (typeof instance.afterUnmarshall === 'function') {
             instance.afterUnmarshall();
           }
@@ -163,8 +175,15 @@ export class Engine {
       } else if (typeof object === 'object') {
         const parsedTransients = this.parseTransients(instance, options);
         for (const key in object) {
-          if (typeof object[key] !== 'undefined' && !this.isTransientProp(parsedTransients, key)) {
-            instance[key] = Engine.unmarshall(object[key], instance[key], parsedTransients.children[key]);
+          if (
+            typeof object[key] !== 'undefined' &&
+            !this.isTransientProp(parsedTransients, key)
+          ) {
+            instance[key] = Engine.unmarshall(
+              object[key],
+              instance[key],
+              parsedTransients.children[key]
+            );
           }
         }
         if (typeof instance.afterUnmarshall === 'function') {
@@ -207,7 +226,12 @@ export class Engine {
   }
 
   static generateUniqueHash(object) {
-    if (object === null || typeof object === 'undefined' || typeof object === 'number' || typeof object === 'boolean') {
+    if (
+      object === null ||
+      typeof object === 'undefined' ||
+      typeof object === 'number' ||
+      typeof object === 'boolean'
+    ) {
       return object;
     }
     if (typeof object !== 'string') {
@@ -221,7 +245,12 @@ export class Engine {
    * Note: object should not be circular in nature
    * */
   static generateHash(object) {
-    if (object === null || typeof object === 'undefined' || typeof object === 'number' || typeof object === 'boolean') {
+    if (
+      object === null ||
+      typeof object === 'undefined' ||
+      typeof object === 'number' ||
+      typeof object === 'boolean'
+    ) {
       return object;
     }
     if (typeof object !== 'string') {
@@ -231,7 +260,7 @@ export class Engine {
     let chr;
     for (let i = 0; i < object.length; i++) {
       chr = object.charCodeAt(i);
-      hash = ((hash << 5) - hash) + chr;
+      hash = (hash << 5) - hash + chr;
       hash |= 0; // Convert to 32bit integer
     }
     return hash;
@@ -243,7 +272,9 @@ export class Engine {
     });
   }
   static isUUID(str) {
-    return str.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    return str.match(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+    );
   }
 }
 

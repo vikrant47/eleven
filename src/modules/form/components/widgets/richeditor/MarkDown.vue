@@ -18,66 +18,69 @@ import { Editor } from '@toast-ui/vue-editor';
 export default {
   name: 'MarkDown',
   components: {
-    editor: Editor
+    editor: Editor,
   },
   props: {
     value: {
       type: String,
-      default: ''
+      default: '',
     },
     previewStyle: {
       type: String,
-      default: 'vertical'
+      default: 'vertical',
     },
     editorType: {
       type: String,
-      default: 'wysiwyg'
+      default: 'wysiwyg',
     },
     height: {
       type: String,
-      default: '300px'
+      default: '300px',
     },
     options: {
       type: Object,
       default() {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       editorText: this.value,
-      editorOptions: this.options
+      editorOptions: this.options,
     };
   },
   computed: {
     editorHtml: function() {
       return this.value;
-    }
+    },
   },
   watch: {
-    'value': {
+    value: {
       handler(value) {
         this.$refs.toastuiEditor.invoke('setHtml', value);
-      }
-    }
+      },
+    },
   },
   mounted() {
-    this.$refs.toastuiEditor.editor.eventManager.listen('pasteBefore', function(event) {
-      /* var html = event.clipboardContainer.innerHTML;
+    this.$refs.toastuiEditor.editor.eventManager.listen(
+      'pasteBefore',
+      function(event) {
+        /* var html = event.clipboardContainer.innerHTML;
       var doc = new DOMParser().parseFromString(html, 'text/html');
       doc.querySelectorAll('span').forEach(function(el) {
         el.outerHTML = el.textContent;
       });
       html = doc.body;
       event.clipboardContainer.innerHTML = html.outerHTML;*/
-    });
+      }
+    );
   },
   methods: {
     onEditorChange() {
       this.$emit('change', this.$refs.toastuiEditor.invoke('getHtml'));
-    }
-  }
+    },
+  },
 };
 </script>
 

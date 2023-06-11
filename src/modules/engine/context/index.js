@@ -25,8 +25,7 @@ export default {
     FormWidgetService,
     EnginePopup: EnginePopup,
     navigation: NavigationService.getInstance(),
-    notification: EngineNotification.getInstance()
+    notification: EngineNotification.getInstance(),
   },
-  libraries: { _ }
+  libraries: { _ },
 };
-

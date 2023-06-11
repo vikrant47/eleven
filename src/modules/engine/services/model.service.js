@@ -1,8 +1,8 @@
 import { TenantService } from '@/modules/engine/services/tenant.service';
 
 export class ModelService {
-  modelAlias;
-  tenantService;
+  modelAlias
+  tenantService
 
   constructor(modelName) {
     this.tenantService = TenantService.getInstance();
@@ -14,12 +14,10 @@ export class ModelService {
       url: '/api/crm/models/' + this.modelAlias + '/definition',
       params: {
         list: options.list,
-        formId: options.formId
-      }
+        formId: options.formId,
+      },
     });
   }
 
-  paginate() {
-
-  }
+  paginate() {}
 }

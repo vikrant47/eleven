@@ -2,24 +2,20 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 import { EngineFileService } from '@/modules/engine/services/engine.file.service';
 
 export default class FileUploadWidget extends BaseWidget {
-  fileList = [];
+  fileList = []
   palletSettings = {
     label: 'File Upload',
-    icon: 'upload'
-  };
+    icon: 'upload',
+  }
 
   /** *handlers**/
-  handlePreview() {
-  }
+  handlePreview() {}
 
-  handleRemove() {
-  }
+  handleRemove() {}
 
-  beforeRemove() {
-  }
+  beforeRemove() {}
 
-  handleExceed() {
-  }
+  handleExceed() {}
 
   updateValueFromFileList(fileList) {
     if (fileList) {
@@ -32,30 +28,40 @@ export default class FileUploadWidget extends BaseWidget {
   }
 
   overrideWidgetSettings(widgetSettings) {
-    return Object.assign({
-      multiple: false,
-      fileList: []
-    }, widgetSettings);
+    return Object.assign(
+      {
+        multiple: false,
+        fileList: [],
+      },
+      widgetSettings
+    );
   }
 
   buildTemplate(h) {
-    return (<el-upload
-      class='upload-demo'
-      props = {{
-        'on-success': (response, file, fileList) => {
-          this.updateValueFromFileList(fileList);
-        },
-        'on-remove': (file, fileList) => {
-          this.updateValueFromFileList(fileList);
-        }
-      }}
-      action={EngineFileService.getUploadUrl()}
-      multiple={this.widgetSettings.multiple}
-      limit={this.widgetSettings.limit}
-      fileList={this.fileList}>
-      <el-button size='small' type='primary'>Upload</el-button>
-      <div slot='tip' class='el-upload__tip'>{this.widgetSettings.title}</div>
-    </el-upload>);
+    return (
+      <el-upload
+        class='upload-demo'
+        props={{
+          'on-success': (response, file, fileList) => {
+            this.updateValueFromFileList(fileList);
+          },
+          'on-remove': (file, fileList) => {
+            this.updateValueFromFileList(fileList);
+          },
+        }}
+        action={EngineFileService.getUploadUrl()}
+        multiple={this.widgetSettings.multiple}
+        limit={this.widgetSettings.limit}
+        fileList={this.fileList}
+      >
+        <el-button size='small' type='primary'>
+          Upload
+        </el-button>
+        <div slot='tip' class='el-upload__tip'>
+          {this.widgetSettings.title}
+        </div>
+      </el-upload>
+    );
   }
 
   componentRender(component, h) {

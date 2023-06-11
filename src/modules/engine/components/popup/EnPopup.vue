@@ -7,22 +7,25 @@
     @closed="model.onClosed()"
   >
     <div v-loading="model.loading" class="popup-wrapper">
-      <div :is="model.component.type" ref="componentInstance" v-bind="model.component.props" class="popup-body" />
+      <div
+        :is="model.component.type"
+        ref="componentInstance"
+        v-bind="model.component.props"
+        class="popup-body"
+      />
     </div>
     <div slot="footer" class="dialog-footer">
       <en-action
         v-for="action in model.actions"
         :key="action.id"
         :action="action"
-        :event="{
-        }"
+        :event="{}"
         :context="{
-          popup: model
+          popup: model,
         }"
       />
     </div>
   </el-dialog>
-
 </template>
 
 <script>
@@ -35,15 +38,16 @@ export default {
   props: {
     model: {
       type: EnginePopup,
-      required: true
-    }
+      required: true,
+    },
   },
   mounted() {
     this.$nextTick(() => {
+      // eslint-disable-next-line vue/no-mutating-props
       this.model.$refs = this.$refs;
       this.model.mounted();
     });
-  }
+  },
 };
 </script>
 

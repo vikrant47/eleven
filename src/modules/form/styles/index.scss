@@ -36,10 +36,10 @@ input, textarea{
     border-bottom-color: #1e1e1e!important;
     color: #fff;
   }
-  .el-icon-edit{
+  .elu-icon-edit{
     color: #f1fa8c;
   }
-  .el-icon-document{
+  .elu-icon-document{
     color: #a95812;
   }
   :focus.is-active.is-focus:not(:active) {
@@ -120,10 +120,10 @@ input, textarea{
   i[class*="el-icon"] + i[class*="el-icon"]{
     margin-left: 6px;
   }
-  .el-icon-plus{
+  .elu-icon-plus{
     color: #409EFF;
   }
-  .el-icon-delete{
+  .elu-icon-delete{
     color: #157a0c;
   }
 }

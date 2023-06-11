@@ -3,16 +3,20 @@ import { BaseWidget } from '@/modules/form/components/widgets/base-widget/base-w
 export default class NumberWidget extends BaseWidget {
   overrideWidgetSettings() {
     return {
-      defaultValue: 0
+      defaultValue: 0,
     };
   }
 
   palletSettings = {
     label: 'number',
-    icon: 'number'
-  };
+    icon: 'number',
+  }
 
   componentRender(component, h) {
-    return h('el-input-number', this.getComponentConfig(component), this.getChildren());
+    return h(
+      'el-input-number',
+      this.getComponentConfig(component),
+      this.getChildren()
+    );
   }
 }

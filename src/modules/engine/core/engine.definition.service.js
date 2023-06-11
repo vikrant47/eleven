@@ -6,17 +6,17 @@ import { Engine } from '@/modules/engine/core/engine';
 import { EngineScript } from '@/modules/engine/core/engine.script';
 
 export class EngineDefinitionService extends EngineObservable {
-  fields = {};
-  processors = [];
-  actions = [];
-  definition = { fields: [] };
-  $widgetRefs = {};
-  modelAlias = null;
-  loading = true;
-  loadingBackground = 'rgb(255 255 255 / 55%)';
-  definitionLoaded = false;
-  model = null;
-  context = {};
+  fields = {}
+  processors = []
+  actions = []
+  definition = { fields: [] }
+  $widgetRefs = {}
+  modelAlias = null
+  loading = true
+  loadingBackground = 'rgb(255 255 255 / 55%)'
+  definitionLoaded = false
+  model = null
+  context = {}
 
   getModelAlias() {
     return this.modelAlias;
@@ -90,7 +90,7 @@ export class EngineDefinitionService extends EngineObservable {
   }
 
   getFieldNames() {
-    return this.getFields().map(field => field.name);
+    return this.getFields().map((field) => field.name);
   }
 
   getFieldsByKey(key) {
@@ -98,15 +98,15 @@ export class EngineDefinitionService extends EngineObservable {
   }
 
   getFieldsByType(type) {
-    return this.getFields().filter(field => field.type === WIDGETS.reference);
+    return this.getFields().filter((field) => field.type === WIDGETS.reference);
   }
 
   getFieldById(id) {
-    return this.getFields().find(field => field.id === id);
+    return this.getFields().find((field) => field.id === id);
   }
 
   getFieldByName(name) {
-    return this.getFields().find(field => field.name === name);
+    return this.getFields().find((field) => field.name === name);
   }
 
   hasField(name) {
@@ -126,18 +126,20 @@ export class EngineDefinitionService extends EngineObservable {
   getIncludeStatement(includedFields = []) {
     let referencedFields = this.getFieldsByType(WIDGETS.reference);
     if (includedFields.length > 0) {
-      referencedFields = referencedFields.filter(field => includedFields.indexOf(field.name) >= 0);
+      referencedFields = referencedFields.filter(
+        (field) => includedFields.indexOf(field.name) >= 0
+      );
     }
     return referencedFields.map((field) => {
       return {
         reference: field.name,
-        fields: [field.referenced_field_name, field.display_field_name]
+        fields: [field.referenced_field_name, field.display_field_name],
       };
     });
   }
 
   buildAction(actions) {
-    let actionInstances = actions.map(action => {
+    let actionInstances = actions.map((action) => {
       if (typeof action.style === 'string') {
         action.style = JSON.parse(action.style);
       }
@@ -148,13 +150,13 @@ export class EngineDefinitionService extends EngineObservable {
     });
     actionInstances = Engine.convertToTree(actionInstances, {
       comparator: (action1, action2) => action1.sort_order - action2.sort_order,
-      parentField: 'parent_id'
+      parentField: 'parent_id',
     });
     return actionInstances;
   }
 
   getAction(name) {
-    return this.actions.find(action => action.name === name);
+    return this.actions.find((action) => action.name === name);
   }
 
   getActions() {
@@ -162,7 +164,7 @@ export class EngineDefinitionService extends EngineObservable {
   }
 
   buildProcessors(processors) {
-    return processors.map(processor => new EngineScript(processor));
+    return processors.map((processor) => new EngineScript(processor));
   }
 
   /**
@@ -176,7 +178,10 @@ export class EngineDefinitionService extends EngineObservable {
         try {
           await processor.execute(event, context);
         } catch (e) {
-          console.error('Error while executing processor "' + processor.name + '"', e);
+          console.error(
+            'Error while executing processor "' + processor.name + '"',
+            e
+          );
         }
       }
     }

@@ -1,11 +1,5 @@
-import {
-  initData,
-  download
-} from '@/api/data';
-import {
-  parseTime,
-  downloadFile
-} from '@/utils/index';
+import { initData, download } from '@/api/data';
+import { parseTime, downloadFile } from '@/utils/index';
 import checkPermission from '@/utils/permission';
 
 export default {
@@ -45,7 +39,7 @@ export default {
       // 重置表单
       resetForm: {},
       // 标题
-      title: ''
+      title: '',
     };
   },
   methods: {
@@ -53,24 +47,26 @@ export default {
     downloadFile,
     checkPermission,
     async init() {
-      if (!await this.beforeInit()) {
+      if (!(await this.beforeInit())) {
         return;
       }
       return new Promise((resolve, reject) => {
         this.loading = true;
         // 请求数据
-        initData(this.url, this.getQueryParame()).then(data => {
-          this.total = data.totalElements;
-          this.data = data.content;
-          // time 毫秒后显示表格
-          setTimeout(() => {
+        initData(this.url, this.getQueryParame())
+          .then((data) => {
+            this.total = data.totalElements;
+            this.data = data.content;
+            // time 毫秒后显示表格
+            setTimeout(() => {
+              this.loading = false;
+            }, this.time);
+            resolve(data);
+          })
+          .catch((err) => {
             this.loading = false;
-          }, this.time);
-          resolve(data);
-        }).catch(err => {
-          this.loading = false;
-          reject(err);
-        });
+            reject(err);
+          });
       });
     },
     beforeInit() {
@@ -82,7 +78,7 @@ export default {
         size: this.size,
         sort: this.sort,
         ...this.query,
-        ...this.params
+        ...this.params,
       };
     },
     // 改变页码
@@ -117,35 +113,35 @@ export default {
       this.$notify({
         title: 'Submitted successfully',
         type: 'success',
-        duration: 2500
+        duration: 2500,
       });
     },
     addSuccessNotify() {
       this.$notify({
         title: 'Added successfully',
         type: 'success',
-        duration: 2500
+        duration: 2500,
       });
     },
     editSuccessNotify() {
       this.$notify({
         title: '编辑成功',
         type: 'success',
-        duration: 2500
+        duration: 2500,
       });
     },
     delSuccessNotify() {
       this.$notify({
         title: '删除成功',
         type: 'success',
-        duration: 2500
+        duration: 2500,
       });
     },
     notify(title, type) {
       this.$notify({
         title: title,
         type: type,
-        duration: 2500
+        duration: 2500,
       });
     },
     /**
@@ -162,20 +158,22 @@ export default {
         return;
       }
       this.delLoading = true;
-      this.crudMethod.del(id).then(() => {
-        this.delLoading = false;
-        this.$refs[id].doClose();
-        this.dleChangePage();
-        this.delSuccessNotify();
-        this.afterDelMethod();
-        this.init();
-      }).catch(() => {
-        this.delLoading = false;
-        this.$refs[id].doClose();
-      });
+      this.crudMethod
+        .del(id)
+        .then(() => {
+          this.delLoading = false;
+          this.$refs[id].doClose();
+          this.dleChangePage();
+          this.delSuccessNotify();
+          this.afterDelMethod();
+          this.init();
+        })
+        .catch(() => {
+          this.delLoading = false;
+          this.$refs[id].doClose();
+        });
     },
-    afterDelMethod() {
-    },
+    afterDelMethod() {},
     /**
      * 多选删除提示
      */
@@ -183,7 +181,7 @@ export default {
       this.$confirm('你确定删除选中的数据吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         this.delAllMethod();
       });
@@ -198,24 +196,26 @@ export default {
       for (let i = 0; i < data.length; i++) {
         ids.push(data[i].id);
       }
-      this.crudMethod.delAll(ids).then(() => {
-        this.delAllLoading = false;
-        this.dleChangePage(ids.length);
-        this.init();
-        this.$notify({
-          title: '删除成功',
-          type: 'success',
-          duration: 2500
+      this.crudMethod
+        .delAll(ids)
+        .then(() => {
+          this.delAllLoading = false;
+          this.dleChangePage(ids.length);
+          this.init();
+          this.$notify({
+            title: '删除成功',
+            type: 'success',
+            duration: 2500,
+          });
+        })
+        .catch(() => {
+          this.delAllLoading = false;
         });
-      }).catch(() => {
-        this.delAllLoading = false;
-      });
     },
     /**
      * 显示新增弹窗前可以调用该方法
      */
-    beforeShowAddForm() {
-    },
+    beforeShowAddForm() {},
     /**
      * 显示新增弹窗
      */
@@ -228,8 +228,7 @@ export default {
     /**
      * 显示编辑弹窗前可以调用该方法
      */
-    beforeShowEditForm(data) {
-    },
+    beforeShowEditForm(data) {},
     /**
      * 显示编辑弹窗
      */
@@ -246,46 +245,49 @@ export default {
      * 新增方法
      */
     addMethod() {
-      this.crudMethod.add(this.form).then(() => {
-        this.addSuccessNotify();
-        this.loading = false;
-        this.afterAddMethod();
-        this.cancel();
-        this.init();
-      }).catch(() => {
-        this.loading = false;
-        this.afterAddErrorMethod();
-      });
+      this.crudMethod
+        .add(this.form)
+        .then(() => {
+          this.addSuccessNotify();
+          this.loading = false;
+          this.afterAddMethod();
+          this.cancel();
+          this.init();
+        })
+        .catch(() => {
+          this.loading = false;
+          this.afterAddErrorMethod();
+        });
     },
     /**
      * 新增后可以调用该方法
      */
-    afterAddMethod() {
-    },
+    afterAddMethod() {},
     /**
      * 新增失败后调用该方法
      */
-    afterAddErrorMethod() {
-    },
+    afterAddErrorMethod() {},
     /**
      * 通用的编辑方法
      */
     editMethod() {
-      this.crudMethod.edit(this.form).then(() => {
-        this.editSuccessNotify();
-        this.loading = false;
-        this.afterEditMethod();
-        this.cancel();
-        this.init();
-      }).catch(() => {
-        this.loading = false;
-      });
+      this.crudMethod
+        .edit(this.form)
+        .then(() => {
+          this.editSuccessNotify();
+          this.loading = false;
+          this.afterEditMethod();
+          this.cancel();
+          this.init();
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     /**
      * 编辑后可以调用该方法
      */
-    afterEditMethod() {
-    },
+    afterEditMethod() {},
     /**
      * 提交前可以调用该方法
      */
@@ -334,12 +336,14 @@ export default {
     downloadMethod() {
       this.beforeInit();
       this.downloadLoading = true;
-      download(this.url + '/download', this.params).then(result => {
-        this.downloadFile(result, this.title + '数据', 'xlsx');
-        this.downloadLoading = false;
-      }).catch(() => {
-        this.downloadLoading = false;
-      });
-    }
-  }
+      download(this.url + '/download', this.params)
+        .then((result) => {
+          this.downloadFile(result, this.title + '数据', 'xlsx');
+          this.downloadLoading = false;
+        })
+        .catch(() => {
+          this.downloadLoading = false;
+        });
+    },
+  },
 };

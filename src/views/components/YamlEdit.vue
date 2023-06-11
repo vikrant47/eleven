@@ -2,22 +2,29 @@
   <div class="app-container">
     <p class="warn-content">
       Yaml编辑器 基于
-      <a href="https://github.com/codemirror/CodeMirror" target="_blank">CodeMirror</a>，
-      主题预览地址 <a href="https://codemirror.net/demo/theme.html#idea" target="_blank">Theme</a>
+      <a
+        href="https://github.com/codemirror/CodeMirror"
+        target="_blank"
+      >CodeMirror</a>， 主题预览地址
+      <a
+        href="https://codemirror.net/demo/theme.html#idea"
+        target="_blank"
+      >Theme</a>
     </p>
     <Yaml :value="value" :height="height" />
   </div>
 </template>
 
 <script>
-import Yaml from '@/components/YamlEdit/index'
+import Yaml from '@/components/YamlEdit/index';
 export default {
   name: 'YamlEdit',
   components: { Yaml },
   data() {
     return {
       height: document.documentElement.clientHeight - 210 + 'px',
-      value: '# 展示数据，如需更换主题，请在src/components/YamlEdit 目录中搜索原主题名称进行替换\n' +
+      value:
+        '# 展示数据，如需更换主题，请在src/components/YamlEdit 目录中搜索原主题名称进行替换\n' +
         '\n' +
         '# ===================================================================\n' +
         '# Spring Boot configuration.\n' +
@@ -190,18 +197,16 @@ export default {
         '# https://www.jhipster.tech/common-application-properties/\n' +
         '# ===================================================================\n' +
         '\n' +
-        '# application:\n'
-    }
+        '# application:\n',
+    };
   },
   mounted() {
-    const that = this
+    const that = this;
     window.onresize = function temp() {
-      that.height = document.documentElement.clientHeight - 210 + 'px'
-    }
-  }
-}
+      that.height = document.documentElement.clientHeight - 210 + 'px';
+    };
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -16,7 +16,7 @@
     >
       <el-table-column fixed type="selection" width="40" />
       <el-table-column
-        v-for="column in listFields.filter(field=>field.visible)"
+        v-for="column in listFields.filter((field) => field.visible)"
         :key="column.name"
         :prop="column.name"
         :label="column.label"
@@ -24,20 +24,20 @@
         :width="column.config.width"
         :min-width="column.config.minWidth"
       >
-        <template slot="header" slot-scope="scope">
-<!--         <div class="header-label">
-            <span>{{ scope.column.label }}</span>
-          </div>
-          <slot name="header" />-->
+        <template slot="header">
+          <!--         <div class="header-label">
+              <span>{{ scope.column.label }}</span>
+            </div>
+            <slot name="header" />-->
         </template>
-        <template #default="{row}">
+        <template #default="{ row }">
           <div
             :is="column.config.widget"
             v-if="column.config.widget"
             :row="row"
             :column="column"
-            :href="column.name==='id'"
-            @click="cellClick($event,row,column)"
+            :href="column.name === 'id'"
+            @click="cellClick($event, row, column)"
           />
         </template>
       </el-table-column>
@@ -46,7 +46,6 @@
       </el-scrollbar>
     </el-table>
   </div>
-
 </template>
 
 <script>
@@ -60,16 +59,16 @@ export default {
   props: {
     listFields: {
       type: Array,
-      required: true
+      required: true,
     },
     engineList: {
       type: EngineList,
-      required: true
+      required: true,
     },
     listEventHandler: {
       type: ListEventHandler,
-      required: true
-    }
+      required: true,
+    },
   },
   mounted() {
     this.engineList.refresh().then(() => {
@@ -79,11 +78,9 @@ export default {
   methods: {
     cellClick($event, row, column) {
       this.$emit('cellClick', $event, row, column);
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

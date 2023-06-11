@@ -3,13 +3,31 @@
     <div class="en-query-builder-wrapper">
       <div class="query-toolbar">
         <el-radio-group v-model="query.condition" size="mini">
-          <el-radio-button value="AND" label="AND">AND</el-radio-button>
-          <el-radio-button value="OR" label="OR">OR</el-radio-button>
+          <el-radio-button model-value="AND" label="AND">AND</el-radio-button>
+          <el-radio-button model-value="OR" label="OR">OR</el-radio-button>
         </el-radio-group>
         <div class="action-wrapper">
-          <el-button type="success" plain icon="el-icon-plus" size="mini" @click="addRule()">Rule</el-button>
-          <el-button type="success" plain icon="el-icon-document-add" size="mini" @click="addGroup()">Group</el-button>
-          <el-button type="danger" plain icon="el-icon-delete" size="mini" @click="removeGroup()" />
+          <el-button
+            type="success"
+            plain
+            :icon="EluIconPlus"
+            size="mini"
+            @click="addRule()"
+          >Rule</el-button>
+          <el-button
+            type="success"
+            plain
+            :icon="EluIconDocumentAdd"
+            size="mini"
+            @click="addGroup()"
+          >Group</el-button>
+          <el-button
+            type="danger"
+            plain
+            :icon="EluIconDelete"
+            size="mini"
+            @click="removeGroup()"
+          />
         </div>
       </div>
       <div class="rules">
@@ -26,7 +44,13 @@
       </div>
     </div>
     <div v-if="!inner" class="footer-actions">
-      <el-button v-if="showApply" class="apply-filter" type="primary" icon="el-icon-success" @click="applyFilter">
+      <el-button
+        v-if="showApply"
+        class="apply-filter"
+        type="primary"
+        :icon="EluIconSuccess"
+        @click="applyFilter"
+      >
         Apply
       </el-button>
     </div>
@@ -34,6 +58,12 @@
 </template>
 
 <script>
+import {
+  Plus as EluIconPlus,
+  DocumentAdd as EluIconDocumentAdd,
+  Delete as EluIconDelete,
+  Success as EluIconSuccess,
+} from '@element-plus/icons';
 import { OPERATORS } from '@/modules/engine/components/query-builder/models/QueryOperator';
 import QueryRule from '@/modules/engine/components/query-builder/QueryRule';
 import { Engine } from '@/modules/engine/core/engine';
@@ -46,45 +76,63 @@ export default {
       type: Array,
       default() {
         return [];
-      }
+      },
     },
     operatorMappings: {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     value: {
       type: Object,
       default() {
         return {
           condition: 'AND',
-          rules: [{ field: '', operator: '', value: null, id: Engine.generateUniqueString('rule_') }]
+          rules: [
+            {
+              field: '',
+              operator: '',
+              value: null,
+              id: Engine.generateUniqueString('rule_'),
+            },
+          ],
         };
-      }
+      },
     },
     inner: {
       type: Boolean,
       default() {
         return false;
-      }
+      },
     },
     showApply: {
       type: Boolean,
       default() {
         return false;
-      }
-    }
+      },
+    },
   },
   data() {
     let query = Engine.clone(this.value);
     query = Object.assign({ condition: 'AND' }, query);
     if (!query.rules) {
-      query.rules = [{ field: '', operator: '', value: null, id: Engine.generateUniqueString('rule_') }];
+      query.rules = [
+        {
+          field: '',
+          operator: '',
+          value: null,
+          id: Engine.generateUniqueString('rule_'),
+        },
+      ];
     }
     return {
       query: query,
-      operators: Object.assign({}, OPERATORS, this.operatorMappings)
+      operators: Object.assign({}, OPERATORS, this.operatorMappings),
+      EluIconPlus,
+      EluIconDocumentAdd,
+      EluIconDelete,
+      EluIconSuccess,
     };
   },
   watch: {
@@ -92,23 +140,39 @@ export default {
       if (!newVal) {
         newVal = {
           condition: 'AND',
-          rules: [{ field: '', operator: '', value: null, id: Engine.generateUniqueString('rule_') }]
+          rules: [
+            {
+              field: '',
+              operator: '',
+              value: null,
+              id: Engine.generateUniqueString('rule_'),
+            },
+          ],
         };
       }
       this.query = newVal;
       if (!this.query.rules) {
         this.query.rules = [];
       }
-    }
+    },
   },
   methods: {
     addGroup(condition = 'OR') {
-      this.query.rules.push({ id: Engine.generateUniqueString('group_'), condition: condition, rules: [{}] });
+      this.query.rules.push({
+        id: Engine.generateUniqueString('group_'),
+        condition: condition,
+        rules: [{}],
+      });
       this.queryUpdated();
     },
     addRule(index) {
       // this.query.rules.splice(index, 0, { field: '', operator: '', value: null });
-      this.query.rules.push({ id: Engine.generateUniqueString('rule_'), field: '', operator: '', value: null });
+      this.query.rules.push({
+        id: Engine.generateUniqueString('rule_'),
+        field: '',
+        operator: '',
+        value: null,
+      });
       this.queryUpdated();
     },
     removeGroup() {
@@ -116,7 +180,11 @@ export default {
     },
     removeRule(index) {
       this.query.rules.splice(index, 1);
-      console.log('rule removed at index ', index, JSON.parse(JSON.stringify(this.query.rules)));
+      console.log(
+        'rule removed at index ',
+        index,
+        JSON.parse(JSON.stringify(this.query.rules))
+      );
       this.queryUpdated();
     },
     ruleUpdated(rule) {
@@ -132,8 +200,8 @@ export default {
     },
     applyFilter() {
       this.$emit('apply', this.query);
-    }
-  }
+    },
+  },
 };
 </script>
 

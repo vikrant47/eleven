@@ -3,15 +3,15 @@ import { EngineObservable } from '@/modules/engine/core/engine.observable';
 export class Pagination extends EngineObservable {
   static events = {
     sizeChange: 'sizeChange',
-    currentChange: 'currentChange'
-  };
+    currentChange: 'currentChange',
+  }
   // page number
-  page = 0;
+  page = 0
   // Number of rows per page
-  limit = 15;
+  limit = 15
   // Total number of rows
-  total = 0;
-  pageSizes = [15, 30, 46, 60, 100];
+  total = 0
+  pageSizes = [15, 30, 46, 60, 100]
 
   constructor(config = {}) {
     super();

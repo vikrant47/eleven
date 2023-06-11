@@ -13,8 +13,8 @@ export default function loadTinymce(cb) {
     fullscreen: true,
     lock: true,
     text: 'Rich text resource loading...',
-    spinner: 'el-icon-loading',
-    background: 'rgba(255, 255, 255, 0.5)'
+    spinner: 'elu-icon-loading',
+    background: 'rgba(255, 255, 255, 0.5)',
   });
 
   loadScript('https://lib.baomitu.com/tinymce/5.3.2/tinymce.min.js', () => {
